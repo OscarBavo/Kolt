@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Kolt</string>
+    <string name="error_generic">Error al consultar información</string>
+    <string name="load_logo_progress">Cargando información</string>
 </resources>
