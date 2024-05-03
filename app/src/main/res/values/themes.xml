@@ -68,14 +68,14 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/dim_text_14</item>
-        <item name="android:textColor">@color/letter</item>
+        <item name="android:textSize">@dimen/dim_text_24</item>
+        <item name="android:textColor">@color/gray_own</item>
     </style>
 
     <style name="input_text.item.title">
         <item name="android:textAlignment">textStart</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/dim_text_18</item>
+        <item name="android:textSize">@dimen/dim_text_24</item>
         <item name="android:textColor">@color/black</item>
     </style>
 

@@ -7,4 +7,9 @@
     <string name="btn_title_in">Entrada</string>
     <string name="btn_title_out">Salida</string>
     <string name="btn_title_transfer">Transferencia</string>
+    <string name="title_generic_input_data_required">Campo obligatorio</string>
+    <string name="title_key_item">Clave Material</string>
+    <string name="title_unique_item">Campo Unico</string>
+    <string name="title_tv_batch">Lote/Rollo</string>
+    <string name="title_tv_pieces">Piezas</string>
 </resources>

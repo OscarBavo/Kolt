@@ -1,11 +1,12 @@
 package com.mkrs.kolt
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.mkrs.kolt.base.MKTActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : MKTActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
     }
 }
