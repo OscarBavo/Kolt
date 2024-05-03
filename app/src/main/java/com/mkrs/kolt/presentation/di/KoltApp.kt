@@ -1,4 +1,4 @@
-package com.mkrs.kolt
+package com.mkrs.kolt.presentation.di
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

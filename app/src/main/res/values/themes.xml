@@ -1,14 +1,24 @@
 <resources >
     <!-- Base application theme. -->
-    <style name="Base.Theme.Kolt" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Kolt" parent="Theme.Material3.DayNight">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:navigationBarColor">@color/primaryColor</item>
+        <item name="android:toolbarStyle">@color/primaryColor</item>
     </style>
 
     <style name="input_text">
         <item name="android:background">@android:color/white</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textSize">@dimen/dim_size_24</item>
+        <item name="android:textSize">@dimen/dim_size_16</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/roboto</item>
     </style>
@@ -127,4 +137,10 @@
     </style>
 
     <style name="Theme.Kolt" parent="Base.Theme.Kolt" />
+
+    <style name="Theme.Kolt.ActionBar">
+        <item name="background">@color/black</item>
+        <item name="colorControlNormal">@color/black</item>
+        <item name="searchViewStyle">@style/Widget.AppCompat.SearchView.ActionBar</item>
+    </style>
 </resources>

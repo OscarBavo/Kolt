@@ -17,7 +17,7 @@ import com.mkrs.kolt.R
  * From: com.mkrs.kolt.base
  * Date: 30 / 04 / 2024
  *****/
-class MKTActivity: AppCompatActivity() {
+open class MKTActivity: AppCompatActivity() {
     lateinit var navController: NavController
     var showingBar: Boolean = false
     private lateinit var alertDialog: AlertDialog

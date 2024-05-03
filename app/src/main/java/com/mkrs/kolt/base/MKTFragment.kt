@@ -17,7 +17,7 @@ import com.mkrs.kolt.R
  * From: com.mkrs.kolt.base
  * Date: 30 / 04 / 2024
  *****/
-class MKTFragment : Fragment() {
+open class MKTFragment : Fragment() {
     var activity: MKTActivity? = null
     lateinit var progressDialog: Dialog
 
@@ -54,7 +54,13 @@ class MKTFragment : Fragment() {
                 it.supportActionBar?.show()
             else
                 it.supportActionBar?.hide()
+
+            it.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            activity?.supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#009688")))
         }
+
+
+        setHasOptionsMenu(true)
     }
 
     fun showDialog() {

@@ -2,6 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="color_white_t">#CCFFFFFF</color>
+    <color name="color_link">#0D47A1</color>
+
+    <color name="primaryColor">#009688</color>
+    <color name="primaryDarkColor">#00675b</color>
+    <color name="secondaryColor">#ff1744</color>
+    <color name="secondaryDarkColor">#c4001d</color>
     <color name="color_divider">#1E000000</color>
     <color name="btnAbd">#DEE308</color>
     <color name="btnBcTc">#E34908</color>
