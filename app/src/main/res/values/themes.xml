@@ -52,6 +52,7 @@
     <style name="input_text.number_go">
         <item name="android:imeOptions">actionGo</item>
         <item name="singleLine">true</item>
+        <item name="android:inputType">numberDecimal</item>
     </style>
 
     <style name="input_text.label">

@@ -35,7 +35,7 @@ class TransferFragment : MKTFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupBar("Test", true)
+        setupBar(resources.getString(R.string.title_fragment_transfer), true)
     }
 
     override fun onCreateView(

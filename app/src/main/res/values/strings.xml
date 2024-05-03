@@ -2,7 +2,10 @@
     <string name="app_name">Kolt</string>
     <string name="error_generic">Error al consultar información</string>
     <string name="load_logo_progress">Cargando información</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="text_general_app_clean">Limpiar</string>
+    <string name="text_general_app_next">Siguiente</string>
+    <!-- Transferencia -->
+    <string name="title_fragment_transfer">Salida Producción</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btn_title_in">Entrada</string>
     <string name="btn_title_out">Salida</string>
@@ -10,6 +13,11 @@
     <string name="title_generic_input_data_required">Campo obligatorio</string>
     <string name="title_key_item">Clave Material</string>
     <string name="title_unique_item">Campo Unico</string>
-    <string name="title_tv_batch">Lote/Rollo</string>
-    <string name="title_tv_pieces">Piezas</string>
+    <string name="title_tv_transfer_batch">Lote/Rollo</string>
+    <string name="title_tv_transfer_pieces">Piezas</string>
+    <string name="title_tv_transfer_done_product">Conversión PT</string>
+    <string name="title_tv_transfer_reject">Devolución</string>
+    <string name="title_tv_transfer_different">Discrepancia</string>
+    <string name="title_tv_transfer_scrap">SCRAP</string>
+    <string name="title_tv_transfer_total_transfer">Total</string>
 </resources>
