@@ -12,13 +12,13 @@ import dagger.hilt.android.HiltAndroidApp
 
 
 @HiltAndroidApp
-class KoltApp:Application(){
-    companion object{
-        lateinit var instance:KoltApp
+class KoltApp : Application() {
+    companion object {
+        lateinit var instance: KoltApp
     }
 
     override fun onCreate() {
         super.onCreate()
-        instance=this
+        instance = this
     }
 }

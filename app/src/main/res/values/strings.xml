@@ -5,6 +5,9 @@
     <string name="text_general_app_clean">Limpiar</string>
     <string name="text_general_app_next">Siguiente</string>
     <string name="text_general_app_save">Guardar</string>
+    <!-- Shared Preference -->
+    <string name="data_name_printer">Impresoras</string>
+    <string name="data_name_printer_port">PuertoImpresoras</string>
     <!-- Transferencia -->
     <string name="title_fragment_transfer">Salida Producción</string>
     <string name="title_bottom_sheet_transfer_done_product">Producto Terminado</string>

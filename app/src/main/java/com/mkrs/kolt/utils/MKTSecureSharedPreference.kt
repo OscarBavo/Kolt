@@ -39,8 +39,16 @@ class MKTSecureSharedPreference private constructor(context: Context, fileName: 
         editor.apply()
     }
 
+    fun saveInt(key: String, value: Int) {
+        editor.putInt(encode(key), value)
+        editor.apply()
+    }
+
     fun getString(key: String, defaultValue: String): String {
         val encoded = sharedPreference.getString(encode(key), encode(defaultValue))
         return decode(encoded ?: encode(defaultValue))
+    }
+    fun getInt(key: String, defaultValue: Int): Int {
+        return sharedPreference.getInt(encode(key), defaultValue)
     }
 }
