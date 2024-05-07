@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.transfer.MainMenuFragment">
+    tools:context=".dashboard.presentacion.MainMenuFragment">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_in"
@@ -20,6 +20,7 @@
         app:layout_constraintVertical_bias="0.380"
         android:visibility="invisible"
         />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_out"
         style="@style/button_text"
@@ -46,8 +47,4 @@
         android:layout_margin="@dimen/dim_size_5"
         android:text="@string/btn_title_transfer"
         />
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.Window
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.mkrs.kolt.R
 
@@ -17,26 +18,11 @@ import com.mkrs.kolt.R
  * From: com.mkrs.kolt.base
  * Date: 30 / 04 / 2024
  *****/
-open class MKTFragment : Fragment() {
+open class MKTFragment : Fragment(), IReturnFragment {
     var activity: MKTActivity? = null
+    var isMainView: Boolean = false
+    var isRequiredMessageReturn: Boolean = false
     lateinit var progressDialog: Dialog
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    /**
-                     * Aqui debe de ir cualquier duda para cuando el usaurio quiera salir
-                     */
-                    if (isEnabled) {
-                        isEnabled = false
-                        requireActivity().onBackPressedDispatcher.onBackPressed()
-                    }
-                }
-            })
-    }
 
     fun initDialog() {
         progressDialog = Dialog(requireContext())
@@ -56,7 +42,13 @@ open class MKTFragment : Fragment() {
                 it.supportActionBar?.hide()
 
             it.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            activity?.supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#009688")))
+            activity?.supportActionBar?.setBackgroundDrawable(
+                ColorDrawable(
+                    Color.parseColor(
+                        resources.getString(R.string.color_title_bar)
+                    )
+                )
+            )
         }
 
 
@@ -80,4 +72,11 @@ open class MKTFragment : Fragment() {
     }
 
     private fun isShowingDialog(): Boolean = progressDialog.isShowing
+    override fun onBackReturn() {
+
+    }
+
+    override fun onCancel() {
+
+    }
 }

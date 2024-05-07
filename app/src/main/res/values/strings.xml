@@ -5,6 +5,15 @@
     <string name="text_general_app_clean">Limpiar</string>
     <string name="text_general_app_next">Siguiente</string>
     <string name="text_general_app_save">Guardar</string>
+    <string name="config_printer">Configurar Impresora</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_on_back_press_general">Atención</string>
+    <string name="title_on_back_press_general_message">¿Deseas salir de la pantall actual?</string>
+    <string name="title_on_back_press_message_close_app">¿Deseas cerrar la aplicación?</string>
+    <string name="title_on_back_press_ret">Regresar</string>
+    <string name="title_on_back_press_out">Salir</string>
+    <string name="title_on_back_press_cancel">Cancelar</string>
+    <string name="color_title_bar">#009688</string>
     <!-- Shared Preference -->
     <string name="data_name_printer">Impresoras</string>
     <string name="data_name_printer_port">PuertoImpresoras</string>
@@ -31,5 +40,6 @@
     <string name="title_bottom_transfer_team_work">Operador</string>
     <string name="title_bottom_transfer_perforadora">Perforadora</string>
     <string name="title_bottom_transfer_standard_pack">Standard Pack</string>
+
 
 </resources>

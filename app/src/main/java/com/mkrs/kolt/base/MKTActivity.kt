@@ -7,6 +7,8 @@ import android.graphics.drawable.ColorDrawable
 import android.view.Window
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.mkrs.kolt.R
@@ -17,11 +19,15 @@ import com.mkrs.kolt.R
  * From: com.mkrs.kolt.base
  * Date: 30 / 04 / 2024
  *****/
-open class MKTActivity: AppCompatActivity() {
+open class MKTActivity : AppCompatActivity() {
     lateinit var navController: NavController
     var showingBar: Boolean = false
     private lateinit var alertDialog: AlertDialog
     lateinit var progressDialog: Dialog
+
+    companion object {
+        private const val NONE = 0
+    }
 
     fun setupActionBar() {
         when (showingBar) {
@@ -49,14 +55,14 @@ open class MKTActivity: AppCompatActivity() {
         navGraph.setStartDestination(idFragmentInit)
     }
 
-    private fun showAlertComplete(
+    fun showAlertComplete(
         titleAlert: String? = "",
         message: String,
         okButtonText: String,
-        showingOkBtn:Boolean=false,
+        showingOkBtn: Boolean = false,
         onClickListener: DialogInterface.OnClickListener?,
         cancelButtonText: String,
-        showingNoBtn:Boolean=false,
+        showingNoBtn: Boolean = false,
         noListener: DialogInterface.OnClickListener?
     ) {
         if (!isFinishing) {
@@ -92,4 +98,18 @@ open class MKTActivity: AppCompatActivity() {
     }
 
     private fun isShowingDialog(): Boolean = progressDialog.isShowing
+
+    public fun setFragment(fragment: MKTFragment, TAG:String) {
+        try {
+            cleanBackStack()
+            this.supportFragmentManager.beginTransaction()
+                .replace(R.id.containerMain, fragment, TAG)
+                .commit()
+        } catch (_: IllegalStateException) {
+        }
+    }
+
+    private fun cleanBackStack() {
+        this.supportFragmentManager.popBackStack(NONE, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
 }
