@@ -1,14 +1,11 @@
 package com.mkrs.kolt.base
 
 import android.app.Dialog
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.Window
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.mkrs.kolt.R
 
@@ -18,7 +15,7 @@ import com.mkrs.kolt.R
  * From: com.mkrs.kolt.base
  * Date: 30 / 04 / 2024
  *****/
-open class MKTFragment : Fragment(), IReturnFragment {
+open class MKTFragment : Fragment() {
     var activity: MKTActivity? = null
     var isMainView: Boolean = false
     var isRequiredMessageReturn: Boolean = false
@@ -72,11 +69,4 @@ open class MKTFragment : Fragment(), IReturnFragment {
     }
 
     private fun isShowingDialog(): Boolean = progressDialog.isShowing
-    override fun onBackReturn() {
-
-    }
-
-    override fun onCancel() {
-
-    }
 }

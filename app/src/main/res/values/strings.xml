@@ -17,6 +17,10 @@
     <!-- Shared Preference -->
     <string name="data_name_printer">Impresoras</string>
     <string name="data_name_printer_port">PuertoImpresoras</string>
+    <!-- Impresora -->
+    <string name="hint_printer_ip">IP Impresora</string>
+    <string name="hint_printer_port">Puerto</string>
+    <string name="title_printer_config">Configurar Impresora</string>
     <!-- Transferencia -->
     <string name="title_fragment_transfer">Salida Producción</string>
     <string name="title_bottom_sheet_transfer_done_product">Producto Terminado</string>

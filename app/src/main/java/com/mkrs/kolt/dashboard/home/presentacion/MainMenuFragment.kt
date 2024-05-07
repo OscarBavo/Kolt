@@ -1,15 +1,11 @@
-package com.mkrs.kolt.dashboard.presentacion
+package com.mkrs.kolt.dashboard.home.presentacion
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mkrs.kolt.MainActivity
 import com.mkrs.kolt.R
 import com.mkrs.kolt.base.MKTActivity
@@ -29,7 +25,7 @@ class MainMenuFragment : MKTFragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(param1: String="", param2: String="") =
+        fun newInstance() =
             MainMenuFragment().apply {
             }
     }

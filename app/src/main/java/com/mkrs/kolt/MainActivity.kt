@@ -5,13 +5,12 @@ import androidx.activity.addCallback
 import androidx.fragment.app.FragmentManager
 import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.databinding.ActivityMainBinding
-import com.mkrs.kolt.dashboard.presentacion.MainMenuFragment
+import com.mkrs.kolt.dashboard.home.presentacion.MainMenuFragment
 import com.mkrs.kolt.utils.visible
 
 class MainActivity : MKTActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var fragment: MainMenuFragment
 
     companion object {
         private const val HOME_TAG = "HOME"
@@ -24,6 +23,10 @@ class MainActivity : MKTActivity() {
         toSection(R.id.action_homme)
         onBackPressedDispatcher.addCallback(this) {
             mainOnBackPress()
+        }
+        binding.navMainMenu.setOnItemSelectedListener { item ->
+            toSection(item.itemId, false)
+            return@setOnItemSelectedListener true
         }
     }
 
@@ -50,7 +53,8 @@ class MainActivity : MKTActivity() {
         setBottomNavigationItemCheck(ItemId)
         when (ItemId) {
             R.id.action_print_config -> {
-                //init bottomsheet printer
+                PrinterConfigFragment.newInstance("A", "B")
+                    .show(supportFragmentManager, PrinterConfigFragment.TAG)
             }
 
             R.id.action_config -> {
