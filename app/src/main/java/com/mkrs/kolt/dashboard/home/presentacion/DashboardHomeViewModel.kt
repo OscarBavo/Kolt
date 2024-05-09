@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModel
  * From: com.mkrs.kolt.dashboard.presentacion
  * Date: 06 / 05 / 2024
  *****/
-class DashboardHomeViewModel(): ViewModel() {
-    private val mutableDashBoarHomeUiState= MutableLiveData<DashboardHomeUIState>()
-    val dashboardHomeUIState:LiveData<DashboardHomeUIState>
+class DashboardHomeViewModel() : ViewModel() {
+    private val mutableDashBoarHomeUiState = MutableLiveData<DashboardHomeUIState>()
+    val dashboardHomeUIState: LiveData<DashboardHomeUIState>
         get() = mutableDashBoarHomeUiState
 }

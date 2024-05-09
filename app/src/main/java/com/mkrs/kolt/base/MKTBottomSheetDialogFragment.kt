@@ -1,12 +1,15 @@
 package com.mkrs.kolt.base
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import com.mkrs.kolt.utils.adjustSheetSize
 
 /****
@@ -31,5 +34,15 @@ open class MKTBottomSheetDialogFragment(@LayoutRes val layoutResId: Int) : Botto
         dialog.setCancelable(false)
         dialog.adjustSheetSize()
         return dialog
+    }
+
+    fun showAlert(view:View, msg: String,actionText:String, listener:View.OnClickListener){
+        Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
+            .setAction(actionText, listener)
+            .show()
+    }
+    fun hideKeyboard(){
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 }

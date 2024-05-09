@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    tools:context=".PrinterConfigFragment">
+    tools:context=".dashboard.home.printer.PrinterConfigFragment">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/title_config_printer"
@@ -38,6 +38,7 @@
             android:layout_height="match_parent"
             android:inputType="number|numberDecimal"
             android:digits="0123456789."
+            android:imeOptions="actionNext"
             android:maxLength="15" />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
@@ -59,12 +60,13 @@
             android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:imeOptions="actionDone|actionGo"
             android:maxLength="4" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_test_printer"
-        android:text="Impresion de prueba"
+        android:text="@string/btn_title_printer_test"
         style="@style/Button.Primary"
         android:layout_margin="@dimen/dim_size_8"
         android:padding="@dimen/dim_size_16"
@@ -91,6 +93,7 @@
         android:text="@string/text_general_app_save"
         style="@style/Button.Primary"
         android:padding="@dimen/dim_size_16"
+        android:layout_marginEnd="@dimen/dim_size_8"
         app:layout_constraintTop_toBottomOf="@id/btn_test_printer"
         app:layout_constraintEnd_toEndOf="@id/btn_test_printer"
         />

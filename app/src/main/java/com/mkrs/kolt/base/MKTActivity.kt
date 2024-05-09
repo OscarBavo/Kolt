@@ -8,7 +8,6 @@ import android.view.View
 import android.view.Window
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -109,7 +108,7 @@ open class MKTActivity : AppCompatActivity() {
 
     private fun isShowingDialog(): Boolean = progressDialog.isShowing
 
-    public fun setFragment(fragment: MKTFragment, TAG: String) {
+    fun setFragment(fragment: MKTFragment, TAG: String) {
         try {
             cleanBackStack()
             this.supportFragmentManager.beginTransaction()
@@ -126,4 +125,6 @@ open class MKTActivity : AppCompatActivity() {
     fun showAlert(msg: String, view: View) {
         Snackbar.make(view, msg, Snackbar.LENGTH_LONG).show()
     }
+
+
 }

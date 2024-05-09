@@ -1,11 +1,14 @@
 <resources>
     <string name="app_name">Kolt</string>
     <string name="error_generic">Error al consultar información</string>
+    <string name="update_info_generic">Información actualizada</string>
     <string name="load_logo_progress">Cargando información</string>
+    <string name="btn_title_printer_test">Imprimir etiqueta</string>
     <string name="text_general_app_clean">Limpiar</string>
     <string name="text_general_app_next">Siguiente</string>
     <string name="text_general_app_continue">Continuar</string>
     <string name="text_general_app_save">Guardar</string>
+    <string name="text_general_accept">Aceptar</string>
     <string name="config_printer">Configurar Impresora</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_on_back_press_general">Atención</string>
@@ -21,6 +24,8 @@
     <string name="title_edit_password">Contraseña</string>
     <string name="title_error_password">Contraseña incorrecta</string>
     <string name="title_required_text">Dato Necesario</string>
+    <string name="title_generic_input_data_required">Campo obligatorio</string>
+    <string name="title_split_ip">:</string>
     <!-- Shared Preference -->
     <string name="data_name_printer">Impresoras</string>
     <string name="key_value_printer">PrinterIPPort</string>
@@ -40,7 +45,6 @@
     <string name="btn_title_in">Entrada</string>
     <string name="btn_title_out">Salida</string>
     <string name="btn_title_transfer">Transferencia</string>
-    <string name="title_generic_input_data_required">Campo obligatorio</string>
     <string name="title_key_item">Clave Material</string>
     <string name="title_unique_item">Campo Unico</string>
     <string name="title_tv_transfer_batch">Lote/Rollo</string>

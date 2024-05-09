@@ -7,18 +7,16 @@ import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.databinding.ActivityMainBinding
 import com.mkrs.kolt.dashboard.home.presentacion.MainMenuFragment
+import com.mkrs.kolt.dashboard.home.printer.PrinterConfigFragment
 import com.mkrs.kolt.preferences.di.HomeModule
 import com.mkrs.kolt.preferences.di.PreferenceModule
-import com.mkrs.kolt.preferences.presentation.PreferenceViewModelFactory
 import com.mkrs.kolt.preferences.presentation.PreferencesViewModel
 import com.mkrs.kolt.utils.visible
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : MKTActivity() {
@@ -125,7 +123,7 @@ class MainActivity : MKTActivity() {
                     when (typeValidate) {
                         VALIDATE_PRINTER -> {
                             this.alertDialog.dismiss()
-                            PrinterConfigFragment.newInstance("A", "B")
+                            PrinterConfigFragment.newInstance()
                                 .show(supportFragmentManager, PrinterConfigFragment.TAG)
                         }
                     }
