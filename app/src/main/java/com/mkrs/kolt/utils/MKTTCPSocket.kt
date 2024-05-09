@@ -1,7 +1,7 @@
 package com.mkrs.kolt.utils
 
-import android.content.Context
-import com.mkrs.kolt.R
+import androidx.lifecycle.MutableLiveData
+import com.mkrs.kolt.dashboard.home.printer.PrinterUIState
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -18,41 +18,42 @@ import java.net.UnknownHostException
  *****/
 class MKTTCPSocket {
 
-    fun sendDataPrinter(data: String, namePrinter: String, context: Context): String {
-        val ipPrinter = MKTSecureSharedPreference.newInstance(
-            context,
-            context.resources.getString(R.string.data_name_printer)
-        ).getString(namePrinter, "")
-        val portPrinter = MKTSecureSharedPreference.newInstance(
-            context,
-            context.resources.getString(R.string.data_name_printer)
-        ).getInt(namePrinter, 9100)
+    fun sendDataPrinter(
+        data: String,
+        ip: String,
+        port: Int,
+        printerStatus: MutableLiveData<PrinterUIState>
+    ) {
+
         try {
-            val socket = Socket(ipPrinter, portPrinter)
+            val socket = Socket(ip, port)
             socket.use {
-                var responseString: String? = null
+                printerStatus.postValue(PrinterUIState.Loading)
                 it.getOutputStream().write(data.toByteArray())
                 val bufferReader = BufferedReader(InputStreamReader(it.inputStream))
+                var line = ""
                 while (true) {
-                    val line = bufferReader.readLine() ?: break
-                    responseString += line
-                    if (line == "exit") break
+                    line = bufferReader.readLine() ?: break
+                    break
                 }
-                println("Received: $responseString")
                 bufferReader.close()
                 it.close()
-                return responseString!!
+                printerStatus.postValue(PrinterUIState.Printed(line))
             }
         } catch (he: UnknownHostException) {
-            return "An exception occurred:\n ${he.printStackTrace()}"
+            val error = "An exception occurred:\n ${he.printStackTrace()}"
+            printerStatus.postValue(PrinterUIState.Printed(error))
 
         } catch (ioe: IOException) {
-            return "An exception occurred:\n ${ioe.printStackTrace()}"
+            val error = "An exception occurred:\n ${ioe.printStackTrace()}"
+            printerStatus.postValue(PrinterUIState.Printed(error))
         } catch (ce: ConnectException) {
-            return "An exception occurred:\n ${ce.printStackTrace()}"
+            val error = "An exception occurred:\n ${ce.printStackTrace()}"
+            printerStatus.postValue(PrinterUIState.Printed(error))
 
         } catch (se: SocketException) {
-            return "An exception occurred:\n ${se.printStackTrace()}"
+            val error = "An exception occurred:\n ${se.printStackTrace()}"
+            printerStatus.postValue(PrinterUIState.Printed(error))
         }
     }
 }

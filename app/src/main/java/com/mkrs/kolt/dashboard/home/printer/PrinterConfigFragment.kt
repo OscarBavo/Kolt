@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.mkrs.kolt.R
+import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.base.MKTBottomSheetDialogFragment
 import com.mkrs.kolt.databinding.FragmentPrinterConfigBinding
 import com.mkrs.kolt.preferences.di.HomeModule
@@ -26,10 +28,28 @@ import java.util.regex.Pattern
 class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_printer_config) {
 
     private lateinit var binding: FragmentPrinterConfigBinding
+    private val printerViewModel by activityViewModels<PrinterViewModel>()
+    private var activity: MKTActivity? = null
     private val preferencesViewModel by activityViewModels<PreferencesViewModel> {
         PreferenceModule.providePreferenceVMFactory(
             HomeModule.provideHomePReferences(requireActivity(), "Impresoras")
         )
+    }
+
+    private val uIStateObserver = Observer<PrinterUIState> { state ->
+        when (state) {
+            is PrinterUIState.Loading -> activity?.showDialog()
+            is PrinterUIState.NoState -> {activity?.dismissDialog()}
+            is PrinterUIState.Printed -> {
+                activity?.dismissDialog()
+                showAlert("Impresion correcta", binding.btnTestPrinter)
+            }
+            is PrinterUIState.Error -> {
+                activity?.dismissDialog()
+                showAlert(state.message, binding.btnTestPrinter)
+            }
+
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,15 +68,24 @@ class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_pri
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentPrinterConfigBinding.bind(view)
+        loadViewModel()
         initView()
+
+        initLoading()
+    }
+
+    private fun initLoading() {
+        activity = requireActivity() as? MKTActivity
+        activity?.initDialog()
+    }
+
+    private fun loadViewModel() {
+        printerViewModel.printerUIState.observe(viewLifecycleOwner, uIStateObserver)
     }
 
     private fun initView() {
         binding.apply {
-            val ipPort = preferencesViewModel.getString(
-                resources.getString(R.string.key_value_printer),
-                resources.getString(R.string.default_value_printer)
-            ).split(resources.getString(R.string.title_split_ip))
+            val ipPort = printerViewModel.getDataPrinter(preferencesViewModel, resources)
 
             tieTextIpPrinter.setText(ipPort[0])
             tieTextPortPrinter.setText(ipPort[1])
@@ -66,6 +95,12 @@ class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_pri
 
             btnSave.setOnClickListener {
                 saveData()
+            }
+
+            btnTestPrinter.setOnClickListener {
+                val ip = printerViewModel.getDataPrinter(preferencesViewModel, resources)[0]
+                val port = printerViewModel.getDataPrinter(preferencesViewModel, resources)[1].toInt()
+                printerViewModel.printTest(ip, port, resources.getString(R.string.label_test))
             }
 
             tieTextIpPrinter.setOnEditorActionListener { textIp, actionId, _ ->
@@ -120,6 +155,7 @@ class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_pri
 
     private fun saveData() {
         hideKeyboard()
+        activity?.showDialog()
         if (validateData()) {
             binding.apply {
                 btnSave.disable()
@@ -128,6 +164,7 @@ class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_pri
                 tilIpPrinter.error =
                     resources.getString(R.string.title_generic_input_data_required)
             }
+            activity?.dismissDialog()
             return
         }
         var ipPortPrinter = binding.tieTextIpPrinter.text.toString()
@@ -138,6 +175,7 @@ class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_pri
             resources.getString(R.string.key_value_printer),
             ipPortPrinter
         )
+        activity?.dismissDialog()
         showAlert(
             binding.btnSave,
             resources.getString(R.string.update_info_generic),

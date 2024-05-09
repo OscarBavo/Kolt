@@ -41,6 +41,11 @@ open class MKTBottomSheetDialogFragment(@LayoutRes val layoutResId: Int) : Botto
             .setAction(actionText, listener)
             .show()
     }
+
+    fun showAlert(msg: String, view: View) {
+        Snackbar.make(view, msg, Snackbar.LENGTH_LONG).show()
+    }
+
     fun hideKeyboard(){
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)

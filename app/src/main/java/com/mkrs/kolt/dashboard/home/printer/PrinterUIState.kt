@@ -9,5 +9,6 @@ package com.mkrs.kolt.dashboard.home.printer
 sealed class PrinterUIState {
     object Loading: PrinterUIState()
     object NoState: PrinterUIState()
+    data class Printed(val msgPrinter:String):PrinterUIState()
     data class Error(val message:String): PrinterUIState()
 }
