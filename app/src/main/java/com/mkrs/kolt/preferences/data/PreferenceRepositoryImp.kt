@@ -9,20 +9,19 @@ import com.mkrs.kolt.utils.MKTSecureSharedPreference
  * From: com.mkrs.kolt.preferences.data
  * Date: 06 / 05 / 2024
  *****/
-class PreferenceRepositoryImp(private val preference: MKTSecureSharedPreference):PreferenceRepository {
+class PreferenceRepositoryImp(private val preference: MKTSecureSharedPreference) :
+    PreferenceRepository {
     override fun saveStringValue(key: String, value: String) {
-        TODO("Not yet implemented")
+        preference.saveString(key, value)
     }
 
-    override fun getStringValue(key: String, defaultValue: String): String {
-        TODO("Not yet implemented")
-    }
+    override fun getStringValue(key: String, defaultValue: String) =
+        preference.getString(key, defaultValue)
+
 
     override fun saveIntValue(key: String, value: Int) {
-        TODO("Not yet implemented")
+        preference.saveInt(key, value)
     }
 
-    override fun getIntValue(key: String, defaultValue: Int): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getIntValue(key: String, defaultValue: Int) = preference.getInt(key, defaultValue)
 }

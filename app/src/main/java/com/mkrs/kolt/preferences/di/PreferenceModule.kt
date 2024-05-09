@@ -7,6 +7,11 @@ import com.mkrs.kolt.preferences.domain.usecases.SaveIntValueUseCase
 import com.mkrs.kolt.preferences.domain.usecases.SaveStringValueUseCase
 import com.mkrs.kolt.preferences.presentation.PreferenceViewModelFactory
 import com.mkrs.kolt.utils.MKTSecureSharedPreference
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 /****
  * Project: Kolt
@@ -14,8 +19,13 @@ import com.mkrs.kolt.utils.MKTSecureSharedPreference
  * From: com.mkrs.kolt.preferences.di
  * Date: 06 / 05 / 2024
  *****/
+
+@Module
+@InstallIn(SingletonComponent::class)
 object PreferenceModule {
 
+    @Singleton
+    @Provides
     fun providePreferenceVMFactory(preference: MKTSecureSharedPreference): PreferenceViewModelFactory {
         val singletonRepository = providesPreferenceRepository(preference)
         return PreferenceViewModelFactory(
@@ -26,19 +36,29 @@ object PreferenceModule {
         )
     }
 
-    private fun providesGetStringUseCase(preference: PreferenceRepositoryImp) =
+    @Singleton
+    @Provides
+    fun providesGetStringUseCase(preference: PreferenceRepositoryImp) =
         GetStringValueUseCase(preference)
 
-    private fun providesGetIntUseCase(preference: PreferenceRepositoryImp) =
+    @Singleton
+    @Provides
+    fun providesGetIntUseCase(preference: PreferenceRepositoryImp) =
         GetIntValueUseCase(preference)
 
-    private fun providesSaveStringUseCase(preferences: PreferenceRepositoryImp) =
+    @Singleton
+    @Provides
+    fun providesSaveStringUseCase(preferences: PreferenceRepositoryImp) =
         SaveStringValueUseCase(preferences)
 
-    private fun providesSaveIntUseCase(preferences: PreferenceRepositoryImp) =
+    @Singleton
+    @Provides
+    fun providesSaveIntUseCase(preferences: PreferenceRepositoryImp) =
         SaveIntValueUseCase(preferences)
 
-    private fun providesPreferenceRepository(preference: MKTSecureSharedPreference) =
+    @Singleton
+    @Provides
+    fun providesPreferenceRepository(preference: MKTSecureSharedPreference) =
         PreferenceRepositoryImp(preference)
 
 

@@ -21,8 +21,14 @@ class PreferenceViewModelFactory(
     private val getIntValueUseCase: GetIntValueUseCase
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(PreferenceViewModelFactory::class.java)){
-        return PreferencesViewModel(getIntValueUseCase,getStringValueUseCase, saveIntValueUseCase, saveStringValueUseCase) as T}
+        if (modelClass.isAssignableFrom(PreferencesViewModel::class.java)) {
+            return PreferencesViewModel(
+                getIntValueUseCase,
+                getStringValueUseCase,
+                saveIntValueUseCase,
+                saveStringValueUseCase
+            ) as T
+        }
         throw IllegalArgumentException("Clase desconocida")
     }
 }

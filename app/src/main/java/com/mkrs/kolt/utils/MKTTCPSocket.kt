@@ -25,7 +25,7 @@ class MKTTCPSocket {
         ).getString(namePrinter, "")
         val portPrinter = MKTSecureSharedPreference.newInstance(
             context,
-            context.resources.getString(R.string.data_name_printer_port)
+            context.resources.getString(R.string.data_name_printer)
         ).getInt(namePrinter, 9100)
         try {
             val socket = Socket(ipPrinter, portPrinter)

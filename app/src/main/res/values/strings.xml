@@ -4,19 +4,31 @@
     <string name="load_logo_progress">Cargando información</string>
     <string name="text_general_app_clean">Limpiar</string>
     <string name="text_general_app_next">Siguiente</string>
+    <string name="text_general_app_continue">Continuar</string>
     <string name="text_general_app_save">Guardar</string>
     <string name="config_printer">Configurar Impresora</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_on_back_press_general">Atención</string>
     <string name="title_on_back_press_general_message">¿Deseas salir de la pantall actual?</string>
+    <string name="title_configure">Para configurar %s debe ingresar la contraseña</string>
+    <string name="title_configure_printer">Impresora</string>
+    <string name="title_configure_web_service">Web Services</string>
     <string name="title_on_back_press_message_close_app">¿Deseas cerrar la aplicación?</string>
     <string name="title_on_back_press_ret">Regresar</string>
     <string name="title_on_back_press_out">Salir</string>
     <string name="title_on_back_press_cancel">Cancelar</string>
     <string name="color_title_bar">#009688</string>
+    <string name="title_edit_password">Contraseña</string>
+    <string name="title_error_password">Contraseña incorrecta</string>
+    <string name="title_required_text">Dato Necesario</string>
     <!-- Shared Preference -->
     <string name="data_name_printer">Impresoras</string>
-    <string name="data_name_printer_port">PuertoImpresoras</string>
+    <string name="key_value_printer">PrinterIPPort</string>
+    <string name="default_value_printer">127.0.0.1:9100</string>
+    <string name="key_pass_config_open">PassPrinter</string>
+    <string name="default_pass_config_open">Mkrs2024</string>
+    <string name="key_pass_web_service">WebServices</string>
+    <string name="default_web_service">127.0.0.1</string>
     <!-- Impresora -->
     <string name="hint_printer_ip">IP Impresora</string>
     <string name="hint_printer_port">Puerto</string>

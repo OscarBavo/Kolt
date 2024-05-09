@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.view.View
 import android.view.Window
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.google.android.material.snackbar.Snackbar
 import com.mkrs.kolt.R
 
 /****
@@ -22,8 +24,9 @@ import com.mkrs.kolt.R
 open class MKTActivity : AppCompatActivity() {
     lateinit var navController: NavController
     var showingBar: Boolean = false
-    private lateinit var alertDialog: AlertDialog
+    lateinit var alertDialog: AlertDialog
     lateinit var progressDialog: Dialog
+
 
     companion object {
         private const val NONE = 0
@@ -63,7 +66,8 @@ open class MKTActivity : AppCompatActivity() {
         onClickListener: DialogInterface.OnClickListener?,
         cancelButtonText: String,
         showingNoBtn: Boolean = false,
-        noListener: DialogInterface.OnClickListener?
+        noListener: DialogInterface.OnClickListener?,
+        hasPass: Boolean = false
     ) {
         if (!isFinishing) {
 
@@ -72,12 +76,18 @@ open class MKTActivity : AppCompatActivity() {
                 if (titleAlert.isNotEmpty())
                     builder.setTitle(titleAlert)
             }
+            val inflater = this.layoutInflater
             builder.setMessage(message)
                 .setCancelable(false)
-            if (showingOkBtn)
+            if (showingOkBtn) {
                 builder.setPositiveButton(okButtonText, onClickListener)
-            if (showingNoBtn)
+                if (hasPass) {
+                    builder.setView(inflater.inflate(R.layout.dialog_pass_config, null))
+                }
+            }
+            if (showingNoBtn) {
                 builder.setNegativeButton(cancelButtonText, noListener)
+            }
 
             alertDialog = builder.show()
             alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE)
@@ -99,7 +109,7 @@ open class MKTActivity : AppCompatActivity() {
 
     private fun isShowingDialog(): Boolean = progressDialog.isShowing
 
-    public fun setFragment(fragment: MKTFragment, TAG:String) {
+    public fun setFragment(fragment: MKTFragment, TAG: String) {
         try {
             cleanBackStack()
             this.supportFragmentManager.beginTransaction()
@@ -111,5 +121,9 @@ open class MKTActivity : AppCompatActivity() {
 
     private fun cleanBackStack() {
         this.supportFragmentManager.popBackStack(NONE, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
+
+    fun showAlert(msg: String, view: View) {
+        Snackbar.make(view, msg, Snackbar.LENGTH_LONG).show()
     }
 }
