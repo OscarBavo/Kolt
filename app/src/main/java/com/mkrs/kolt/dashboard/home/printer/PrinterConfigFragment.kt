@@ -17,6 +17,7 @@ import com.mkrs.kolt.preferences.di.PreferenceModule
 import com.mkrs.kolt.preferences.presentation.PreferencesViewModel
 import com.mkrs.kolt.utils.disable
 import com.mkrs.kolt.utils.enable
+import com.mkrs.kolt.utils.toEditable
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -39,11 +40,15 @@ class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_pri
     private val uIStateObserver = Observer<PrinterUIState> { state ->
         when (state) {
             is PrinterUIState.Loading -> activity?.showDialog()
-            is PrinterUIState.NoState -> {activity?.dismissDialog()}
+            is PrinterUIState.NoState -> {
+                activity?.dismissDialog()
+            }
+
             is PrinterUIState.Printed -> {
                 activity?.dismissDialog()
                 showAlert("Impresion correcta", binding.btnTestPrinter)
             }
+
             is PrinterUIState.Error -> {
                 activity?.dismissDialog()
                 showAlert(state.message, binding.btnTestPrinter)
@@ -87,8 +92,8 @@ class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_pri
         binding.apply {
             val ipPort = printerViewModel.getDataPrinter(preferencesViewModel, resources)
 
-            tieTextIpPrinter.setText(ipPort[0])
-            tieTextPortPrinter.setText(ipPort[1])
+            tieTextIpPrinter.text = ipPort[0].toEditable()
+            tieTextPortPrinter.text = ipPort[1].toEditable()
             btnCancel.setOnClickListener {
                 dismiss()
             }
@@ -99,7 +104,8 @@ class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_pri
 
             btnTestPrinter.setOnClickListener {
                 val ip = printerViewModel.getDataPrinter(preferencesViewModel, resources)[0]
-                val port = printerViewModel.getDataPrinter(preferencesViewModel, resources)[1].toInt()
+                val port =
+                    printerViewModel.getDataPrinter(preferencesViewModel, resources)[1].toInt()
                 printerViewModel.printTest(ip, port, resources.getString(R.string.label_test))
             }
 
@@ -176,11 +182,7 @@ class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_pri
             ipPortPrinter
         )
         activity?.dismissDialog()
-        showAlert(
-            binding.btnSave,
-            resources.getString(R.string.update_info_generic),
-            resources.getString(R.string.text_general_accept)
-        ) { this.dismiss() }
+        showMessageDone(binding.btnSave)
     }
 
     private fun validateIP(ip: String): Boolean {

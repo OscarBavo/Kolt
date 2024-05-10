@@ -1,5 +1,6 @@
 package com.mkrs.kolt.utils
 
+import android.text.Editable
 import android.view.View
 
 /****
@@ -63,3 +64,5 @@ fun View.disable() {
 fun View.enable() {
     isEnabled = true
 }
+
+fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)

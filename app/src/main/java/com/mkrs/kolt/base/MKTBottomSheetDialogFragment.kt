@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
+import com.mkrs.kolt.R
 import com.mkrs.kolt.utils.adjustSheetSize
 
 /****
@@ -49,5 +50,13 @@ open class MKTBottomSheetDialogFragment(@LayoutRes val layoutResId: Int) : Botto
     fun hideKeyboard(){
         val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+    }
+
+    fun showMessageDone(view:View) {
+        showAlert(
+            view,
+            resources.getString(R.string.update_info_generic),
+            resources.getString(R.string.text_general_accept)
+        ) { this.dismiss() }
     }
 }

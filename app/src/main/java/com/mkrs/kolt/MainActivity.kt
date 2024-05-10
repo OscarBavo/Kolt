@@ -2,6 +2,7 @@ package com.mkrs.kolt
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.activity.addCallback
 import androidx.activity.viewModels
@@ -12,6 +13,7 @@ import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.databinding.ActivityMainBinding
 import com.mkrs.kolt.dashboard.home.presentacion.MainMenuFragment
 import com.mkrs.kolt.dashboard.home.printer.PrinterConfigFragment
+import com.mkrs.kolt.dashboard.home.webservice.ConfigWebServiceBottomSheet
 import com.mkrs.kolt.preferences.di.HomeModule
 import com.mkrs.kolt.preferences.di.PreferenceModule
 import com.mkrs.kolt.preferences.presentation.PreferencesViewModel
@@ -119,19 +121,41 @@ class MainActivity : MKTActivity() {
             if (pass?.text.isNullOrEmpty()) {
                 tilPass?.error = resources.getString(R.string.title_generic_input_data_required)
             } else {
-                if (passOpen == pass?.text.toString()) {
-                    when (typeValidate) {
-                        VALIDATE_PRINTER -> {
-                            this.alertDialog.dismiss()
-                            PrinterConfigFragment.newInstance()
-                                .show(supportFragmentManager, PrinterConfigFragment.TAG)
-                        }
-                    }
-                } else {
+                if (!nextFlow(passOpen, pass?.text.toString(), typeValidate)) {
                     tilPass?.error = resources.getString(R.string.title_error_password)
                 }
+
             }
             pass?.doOnTextChanged { _, _, _, count -> if (count > 0) tilPass?.error = null }
+            pass?.setOnEditorActionListener { tvPass, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (!nextFlow(passOpen, tvPass.text.toString(), typeValidate)) {
+                        tilPass?.error = resources.getString(R.string.title_error_password)
+                    }
+                }
+                return@setOnEditorActionListener true
+            }
+        }
+    }
+
+    private fun nextFlow(passOpen: String, pass: String, typeValidate: Int): Boolean {
+        return if (passOpen == pass) {
+            when (typeValidate) {
+                VALIDATE_PRINTER -> {
+                    this.alertDialog.dismiss()
+                    PrinterConfigFragment.newInstance()
+                        .show(supportFragmentManager, PrinterConfigFragment.TAG)
+                }
+
+                VALIDATE_WEB_SERVICE -> {
+                    this.alertDialog.dismiss()
+                    ConfigWebServiceBottomSheet.newInstance("", "")
+                        .show(supportFragmentManager, ConfigWebServiceBottomSheet.TAG)
+                }
+            }
+            true
+        } else {
+            false
         }
     }
 

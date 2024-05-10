@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/input_text_password"
+            android:imeOptions="actionDone"
             android:maxLength="12"
             android:singleLine="true"
             android:hint="@string/title_edit_password"/>
