@@ -55,6 +55,7 @@ open class MKTActivity : AppCompatActivity() {
         navController = Navigation.findNavController(this, idNavController)
         val navGraph = navController.navInflater.inflate(idNavGraph)
         navGraph.setStartDestination(idFragmentInit)
+        navController.setGraph(navGraph, intent.extras)
     }
 
     fun showAlertComplete(

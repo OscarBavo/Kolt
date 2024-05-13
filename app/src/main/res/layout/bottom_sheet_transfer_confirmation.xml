@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    tools:context=".presentation.transfer.BottomSheetTransferConfirmation">
+    tools:context=".transfer.presentation.BottomSheetTransferConfirmation">
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_title_no_part"
         android:layout_width="@dimen/dim_size_0"

@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.Window
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import com.mkrs.kolt.R
 
@@ -21,6 +22,9 @@ open class MKTFragment : Fragment() {
     var isRequiredMessageReturn: Boolean = false
     lateinit var progressDialog: Dialog
 
+    companion object {
+        private const val NONE = 0
+    }
     fun initDialog() {
         progressDialog = Dialog(requireContext())
         progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -39,7 +43,7 @@ open class MKTFragment : Fragment() {
                 it.supportActionBar?.hide()
 
             it.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            activity?.supportActionBar?.setBackgroundDrawable(
+            it.supportActionBar?.setBackgroundDrawable(
                 ColorDrawable(
                     Color.parseColor(
                         resources.getString(R.string.color_title_bar)
@@ -68,5 +72,18 @@ open class MKTFragment : Fragment() {
         Snackbar.make(view, msg, Snackbar.LENGTH_LONG).show()
     }
 
+    fun setFragment(fragment: MKTFragment, TAG: String) {
+        try {
+            cleanBackStack()
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.containerMain, fragment, TAG)
+                ?.commit()
+        } catch (_: IllegalStateException) {
+        }
+    }
+
+    private fun cleanBackStack() {
+        activity?.supportFragmentManager?.popBackStack(NONE, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+    }
     private fun isShowingDialog(): Boolean = progressDialog.isShowing
 }

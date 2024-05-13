@@ -1,7 +1,6 @@
-package com.mkrs.kolt.presentation.transfer
+package com.mkrs.kolt.transfer.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,33 +8,21 @@ import com.mkrs.kolt.R
 import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.base.MKTFragment
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 /**
- * A simple [Fragment] subclass.
- * Use the [TransferFragment.newInstance] factory method to
+ * Use the [BottomSheetTransferConfirmation.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TransferFragment : MKTFragment() {
+class BottomSheetTransferConfirmation : MKTFragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupBar(resources.getString(R.string.title_fragment_transfer), true)
+        setupBar(resources.getString(R.string.title_bottom_sheet_transfer_done_product), true)
     }
 
     override fun onCreateView(
@@ -44,7 +31,11 @@ class TransferFragment : MKTFragment() {
     ): View? {
         activity = requireActivity() as? MKTActivity
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_transfer, container, false)
+        return inflater.inflate(
+            R.layout.bottom_sheet_transfer_confirmation,
+            container,
+            false
+        )
     }
 
     companion object {
@@ -54,16 +45,13 @@ class TransferFragment : MKTFragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment TransferFragment.
+         * @return A new instance of fragment BottomSheetTransferConfirmation.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TransferFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+        fun newInstance() =
+            BottomSheetTransferConfirmation().apply {
+
             }
     }
 }

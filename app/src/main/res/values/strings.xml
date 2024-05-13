@@ -21,7 +21,7 @@
     <string name="title_on_back_press_ret">Regresar</string>
     <string name="title_on_back_press_out">Salir</string>
     <string name="title_on_back_press_cancel">Cancelar</string>
-    <string name="color_title_bar">#009688</string>
+    <string name="color_title_bar">#6AA7A1</string>
     <string name="title_edit_password">Contraseña</string>
     <string name="title_error_password">Contraseña incorrecta</string>
     <string name="title_required_text">Dato Necesario</string>

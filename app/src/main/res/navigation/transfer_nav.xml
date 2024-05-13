@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/transferFragment"
-        android:name="com.mkrs.kolt.presentation.transfer.TransferFragment"
+        android:name="com.mkrs.kolt.transfer.presentation.TransferFragment"
         android:label="fragment_transfer"
         tools:layout="@layout/fragment_transfer" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/bottomSheetTransferConfirmation"
-        android:name="com.mkrs.kolt.presentation.transfer.BottomSheetTransferConfirmation"
+        android:name="com.mkrs.kolt.transfer.presentation.BottomSheetTransferConfirmation"
         android:label="bottom_sheet_transfer_confirmation"
         tools:layout="@layout/bottom_sheet_transfer_confirmation" />
 </navigation>

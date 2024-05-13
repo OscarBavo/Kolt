@@ -1,5 +1,6 @@
 package com.mkrs.kolt.dashboard.home.presentacion
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import com.mkrs.kolt.MainActivity
 import com.mkrs.kolt.R
+import com.mkrs.kolt.transfer.presentation.TransferActivity
 import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.base.MKTFragment
 import com.mkrs.kolt.databinding.FragmentMainMenuBinding
@@ -52,7 +54,7 @@ class MainMenuFragment : MKTFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupBar(resources.getString(R.string.title_dashboard), true)
         binding.btnTransfer.setOnClickListener {
-            showAlert("Hola", binding.btnTransfer)
+            startActivity(Intent(requireContext(), TransferActivity::class.java))
         }
         registerForContextMenu(binding.btnTransfer)
     }
@@ -67,16 +69,4 @@ class MainMenuFragment : MKTFragment() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-/*
-    override fun onBackReturn() {
-        super.onBackReturn()
-        showAlert("back", binding.btnTransfer)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        this.requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
-    }*/
-
-
 }
