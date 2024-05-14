@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import com.mkrs.kolt.R
 
@@ -52,7 +52,8 @@ open class MKTActivity : AppCompatActivity() {
     }
 
     fun initNavController(idNavController: Int, idNavGraph: Int, idFragmentInit: Int) {
-        navController = Navigation.findNavController(this, idNavController)
+        val navHosFragment=supportFragmentManager.findFragmentById(idNavController) as NavHostFragment
+        navController = navHosFragment.navController
         val navGraph = navController.navInflater.inflate(idNavGraph)
         navGraph.setStartDestination(idFragmentInit)
         navController.setGraph(navGraph, intent.extras)

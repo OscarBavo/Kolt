@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".transfer.presentation.TransferActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/tb_transfer"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primaryColor"
+        android:elevation="@dimen/dim_size_4"
+        style="@style/Theme.Kolt.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+        />
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fr_transfer"
@@ -16,6 +29,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/tb_transfer"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,7 +21,11 @@ class TransferActivity : MKTActivity() {
         initBackPress()
         setupActionBar()
         initDialog()
+
+        transferBinding.tbTransfer.title = "Transferencia"
+        setSupportActionBar(transferBinding.tbTransfer)
     }
+
 
     private fun initBackPress() {
         onBackPressedDispatcher.addCallback(this) {
@@ -50,7 +54,7 @@ class TransferActivity : MKTActivity() {
                 this.finish()
             }, "No",
             true,
-            {_,_->}
+            { _, _ -> }
         )
     }
 }

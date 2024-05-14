@@ -143,16 +143,9 @@
     <style name="Theme.Kolt" parent="Base.Theme.Kolt" />
 
     <style name="Theme.Kolt.ActionBar">
-        <item name="colorControlNormal">@color/red_own</item>
+        <item name="colorControlNormal">@color/white</item>
         <item name="searchViewStyle">@style/Widget.AppCompat.SearchView.ActionBar</item>
-        <item name="titleTextColor">@color/red_own</item>
-        <item name="android:titleTextStyle">@style/Theme.Kolt.ActionBar.TitleTextStyle</item>
-        <item name="android:subtitleTextStyle">@style/Theme.Kolt.ActionBar.TitleTextStyle</item>
-        <item name="titleTextStyle">@style/Theme.Kolt.ActionBar.TitleTextStyle</item>
-        <item name="subtitleTextStyle">@style/Theme.Kolt.ActionBar.TitleTextStyle</item>
+        <item name="titleTextColor">@color/black</item>
+    </style>
 
-    </style>
-    <style name="Theme.Kolt.ActionBar.TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/black</item>
-    </style>
 </resources>

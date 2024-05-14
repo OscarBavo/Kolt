@@ -43,13 +43,6 @@ open class MKTFragment : Fragment() {
                 it.supportActionBar?.hide()
 
             it.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            it.supportActionBar?.setBackgroundDrawable(
-                ColorDrawable(
-                    Color.parseColor(
-                        resources.getString(R.string.color_title_bar)
-                    )
-                )
-            )
         }
 
 

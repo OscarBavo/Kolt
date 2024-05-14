@@ -50,6 +50,7 @@ class MainActivity : MKTActivity() {
             toSection(item.itemId, false)
             return@setOnItemSelectedListener true
         }
+        binding.tbMain.title="Dashboard"
     }
 
     fun mainOnBackPress() {

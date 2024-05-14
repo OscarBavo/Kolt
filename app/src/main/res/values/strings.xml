@@ -9,8 +9,9 @@
     <string name="text_general_app_continue">Continuar</string>
     <string name="text_general_app_save">Guardar</string>
     <string name="text_general_accept">Aceptar</string>
-    <string name="config_printer">Configurar Impresora</string>
-    <string name="config_web_service">Configurar Web Services</string>
+    <string name="config_printer">Impresora</string>
+    <string name="home">Inicio</string>
+    <string name="config_web_service">Web Services</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_on_back_press_general">Atención</string>
     <string name="title_on_back_press_general_message">¿Deseas salir de la pantall actual?</string>
@@ -21,7 +22,7 @@
     <string name="title_on_back_press_ret">Regresar</string>
     <string name="title_on_back_press_out">Salir</string>
     <string name="title_on_back_press_cancel">Cancelar</string>
-    <string name="color_title_bar">#6AA7A1</string>
+    <string name="color_title_bar">#0E4741</string>
     <string name="title_edit_password">Contraseña</string>
     <string name="title_error_password">Contraseña incorrecta</string>
     <string name="title_required_text">Dato Necesario</string>
