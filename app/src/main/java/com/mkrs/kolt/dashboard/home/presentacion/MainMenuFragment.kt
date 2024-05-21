@@ -14,7 +14,7 @@ import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.base.MKTFragment
 import com.mkrs.kolt.databinding.FragmentMainMenuBinding
 
-class MainMenuFragment : MKTFragment() {
+class MainMenuFragment : MKTFragment(R.layout.fragment_main_menu) {
 
     private lateinit var binding: FragmentMainMenuBinding
 
