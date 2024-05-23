@@ -2,9 +2,7 @@ package com.mkrs.kolt.utils
 
 import androidx.lifecycle.MutableLiveData
 import com.mkrs.kolt.dashboard.home.printer.PrinterUIState
-import java.io.BufferedReader
 import java.io.IOException
-import java.io.InputStreamReader
 import java.net.ConnectException
 import java.net.Socket
 import java.net.SocketException
@@ -18,6 +16,10 @@ import java.net.UnknownHostException
  *****/
 class MKTTCPSocket {
 
+    companion object {
+        private const val PRINTING_OK = "OK"
+    }
+
     fun sendDataPrinter(
         data: String,
         ip: String,
@@ -30,15 +32,8 @@ class MKTTCPSocket {
             socket.use {
                 printerStatus.postValue(PrinterUIState.Loading)
                 it.getOutputStream().write(data.toByteArray())
-                val bufferReader = BufferedReader(InputStreamReader(it.inputStream))
-                var line = ""
-                while (true) {
-                    line = bufferReader.readLine() ?: break
-                    break
-                }
-                bufferReader.close()
                 it.close()
-                printerStatus.postValue(PrinterUIState.Printed(line))
+                printerStatus.postValue(PrinterUIState.Printed(PRINTING_OK))
             }
         } catch (he: UnknownHostException) {
             val error = "An exception occurred:\n ${he.printStackTrace()}"

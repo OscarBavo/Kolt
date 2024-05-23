@@ -60,6 +60,4 @@ object PreferenceModule {
     @Provides
     fun providesPreferenceRepository(preference: MKTSecureSharedPreference) =
         PreferenceRepositoryImp(preference)
-
-
 }
