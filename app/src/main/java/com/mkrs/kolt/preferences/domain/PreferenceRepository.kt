@@ -7,11 +7,11 @@ package com.mkrs.kolt.preferences.domain
  * Date: 06 / 05 / 2024
  *****/
 interface PreferenceRepository {
-    fun saveStringValue(key:String, value:String)
+    fun saveStringValue(key: String, value: String)
 
-    fun getStringValue(key:String, defaultValue:String=""):String
+    fun getStringValue(key: String, defaultValue: String = ""): String
 
-    fun saveIntValue(key:String, value:Int)
+    fun saveIntValue(key: String, value: Int)
 
-    fun getIntValue(key:String, defaultValue:Int=0):Int
+    fun getIntValue(key: String, defaultValue: Int = 0): Int
 }
