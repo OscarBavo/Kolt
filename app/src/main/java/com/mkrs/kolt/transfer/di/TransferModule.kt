@@ -1,8 +1,11 @@
 package com.mkrs.kolt.transfer.di
 
+import android.app.Application
 import com.mkrs.kolt.transfer.data.TransferRepositoryImp
 import com.mkrs.kolt.transfer.domain.repositories.TransferRepository
 import com.mkrs.kolt.transfer.domain.usecase.GetCodePTUseCase
+import com.mkrs.kolt.transfer.domain.usecase.PostDetailInventoryUseCase
+import com.mkrs.kolt.transfer.presentation.TransferViewModelFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,25 +23,30 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object TransferModule {
 
-    /*
-       @Singleton
+    @Singleton
     @Provides
-    fun providesGetStringUseCase(preference: PreferenceRepositoryImp) =
-        GetStringValueUseCase(preference)
-     */
+    fun providesTransferRepository(): TransferRepository {
+        return TransferRepositoryImp
+    }
 
     @Singleton
     @Provides
-    fun providesTransferRepository() = TransferRepositoryImp()
+    fun providesTransferViewModelFactory(application: Application): TransferViewModelFactory {
+        return TransferViewModelFactory(
+            application,
+            providesGetCodePTUseCase(),
+            providesPostDetailInventoryUseCase()
+        )
+    }
 
     @Singleton
     @Provides
-    fun providesGetCodePTUseCase(transferRepo: TransferRepositoryImp) =
-        GetCodePTUseCase(transferRepo)
+    fun providesGetCodePTUseCase() =
+        GetCodePTUseCase(providesTransferRepository())
 
     @Singleton
     @Provides
-    fun providesPostDetailInventoryUseCase(transferRepo: TransferRepositoryImp) =
-        GetCodePTUseCase(transferRepo)
+    fun providesPostDetailInventoryUseCase() =
+        PostDetailInventoryUseCase(providesTransferRepository())
 
 }

@@ -102,6 +102,10 @@
     <string name="title_bottom_transfer_team_work">Operador</string>
     <string name="title_bottom_transfer_perforadora">Perforadora</string>
     <string name="title_bottom_transfer_standard_pack">Standard Pack</string>
+    <string name="not_found_data_code_pt">0</string>
+    <string name="not_found_data_code_p_msg">No existe PT en SAP para la clave ingresada, verifique.</string>
+    <string name="quantity_detail">0</string>
+    <string name="quantity_detail_msg">El código único no tiene MP</string>
 
 
 </resources>

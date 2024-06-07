@@ -1,6 +1,6 @@
 package com.mkrs.kolt.transfer.domain.usecase
 
-import com.mkrs.kolt.base.GenericResponse
+import com.mkrs.kolt.base.MKTGenericResponse
 import com.mkrs.kolt.transfer.domain.models.FinalProductModel
 import com.mkrs.kolt.transfer.domain.repositories.TransferRepository
 
@@ -15,7 +15,16 @@ class PostDetailInventoryUseCase(private val transferRepository: TransferReposit
     suspend fun execute(
         claveMaterial: String,
         uniqueCode: String
-    ): GenericResponse<FinalProductModel> {
-        return transferRepository.postDetailInventory(claveMaterial, uniqueCode)
+    ): DetailInventoryResult {
+        return when (val result =
+            transferRepository.postDetailInventory(claveMaterial, uniqueCode)) {
+            is MKTGenericResponse.Success -> DetailInventoryResult.Success(result.content)
+            is MKTGenericResponse.Failed -> DetailInventoryResult.Fail(result.errorMsg)
+        }
     }
+}
+
+sealed class DetailInventoryResult {
+    data class Success(val finalProductModel: FinalProductModel) : DetailInventoryResult()
+    data class Fail(val errorMsg: String) : DetailInventoryResult()
 }
