@@ -1,7 +1,7 @@
 package com.mkrs.kolt.transfer.presentation
 
 import androidx.lifecycle.ViewModel
-import com.mkrs.kolt.base.GenericResponse
+import com.mkrs.kolt.base.webservices.GenericResponse
 import com.mkrs.kolt.transfer.domain.usecase.GetCodePTUseCase
 import com.mkrs.kolt.transfer.domain.usecase.PostDetailInventoryUseCase
 
@@ -18,8 +18,8 @@ class TransferViewModel(
 
     suspend fun getCodePT(code: String) {
         when (val response = getCodePTUseCase.execute(code)) {
-            is GenericResponse.success -> {}
-            is GenericResponse.failed -> {}
+            is GenericResponse.Success -> {}
+            is GenericResponse.Failed -> {}
             else -> {}
         }
     }

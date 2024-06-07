@@ -1,6 +1,6 @@
 package com.mkrs.kolt.transfer.domain.repositories
 
-import com.mkrs.kolt.base.GenericResponse
+import com.mkrs.kolt.base.webservices.GenericResponse
 import com.mkrs.kolt.transfer.domain.models.FinalProductModel
 
 /****
