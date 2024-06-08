@@ -50,7 +50,7 @@ class MainActivity : MKTActivity() {
             toSection(item.itemId, false)
             return@setOnItemSelectedListener true
         }
-        binding.tbMain.title="Dashboard"
+        binding.tbMain.title = "Dashboard"
     }
 
     fun mainOnBackPress() {
@@ -81,8 +81,6 @@ class MainActivity : MKTActivity() {
                     resources.getString(R.string.title_configure_printer),
                     VALIDATE_PRINTER
                 )
-                /* PrinterConfigFragment.newInstance("A", "B")
-                     .show(supportFragmentManager, PrinterConfigFragment.TAG)*/
             }
 
             R.id.action_config -> {

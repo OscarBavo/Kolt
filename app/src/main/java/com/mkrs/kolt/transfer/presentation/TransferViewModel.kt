@@ -27,7 +27,8 @@ class TransferViewModel(
 ) : ViewModel() {
 
     private val mutableTransferUIState = MutableLiveData<TransferUIState>()
-    var finalProductModel: FinalProductModel = FinalProductModel()
+    private var finalProductModel: FinalProductModel = FinalProductModel()
+    private var code: String = ""
 
     val transferViewState: LiveData<TransferUIState>
         get() = mutableTransferUIState
@@ -36,14 +37,29 @@ class TransferViewModel(
         this.finalProductModel = finalProductModel
     }
 
+    fun setNoState() {
+        mutableTransferUIState.postValue(TransferUIState.NoState)
+    }
+
+    private fun saveCode(code: String) {
+        this.code = code
+    }
+
     fun getCodePT(code: String) {
         viewModelScope.launch {
             mutableTransferUIState.postValue(TransferUIState.Loading)
             when (val response = getCodePTUseCase.execute(code)) {
                 is CodePTResult.Success -> {
                     if (response.data == context.getString(R.string.not_found_data_code_pt)) {
-                        mutableTransferUIState.postValue(TransferUIState.Error(context.getString(R.string.not_found_data_code_p_msg)))
+                        mutableTransferUIState.postValue(
+                            TransferUIState.NoExistsPT(
+                                context.getString(
+                                    R.string.not_found_data_code_p_msg
+                                )
+                            )
+                        )
                     } else {
+                        saveCode(code)
                         mutableTransferUIState.postValue(TransferUIState.SuccessCode)
                     }
                 }
@@ -55,7 +71,7 @@ class TransferViewModel(
         }
     }
 
-    fun getDetailInventory(code: String, codigoUnico: String) {
+    fun getDetailInventory(codigoUnico: String) {
         viewModelScope.launch {
             when (val response = postDetailInventoryUseCase.execute(code, codigoUnico)) {
                 is DetailInventoryResult.Success -> {

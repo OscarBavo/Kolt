@@ -22,7 +22,7 @@ class TransferActivity : MKTActivity() {
         setupActionBar()
         initDialog()
 
-        transferBinding.tbTransfer.title = "Transferencia"
+        transferBinding.tbTransfer.title = getString(R.string.btn_title_transfer)
         setSupportActionBar(transferBinding.tbTransfer)
     }
 
@@ -46,15 +46,19 @@ class TransferActivity : MKTActivity() {
     private fun messageOut() {
         showAlertComplete(
             getString(R.string.title_on_back_press_general),
-            "Deseas salir de Transferencia",
-            "Si",
+            getString(R.string.title_exit_transfer),
+            getString(R.string.generic_yes),
             true,
             { _, _ ->
                 startActivity(Intent(this, MainActivity::class.java))
                 this.finish()
-            }, "No",
+            }, getString(R.string.generic_no),
             true,
             { _, _ -> }
         )
+    }
+
+    companion object {
+        private const val HOME_TAG = "HOME"
     }
 }

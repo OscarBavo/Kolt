@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import com.mkrs.kolt.R
+import com.mkrs.kolt.utils.toEditable
 
 /****
  * Project: Kolt
@@ -56,11 +58,12 @@ open class MKTFragment(@LayoutRes layoutResId: Int) : Fragment() {
 
     private fun callBackFragmentOnFragmentResume() {
         val fragments = getFragments()
-
-        for(fragment in fragments) {
-            if ((fragment as MKTFragment) != this && fragment.context != null) {
-                fragment.onFragmentResume()
-                break
+        for (fragment in fragments) {
+            if (fragment is MKTFragment) {
+                if (fragment != this && fragment.context != null) {
+                    fragment.onFragmentResume()
+                    break
+                }
             }
         }
     }
@@ -157,5 +160,10 @@ open class MKTFragment(@LayoutRes layoutResId: Int) : Fragment() {
 
     private fun isShowingDialog(): Boolean = progressDialog.isShowing
 
+    fun emptyString(): Editable = "".toEditable()
+
+    fun hideKeyboard() {
+        activity?.hideKeyboard()
+    }
 
 }

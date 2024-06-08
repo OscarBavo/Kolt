@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Kolt</string>
+    <string name="generic_yes">Si</string>
+    <string name="generic_no">No</string>
     <string name="error_generic">Error al consultar información</string>
     <string name="update_info_generic">Información actualizada</string>
     <string name="load_logo_progress">Cargando información</string>
@@ -81,6 +83,7 @@
         ^XZ
     </string>
     <!-- Transferencia -->
+    <string name="title_exit_transfer">¿Deseas salir de Transferencia?</string>
     <string name="title_fragment_transfer">Salida Producción</string>
     <string name="title_bottom_sheet_transfer_done_product">Producto Terminado</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -90,8 +93,10 @@
     <string name="title_key_item">Clave Material</string>
     <string name="title_unique_item">Campo Unico</string>
     <string name="title_tv_transfer_batch">Lote/Rollo</string>
+    <string name="title_tv_transfer_batch_detail">Detalles</string>
     <string name="title_tv_transfer_pieces">Piezas</string>
-    <string name="title_tv_transfer_done_product">Conversión PT</string>
+    <string name="title_tv_transfer_convert">Conversión</string>
+    <string name="title_tv_transfer_done_product">PT</string>
     <string name="title_tv_transfer_reject">Devolución</string>
     <string name="title_tv_transfer_different">Discrepancia</string>
     <string name="title_tv_transfer_scrap">SCRAP</string>
@@ -106,6 +111,7 @@
     <string name="not_found_data_code_p_msg">No existe PT en SAP para la clave ingresada, verifique.</string>
     <string name="quantity_detail">0</string>
     <string name="quantity_detail_msg">El código único no tiene MP</string>
+    <string name="unique_code_error_init">El código único es invalido, verifique</string>
 
 
 </resources>

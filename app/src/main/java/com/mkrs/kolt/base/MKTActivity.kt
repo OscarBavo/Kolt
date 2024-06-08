@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.Window
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
@@ -52,7 +53,8 @@ open class MKTActivity : AppCompatActivity() {
     }
 
     fun initNavController(idNavController: Int, idNavGraph: Int, idFragmentInit: Int) {
-        val navHosFragment=supportFragmentManager.findFragmentById(idNavController) as NavHostFragment
+        val navHosFragment =
+            supportFragmentManager.findFragmentById(idNavController) as NavHostFragment
         navController = navHosFragment.navController
         val navGraph = navController.navInflater.inflate(idNavGraph)
         navGraph.setStartDestination(idFragmentInit)
@@ -83,7 +85,7 @@ open class MKTActivity : AppCompatActivity() {
             if (showingOkBtn) {
                 builder.setPositiveButton(okButtonText, onClickListener)
                 if (hasPass) {
-                    builder.setView(inflater.inflate(R.layout.dialog_pass_config, null))
+                    builder.setView(inflater.inflate(R.layout.dialog_pass_config,null))
                 }
             }
             if (showingNoBtn) {
@@ -126,6 +128,15 @@ open class MKTActivity : AppCompatActivity() {
 
     fun showAlert(msg: String, view: View) {
         Snackbar.make(view, msg, Snackbar.LENGTH_LONG).show()
+    }
+
+    fun hideKeyboard() {
+        val view = currentFocus
+        if (view != null) {
+            val inputManager: InputMethodManager =
+                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            inputManager.hideSoftInputFromWindow(view.windowToken, NONE)
+        }
     }
 
 
