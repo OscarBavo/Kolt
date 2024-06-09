@@ -59,6 +59,7 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
                 dismissDialog()
                 transferBinding.tieTextKeyItem.disable()
                 transferBinding.tieTextUniqueCode.enable()
+                transferBinding.btnClean.enable()
                 transferBinding.tieTextUniqueCode.requestFocus()
                 transferViewModel.setNoState()
             }
@@ -90,6 +91,35 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
                 showAlert(uiState.msg, transferBinding.btnNext)
                 transferViewModel.setNoState()
             }
+
+            is TransferUIState.UpperQuantity -> {
+                hideKeyboard()
+                showError(uiState.typeQuantity)
+                transferViewModel.setNoState()
+            }
+
+            is TransferUIState.EqualsQuantity -> {
+                hideKeyboard()
+                transferBinding.btnNext.isEnabled = true
+                transferViewModel.setNoState()
+            }
+
+            is TransferUIState.AddQuantity -> {
+                transferBinding.tvTextTotal.text = uiState.quantity
+                transferViewModel.setNoState()
+            }
+        }
+    }
+
+    private fun showError(typeQuantity: TransferViewModel.TypeQuantity) {
+        when (typeQuantity) {
+            TransferViewModel.TypeQuantity.DONE -> transferBinding.tieTextDoneProduct.requestFocus()
+
+            TransferViewModel.TypeQuantity.DIFF -> transferBinding.tieTextDifferent.requestFocus()
+
+            TransferViewModel.TypeQuantity.REJECT -> transferBinding.tieTextReject.requestFocus()
+
+            TransferViewModel.TypeQuantity.SCRAP -> transferBinding.tieTextScrap.requestFocus()
         }
     }
 
@@ -115,16 +145,21 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
             tilKeyItem.enable()
             tieTextKeyItem.requestFocus()
             btnClean.disable()
-            btnNext.disable()
+            // btnNext.disable()
         }
         initListener()
     }
 
     private fun initListener() {
         transferBinding.tieTextKeyItem.doOnTextChanged { code, _, _, _ ->
-            if (!code.isNullOrEmpty() && code.toString().length == CODE_MAX_LENGTH) {
-                hideKeyboard()
-                transferViewModel.getCodePT(code.toString())
+            if (code.isNullOrEmpty()) {
+                transferBinding.tilKeyItem.error = emptyString()
+                transferBinding.tieTextKeyItem.requestFocus()
+            } else if (isLetter(code.toString())) {
+                transferBinding.tilKeyItem.error = "solo ingresar números"
+                transferBinding.tieTextKeyItem.requestFocus()
+            } else if (code.length == CODE_MAX_LENGTH && isDigit(code.toString())) {
+                transferViewModel.getCodePT(code = code.toString())
             }
         }
 
@@ -132,46 +167,81 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
             if (!uniqueCode.isNullOrEmpty() && uniqueCode.toString().length == CODE_MAX_LENGTH) {
                 hideKeyboard()
                 validateUniqueCode(uniqueCode.toString())
-
+            } else {
+                transferBinding.tilUniqueCode.error = emptyString()
             }
+        }
+
+        transferBinding.tieTextDoneProduct.doOnTextChanged { qaDone, _, _, _ ->
+            if (!qaDone.isNullOrEmpty()) {
+                transferViewModel.saveQuantityDone(qaDone.toString())
+            }
+        }
+
+        transferBinding.tieTextReject.doOnTextChanged { qaRJ, _, _, _ ->
+            if (!qaRJ.isNullOrEmpty()) {
+                transferViewModel.saveQuantityReject(qaRJ.toString())
+            }
+        }
+        transferBinding.tieTextDifferent.doOnTextChanged { qaDiff, _, _, _ ->
+            if (!qaDiff.isNullOrEmpty()) {
+                transferViewModel.saveQuantityDiff(qaDiff.toString())
+            }
+        }
+
+        transferBinding.tieTextScrap.doOnTextChanged { qaScrap, _, _, _ ->
+            if (!qaScrap.isNullOrEmpty()) {
+                transferViewModel.saveQuantitySCRAP(qaScrap.toString())
+            }
+        }
+
+        transferBinding.btnClean.setOnClickListener {
+            resetView()
         }
     }
 
+    private fun resetView() {
+        transferViewModel.saveQuantityDone(VERIFY_TOTAL_OK.toString())
+        transferViewModel.saveQuantityDiff(VERIFY_TOTAL_OK.toString())
+        transferViewModel.saveQuantityReject(VERIFY_TOTAL_OK.toString())
+        transferViewModel.saveQuantitySCRAP(VERIFY_TOTAL_OK.toString())
+        transferBinding.tieTextUniqueCode.text = emptyString()
+        transferBinding.tieTextKeyItem.text = emptyString()
+        transferBinding.tieTextDoneProduct.text = emptyString()
+        transferBinding.tieTextDifferent.text = emptyString()
+        transferBinding.tieTextReject.text = emptyString()
+        transferBinding.tieTextScrap.text = emptyString()
+        transferBinding.tvPiecesData.text = emptyString()
+        transferBinding.tvBatchRollData.text = emptyString()
+        transferBinding.tvBatchDetailData.text = emptyString()
+        transferViewModel.resetFinalProductModel()
+        transferBinding.tieTextUniqueCode.disable()
+        transferBinding.tieTextDoneProduct.disable()
+        transferBinding.tieTextDifferent.disable()
+        transferBinding.tieTextReject.disable()
+        transferBinding.tieTextScrap.disable()
+        transferBinding.tieTextKeyItem.enable()
+        transferBinding.tieTextKeyItem.requestFocus()
+
+    }
+
     private fun validateUniqueCode(uniqueCode: String) {
-        when {
-            isOnlyLetters(
-                uniqueCode.substring(
-                    INIT_CODE_UNIQUE,
-                    SECOND_CODE_UNIQUE
-                )
-            ) -> transferViewModel.getDetailInventory(
-                uniqueCode
+        if (isCode(uniqueCode)) {
+            transferViewModel.getDetailInventory(uniqueCode)
+        } else {
+            transferBinding.tilUniqueCode.error = getString(R.string.unique_code_error_init)
+            showAlert(
+                getString(R.string.unique_code_error_init),
+                transferBinding.tieTextUniqueCode
             )
-
-            isOnlyLetters(
-                uniqueCode.substring(
-                    INIT_CODE_UNIQUE,
-                    FIRST_CODE_UNIQUE
-                )
-            ) -> transferViewModel.getDetailInventory(
-                uniqueCode
-            )
-
-            else -> {
-                showAlert(
-                    getString(R.string.unique_code_error_init),
-                    transferBinding.tieTextUniqueCode
-                )
-            }
         }
+
     }
 
     companion object {
 
         const val CODE_MAX_LENGTH = 7
-        const val INIT_CODE_UNIQUE = 0
-        const val FIRST_CODE_UNIQUE = 1
-        const val SECOND_CODE_UNIQUE = 2
+        const val VERIFY_TOTAL_OK = 0.0
 
         /**
          * Use this factory method to create a new instance of
@@ -187,8 +257,17 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
             }
     }
 
-    private fun isOnlyLetters(word: String): Boolean {
+    private fun isCode(word: String): Boolean {
+        val regex = "^[A-Za-z]{1,2}[\\d]{5}\$".toRegex()
+        return regex.matches(word)
+    }
+
+    private fun isLetter(word: String): Boolean {
         val regex = "^[A-Za-z]*$".toRegex()
+        return regex.matches(word)
+    }
+    private fun isDigit(word: String): Boolean {
+        val regex = "^[\\d]{7}$".toRegex()
         return regex.matches(word)
     }
 }

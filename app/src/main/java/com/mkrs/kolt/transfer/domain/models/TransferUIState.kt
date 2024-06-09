@@ -1,5 +1,7 @@
 package com.mkrs.kolt.transfer.domain.models
 
+import com.mkrs.kolt.transfer.presentation.TransferViewModel
+
 /****
  * Project: Kolt
  * Dev: Oscar Balderas Vazquez
@@ -14,4 +16,8 @@ sealed class TransferUIState {
     data class Error(val msg: String) : TransferUIState()
     object SuccessCode : TransferUIState()
     data class SuccessDetail(val detail: FinalProductModel) : TransferUIState()
+
+    data class UpperQuantity(val typeQuantity: TransferViewModel.TypeQuantity) : TransferUIState()
+    object EqualsQuantity : TransferUIState()
+    data class AddQuantity(val quantity:String) : TransferUIState()
 }
