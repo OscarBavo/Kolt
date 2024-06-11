@@ -110,11 +110,12 @@ class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_pri
             }
 
             tieTextIpPrinter.setOnEditorActionListener { textIp, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
                     if (!validateIP(textIp.text.toString())) {
                         tilIpPrinter.error =
                             resources.getString(R.string.title_generic_input_data_required)
                     } else {
+                        saveData()
                         tieTextPortPrinter.requestFocus()
                         tilIpPrinter.error = null
                     }

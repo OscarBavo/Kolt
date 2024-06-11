@@ -12,5 +12,9 @@ data class FinalProductModel(
     val quantity: String = "",
     val itemName: String = "",
     val suppCatNum: String = "",
-    val uPedidoProg: String = ""
+    val uPedidoProg: String = "",
+    var pieces: String = "",
+    var stdPack: String = "",
+    var piecesPT: String = "",
+    var notePT: String = ""
 )

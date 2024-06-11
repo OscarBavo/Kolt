@@ -37,18 +37,18 @@ class MKTTCPSocket {
             }
         } catch (he: UnknownHostException) {
             val error = "An exception occurred:\n ${he.printStackTrace()}"
-            printerStatus.postValue(PrinterUIState.Printed(error))
+            printerStatus.postValue(PrinterUIState.Error(error))
 
         } catch (ioe: IOException) {
             val error = "An exception occurred:\n ${ioe.printStackTrace()}"
-            printerStatus.postValue(PrinterUIState.Printed(error))
+            printerStatus.postValue(PrinterUIState.Error(error))
         } catch (ce: ConnectException) {
             val error = "An exception occurred:\n ${ce.printStackTrace()}"
-            printerStatus.postValue(PrinterUIState.Printed(error))
+            printerStatus.postValue(PrinterUIState.Error(error))
 
         } catch (se: SocketException) {
             val error = "An exception occurred:\n ${se.printStackTrace()}"
-            printerStatus.postValue(PrinterUIState.Printed(error))
+            printerStatus.postValue(PrinterUIState.Error(error))
         }
     }
 }

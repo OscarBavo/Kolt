@@ -17,7 +17,13 @@ sealed class TransferUIState {
     object SuccessCode : TransferUIState()
     data class SuccessDetail(val detail: FinalProductModel) : TransferUIState()
 
-    data class UpperQuantity(val typeQuantity: TransferViewModel.TypeQuantity) : TransferUIState()
-    object EqualsQuantity : TransferUIState()
-    data class AddQuantity(val quantity:String) : TransferUIState()
+    data class AddQuantity(val quantity: String) : TransferUIState()
+    data class EqualsQuantity(val quantity: String) : TransferUIState()
+    data class UpperQuantity(
+        val quantity: String,
+        val typeQuantity: TransferViewModel.TypeQuantity
+    ) : TransferUIState()
+
+    data class SendToPrinter(val label:String):TransferUIState()
+
 }

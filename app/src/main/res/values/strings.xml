@@ -82,6 +82,7 @@
         ^FO470,955^FDCA^FS
         ^XZ
     </string>
+    <string name="success_printer">Impresion correcta</string>
     <!-- Transferencia -->
     <string name="title_exit_transfer">¿Deseas salir de Transferencia?</string>
     <string name="title_fragment_transfer">Salida Producción</string>
@@ -112,6 +113,6 @@
     <string name="quantity_detail">0</string>
     <string name="quantity_detail_msg">El código único no tiene MP</string>
     <string name="unique_code_error_init">El código único es invalido, verifique</string>
-
+    <string name="label_note_printer">Se imprimirá 1 etiquetas con cantidad de %s piezas</string>
 
 </resources>

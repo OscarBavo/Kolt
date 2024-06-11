@@ -8,7 +8,8 @@ import com.mkrs.kolt.base.MKTBottomSheetDialogFragment
  * Use the [BottomSheetTransferConfirmation.newInstance] factory method to
  * create an instance of this fragment.
  */
-class BottomSheetTransferConfirmation : MKTBottomSheetDialogFragment(R.layout.bottom_sheet_transfer_confirmation,) {
+class BottomSheetTransferConfirmation :
+    MKTBottomSheetDialogFragment(R.layout.bottom_sheet_transfer_confirmation) {
     // TODO: Rename and change types of parameters
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +36,7 @@ class BottomSheetTransferConfirmation : MKTBottomSheetDialogFragment(R.layout.bo
     }*/
 
     companion object {
+        const val TAG = "BOTTOMSHEETTRANSFERCONFIRMATION"
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

@@ -48,7 +48,7 @@
             app:counterEnabled="true"
             app:counterMaxLength="@integer/dim_7"
             app:endIconMode="clear_text"
-            android:enabled="false"
+
             app:helperText="@string/title_generic_input_data_required"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

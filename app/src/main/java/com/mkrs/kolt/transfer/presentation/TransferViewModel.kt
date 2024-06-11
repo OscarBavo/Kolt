@@ -109,6 +109,7 @@ class TransferViewModel(
 
     fun getDetailInventory(codigoUnico: String) {
         viewModelScope.launch {
+            mutableTransferUIState.postValue(TransferUIState.Loading)
             when (val response = postDetailInventoryUseCase.execute(code, codigoUnico)) {
                 is DetailInventoryResult.Success -> {
                     if (response.finalProductModel.quantity == context.getString(R.string.quantity_detail)) {
@@ -127,12 +128,32 @@ class TransferViewModel(
         }
     }
 
+    fun updateDataFinalProduct(label: String) {
+        mutableTransferUIState.postValue(TransferUIState.Loading)
+        finalProductModel.pieces = quantity.toString()
+        finalProductModel.stdPack = quantity.toString()
+        finalProductModel.piecesPT = quantity.toString()
+        finalProductModel.notePT =
+            context.getString(R.string.label_note_printer, quantity.toString())
+        val labelReplace = replaceData(label)
+        mutableTransferUIState.postValue(TransferUIState.SendToPrinter(labelReplace))
+    }
+
+    private fun replaceData(label: String): String {
+        return label
+    }
+
     private fun isAvailableQuantity(typeQuantity: TypeQuantity) {
         val quantityTotal = quantityDone + quantityReject + quantityDiff + quantitySCRAP
         if (quantity - quantityTotal < VERIFY_TOTAL_OK) {
-            mutableTransferUIState.postValue(TransferUIState.UpperQuantity(typeQuantity))
+            mutableTransferUIState.postValue(
+                TransferUIState.UpperQuantity(
+                    quantityTotal.toString(),
+                    typeQuantity
+                )
+            )
         } else if ((quantity - quantityTotal) == VERIFY_TOTAL_OK) {
-            mutableTransferUIState.postValue(TransferUIState.EqualsQuantity)
+            mutableTransferUIState.postValue(TransferUIState.EqualsQuantity(quantityTotal.toString()))
         } else {
             mutableTransferUIState.postValue(TransferUIState.AddQuantity(quantityTotal.toString()))
         }

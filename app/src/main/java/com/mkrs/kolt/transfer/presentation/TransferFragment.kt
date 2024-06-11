@@ -4,16 +4,23 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.mkrs.kolt.R
 import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.base.MKTFragment
 import com.mkrs.kolt.base.viewBinding
+import com.mkrs.kolt.dashboard.home.printer.PrinterUIState
+import com.mkrs.kolt.dashboard.home.printer.PrinterViewModel
 import com.mkrs.kolt.databinding.FragmentTransferBinding
+import com.mkrs.kolt.preferences.di.HomeModule
+import com.mkrs.kolt.preferences.di.PreferenceModule
+import com.mkrs.kolt.preferences.presentation.PreferencesViewModel
 import com.mkrs.kolt.transfer.di.TransferModule
 import com.mkrs.kolt.transfer.domain.models.FinalProductModel
 import com.mkrs.kolt.transfer.domain.models.TransferUIState
 import com.mkrs.kolt.utils.disable
 import com.mkrs.kolt.utils.enable
+import com.mkrs.kolt.utils.toEditable
 
 /**
  * Use the [TransferFragment.newInstance] factory method to
@@ -26,6 +33,45 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
         TransferModule.providesTransferViewModelFactory(requireActivity().application)
     }
     private val transferViewModel: TransferViewModel by activityViewModels { vmFactory }
+
+    private val preferencesViewModel by activityViewModels<PreferencesViewModel> {
+        PreferenceModule.providePreferenceVMFactory(
+            HomeModule.provideHomePReferences(requireActivity(), "Impresoras")
+        )
+    }
+
+    private val printerViewModel by activityViewModels<PrinterViewModel>()
+
+    private val uIStateObserver = Observer<PrinterUIState> { state ->
+        when (state) {
+            is PrinterUIState.Loading -> activity?.showDialog()
+            is PrinterUIState.NoState -> {
+                activity?.dismissDialog()
+            }
+
+            is PrinterUIState.Printed -> {
+                activity?.dismissDialog()
+                showAlert(getString(R.string.success_printer), transferBinding.btnNext)
+                showDetailPT()
+            }
+
+            is PrinterUIState.Error -> {
+                activity?.dismissDialog()
+                showAlert(state.message, transferBinding.btnNext)
+            }
+
+        }
+    }
+
+    private fun showDetailPT() {
+        transferViewModel.setNoState()
+        activity?.let {
+            BottomSheetTransferConfirmation.newInstance()
+                .show(it.supportFragmentManager, BottomSheetTransferConfirmation.TAG)
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity = requireActivity() as MKTActivity
@@ -43,6 +89,7 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
         transferViewModel.transferViewState.observe(viewLifecycleOwner) {
             observeTransferState(it)
         }
+        printerViewModel.printerUIState.observe(viewLifecycleOwner, uIStateObserver)
     }
 
     private fun observeTransferState(uiState: TransferUIState) {
@@ -93,22 +140,40 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
             }
 
             is TransferUIState.UpperQuantity -> {
+                dismissDialog()
                 hideKeyboard()
+                transferBinding.tvTextTotal.text = uiState.quantity
                 showError(uiState.typeQuantity)
+                transferBinding.btnNext.isEnabled = false
                 transferViewModel.setNoState()
             }
 
             is TransferUIState.EqualsQuantity -> {
+                dismissDialog()
                 hideKeyboard()
+                transferBinding.tvTextTotal.text = uiState.quantity
                 transferBinding.btnNext.isEnabled = true
                 transferViewModel.setNoState()
             }
 
             is TransferUIState.AddQuantity -> {
+                dismissDialog()
                 transferBinding.tvTextTotal.text = uiState.quantity
                 transferViewModel.setNoState()
             }
+
+            is TransferUIState.SendToPrinter -> {
+                dismissDialog()
+                hideKeyboard()
+                createConectionPrinter(uiState.label)
+            }
         }
+    }
+
+    private fun createConectionPrinter(label: String) {
+        val ipPort = printerViewModel.getDataPrinter(preferencesViewModel, resources)
+
+        printerViewModel.printTest(ipPort[0], ipPort[1].toInt(), label)
     }
 
     private fun showError(typeQuantity: TransferViewModel.TypeQuantity) {
@@ -164,9 +229,23 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
         }
 
         transferBinding.tieTextUniqueCode.doOnTextChanged { uniqueCode, _, _, _ ->
-            if (!uniqueCode.isNullOrEmpty() && uniqueCode.toString().length == CODE_MAX_LENGTH) {
-                hideKeyboard()
-                validateUniqueCode(uniqueCode.toString())
+            if (!uniqueCode.isNullOrEmpty()) {
+                if (uniqueCode.toString().length == CODE_MAX_LENGTH) {
+                    hideKeyboard()
+                    validateUniqueCode(uniqueCode.toString())
+                } else {
+                    if (!isCodeFill(uniqueCode.toString())) {
+                        hideKeyboard()
+                        transferBinding.tilUniqueCode.error =
+                            getString(R.string.unique_code_error_init)
+                        showAlert(
+                            getString(R.string.unique_code_error_init),
+                            transferBinding.tieTextUniqueCode
+                        )
+                    } else {
+                        transferBinding.tilUniqueCode.error = null
+                    }
+                }
             } else {
                 transferBinding.tilUniqueCode.error = emptyString()
             }
@@ -198,6 +277,11 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
         transferBinding.btnClean.setOnClickListener {
             resetView()
         }
+
+        transferBinding.btnNext.setOnClickListener {
+            transferViewModel.updateDataFinalProduct(getString(R.string.label_printer_one))
+        }
+
     }
 
     private fun resetView() {
@@ -214,12 +298,15 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
         transferBinding.tvPiecesData.text = emptyString()
         transferBinding.tvBatchRollData.text = emptyString()
         transferBinding.tvBatchDetailData.text = emptyString()
+        transferBinding.tvTextTotal.text = "".toEditable()
         transferViewModel.resetFinalProductModel()
         transferBinding.tieTextUniqueCode.disable()
         transferBinding.tieTextDoneProduct.disable()
         transferBinding.tieTextDifferent.disable()
         transferBinding.tieTextReject.disable()
         transferBinding.tieTextScrap.disable()
+        transferBinding.btnClean.disable()
+        transferBinding.btnNext.disable()
         transferBinding.tieTextKeyItem.enable()
         transferBinding.tieTextKeyItem.requestFocus()
 
@@ -262,10 +349,16 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
         return regex.matches(word)
     }
 
+    private fun isCodeFill(word: String): Boolean {
+        val regex = "^[A-Za-z]{1,2}[\\d]*\$".toRegex()
+        return regex.matches(word)
+    }
+
     private fun isLetter(word: String): Boolean {
         val regex = "^[A-Za-z]*$".toRegex()
         return regex.matches(word)
     }
+
     private fun isDigit(word: String): Boolean {
         val regex = "^[\\d]{7}$".toRegex()
         return regex.matches(word)
