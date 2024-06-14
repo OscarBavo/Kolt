@@ -128,20 +128,14 @@ class TransferViewModel(
         }
     }
 
-    fun updateDataFinalProduct(label: String) {
-        mutableTransferUIState.postValue(TransferUIState.Loading)
+    fun updateDataFinalProduct() {
         finalProductModel.pieces = quantity.toString()
         finalProductModel.stdPack = quantity.toString()
         finalProductModel.piecesPT = quantity.toString()
         finalProductModel.notePT =
             context.getString(R.string.label_note_printer, quantity.toString())
-        val labelReplace = replaceData(label)
-        mutableTransferUIState.postValue(TransferUIState.SendToPrinter(labelReplace))
     }
 
-    private fun replaceData(label: String): String {
-        return label
-    }
 
     private fun isAvailableQuantity(typeQuantity: TypeQuantity) {
         val quantityTotal = quantityDone + quantityReject + quantityDiff + quantitySCRAP

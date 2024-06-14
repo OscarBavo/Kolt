@@ -4,22 +4,20 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.mkrs.kolt.R
 import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.base.MKTFragment
 import com.mkrs.kolt.base.viewBinding
-import com.mkrs.kolt.dashboard.home.printer.PrinterUIState
-import com.mkrs.kolt.dashboard.home.printer.PrinterViewModel
 import com.mkrs.kolt.databinding.FragmentTransferBinding
-import com.mkrs.kolt.preferences.di.HomeModule
-import com.mkrs.kolt.preferences.di.PreferenceModule
-import com.mkrs.kolt.preferences.presentation.PreferencesViewModel
 import com.mkrs.kolt.transfer.di.TransferModule
 import com.mkrs.kolt.transfer.domain.models.FinalProductModel
 import com.mkrs.kolt.transfer.domain.models.TransferUIState
 import com.mkrs.kolt.utils.disable
 import com.mkrs.kolt.utils.enable
+import com.mkrs.kolt.utils.isCode
+import com.mkrs.kolt.utils.isCodeFill
+import com.mkrs.kolt.utils.isDigit
+import com.mkrs.kolt.utils.isLetter
 import com.mkrs.kolt.utils.toEditable
 
 /**
@@ -34,34 +32,6 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
     }
     private val transferViewModel: TransferViewModel by activityViewModels { vmFactory }
 
-    private val preferencesViewModel by activityViewModels<PreferencesViewModel> {
-        PreferenceModule.providePreferenceVMFactory(
-            HomeModule.provideHomePReferences(requireActivity(), "Impresoras")
-        )
-    }
-
-    private val printerViewModel by activityViewModels<PrinterViewModel>()
-
-    private val uIStateObserver = Observer<PrinterUIState> { state ->
-        when (state) {
-            is PrinterUIState.Loading -> activity?.showDialog()
-            is PrinterUIState.NoState -> {
-                activity?.dismissDialog()
-            }
-
-            is PrinterUIState.Printed -> {
-                activity?.dismissDialog()
-                showAlert(getString(R.string.success_printer), transferBinding.btnNext)
-                showDetailPT()
-            }
-
-            is PrinterUIState.Error -> {
-                activity?.dismissDialog()
-                showAlert(state.message, transferBinding.btnNext)
-            }
-
-        }
-    }
 
     private fun showDetailPT() {
         transferViewModel.setNoState()
@@ -89,7 +59,6 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
         transferViewModel.transferViewState.observe(viewLifecycleOwner) {
             observeTransferState(it)
         }
-        printerViewModel.printerUIState.observe(viewLifecycleOwner, uIStateObserver)
     }
 
     private fun observeTransferState(uiState: TransferUIState) {
@@ -158,22 +127,11 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
 
             is TransferUIState.AddQuantity -> {
                 dismissDialog()
+                transferBinding.btnNext.isEnabled = false
                 transferBinding.tvTextTotal.text = uiState.quantity
                 transferViewModel.setNoState()
             }
-
-            is TransferUIState.SendToPrinter -> {
-                dismissDialog()
-                hideKeyboard()
-                createConectionPrinter(uiState.label)
-            }
         }
-    }
-
-    private fun createConectionPrinter(label: String) {
-        val ipPort = printerViewModel.getDataPrinter(preferencesViewModel, resources)
-
-        printerViewModel.printTest(ipPort[0], ipPort[1].toInt(), label)
     }
 
     private fun showError(typeQuantity: TransferViewModel.TypeQuantity) {
@@ -210,7 +168,10 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
             tilKeyItem.enable()
             tieTextKeyItem.requestFocus()
             btnClean.disable()
-            // btnNext.disable()
+            tieTextDoneProduct.enable()
+            tieTextReject.enable()
+            tieTextDifferent.enable()
+            tieTextScrap.enable()
         }
         initListener()
     }
@@ -254,23 +215,31 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
         transferBinding.tieTextDoneProduct.doOnTextChanged { qaDone, _, _, _ ->
             if (!qaDone.isNullOrEmpty()) {
                 transferViewModel.saveQuantityDone(qaDone.toString())
+            } else {
+                transferViewModel.saveQuantityDone("0")
             }
         }
 
         transferBinding.tieTextReject.doOnTextChanged { qaRJ, _, _, _ ->
             if (!qaRJ.isNullOrEmpty()) {
                 transferViewModel.saveQuantityReject(qaRJ.toString())
+            } else {
+                transferViewModel.saveQuantityReject("0")
             }
         }
         transferBinding.tieTextDifferent.doOnTextChanged { qaDiff, _, _, _ ->
             if (!qaDiff.isNullOrEmpty()) {
                 transferViewModel.saveQuantityDiff(qaDiff.toString())
+            } else {
+                transferViewModel.saveQuantityDiff("0")
             }
         }
 
         transferBinding.tieTextScrap.doOnTextChanged { qaScrap, _, _, _ ->
             if (!qaScrap.isNullOrEmpty()) {
                 transferViewModel.saveQuantitySCRAP(qaScrap.toString())
+            } else {
+                transferViewModel.saveQuantitySCRAP("0")
             }
         }
 
@@ -279,7 +248,8 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
         }
 
         transferBinding.btnNext.setOnClickListener {
-            transferViewModel.updateDataFinalProduct(getString(R.string.label_printer_one))
+            transferViewModel.updateDataFinalProduct()
+            showDetailPT()
         }
 
     }
@@ -344,23 +314,5 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
             }
     }
 
-    private fun isCode(word: String): Boolean {
-        val regex = "^[A-Za-z]{1,2}[\\d]{5}\$".toRegex()
-        return regex.matches(word)
-    }
 
-    private fun isCodeFill(word: String): Boolean {
-        val regex = "^[A-Za-z]{1,2}[\\d]*\$".toRegex()
-        return regex.matches(word)
-    }
-
-    private fun isLetter(word: String): Boolean {
-        val regex = "^[A-Za-z]*$".toRegex()
-        return regex.matches(word)
-    }
-
-    private fun isDigit(word: String): Boolean {
-        val regex = "^[\\d]{7}$".toRegex()
-        return regex.matches(word)
-    }
 }
