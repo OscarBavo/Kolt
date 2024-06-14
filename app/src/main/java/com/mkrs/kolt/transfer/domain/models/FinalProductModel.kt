@@ -16,5 +16,6 @@ data class FinalProductModel(
     var pieces: String = "",
     var stdPack: String = "",
     var piecesPT: String = "",
-    var notePT: String = ""
+    var notePT: String = "",
+    var codeUnique: String = ""
 )

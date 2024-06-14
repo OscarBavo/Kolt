@@ -102,6 +102,7 @@
     <string name="title_tv_transfer_different">Discrepancia</string>
     <string name="title_tv_transfer_scrap">SCRAP</string>
     <string name="title_tv_transfer_total_transfer">Total</string>
+    <string name="title_bottom_transfer_product_done">Producto Terminado</string>
     <string name="title_bottom_transfer_no_part">No. Parte</string>
     <string name="title_bottom_transfer_unique_code">Código único</string>
     <string name="title_bottom_transfer_order">Pedido Programado</string>

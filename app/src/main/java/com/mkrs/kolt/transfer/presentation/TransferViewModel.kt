@@ -28,8 +28,9 @@ class TransferViewModel(
 ) : ViewModel() {
 
     private val mutableTransferUIState = MutableLiveData<TransferUIState>()
-    private var finalProductModel: FinalProductModel = FinalProductModel()
+    var finalProductModel: FinalProductModel = FinalProductModel()
     private var code: String = ""
+    private var codeUnique: String = ""
     private var quantity: Double = 0.0
     private var quantityDone: Double = 0.0
     private var quantityReject: Double = 0.0
@@ -41,6 +42,7 @@ class TransferViewModel(
 
     private fun saveFinalProductModel(finalProductModel: FinalProductModel) {
         this.finalProductModel = finalProductModel
+        this.finalProductModel.codeUnique=codeUnique
     }
 
     fun resetFinalProductModel() {
@@ -55,6 +57,9 @@ class TransferViewModel(
 
     private fun saveCode(code: String) {
         this.code = code
+    }
+    private fun saveCodeUnique(code: String) {
+        this.codeUnique = code
     }
 
     private fun saveQuantity(quantity: String) {
@@ -115,6 +120,7 @@ class TransferViewModel(
                     if (response.finalProductModel.quantity == context.getString(R.string.quantity_detail)) {
                         mutableTransferUIState.postValue(TransferUIState.Error(context.getString(R.string.quantity_detail_msg)))
                     } else {
+                        saveCodeUnique(codigoUnico)
                         saveQuantity(response.finalProductModel.quantity)
                         saveFinalProductModel(response.finalProductModel)
                         mutableTransferUIState.postValue(TransferUIState.SuccessDetail(response.finalProductModel))
@@ -129,9 +135,9 @@ class TransferViewModel(
     }
 
     fun updateDataFinalProduct() {
-        finalProductModel.pieces = quantity.toString()
-        finalProductModel.stdPack = quantity.toString()
-        finalProductModel.piecesPT = quantity.toString()
+        finalProductModel.pieces = quantityDone.toString()
+        finalProductModel.stdPack = quantityDone.toString()
+        finalProductModel.piecesPT = quantityDone.toString()
         finalProductModel.notePT =
             context.getString(R.string.label_note_printer, quantity.toString())
     }
