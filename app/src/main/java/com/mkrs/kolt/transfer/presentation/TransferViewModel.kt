@@ -13,6 +13,7 @@ import com.mkrs.kolt.transfer.domain.usecase.GetCodePTUseCase
 import com.mkrs.kolt.transfer.domain.usecase.GetCodePTUseCase.CodePTResult
 import com.mkrs.kolt.transfer.domain.usecase.PostDetailInventoryUseCase
 import com.mkrs.kolt.transfer.presentation.TransferFragment.Companion.VERIFY_TOTAL_OK
+import com.mkrs.kolt.utils.emptyString
 import kotlinx.coroutines.launch
 
 /****
@@ -34,6 +35,7 @@ class TransferViewModel(
     private var coWorker: String = ""
     private var perforadora: String = ""
     private var quantity: Double = 0.0
+    private var quantityPrinter: Double = 0.0
     private var quantityDone: Double = 0.0
     private var quantityReject: Double = 0.0
     private var quantityDiff: Double = 0.0
@@ -41,6 +43,9 @@ class TransferViewModel(
     private var isOperardor = false
     private var isPerforadora = false
     private var isLabelReady = false
+    private var totalLabel = 0
+    private var remaindersLabel = 0
+
 
     val transferViewState: LiveData<TransferUIState>
         get() = mutableTransferUIState
@@ -48,6 +53,7 @@ class TransferViewModel(
     private fun saveFinalProductModel(finalProductModel: FinalProductModel) {
         this.finalProductModel = finalProductModel
         this.finalProductModel.codeUnique = codeUnique
+        this.finalProductModel.date = "06-10-1991 06:12"
     }
 
     fun resetFinalProductModel() {
@@ -162,6 +168,13 @@ class TransferViewModel(
         val labels = (quantityDone / stdPack).toInt()
         val remainders = quantityDone % stdPack
         val piecesLabel = labels * stdPack
+        remaindersLabel = if (remainders.toInt() == 0) stdPack.toInt() else remainders.toInt()
+        quantityPrinter = stdPack
+        totalLabel = if (remainders > 0.0) {
+            labels + 1
+        } else {
+            labels
+        }
         saveReadyPrinter(true, ReadyPrinter.LABELS)
         return if (remainders > 0.0) {
             context.getString(
@@ -176,7 +189,7 @@ class TransferViewModel(
             context.getString(
                 R.string.label_note_printer_calculate,
                 labels.toString(),
-                quantityDone.toString()
+                stdPack.toString()
             )
         }
     }
@@ -210,6 +223,33 @@ class TransferViewModel(
     private fun isAvailableToPrinter() {
         val printer = isOperardor && isPerforadora && isLabelReady
         mutableTransferUIState.postValue(TransferUIState.IsEnableTransfer(printer))
+    }
+
+    fun replaceDataPrinter() {
+        mutableTransferUIState.postValue(TransferUIState.Loading)
+        val labels = mutableListOf<String>()
+        var initLabel = 0
+        val dataLabel: Array<String> = context.resources.getStringArray(R.array.data_replace)
+        while (initLabel < totalLabel) {
+            val quantityLabel =
+                if (initLabel == totalLabel - 1) remaindersLabel else quantityPrinter
+            var label = context.getString(R.string.label_printer_one)
+            label = label.replace(dataLabel[0], finalProductModel.date)
+            label = label.replace(dataLabel[1], finalProductModel.itemName)
+            label = label.replace(dataLabel[2], finalProductModel.suppCatNum)
+            label = label.replace(dataLabel[3], coWorker)
+            label = label.replace(dataLabel[4], code)
+            label = label.replace(dataLabel[5], finalProductModel.uPedidoProg)
+            label = label.replace(dataLabel[6], finalProductModel.mnfSerial)
+            label = label.replace(dataLabel[7], emptyString())
+            label = label.replace(dataLabel[8], finalProductModel.codeUnique)
+            label = label.replace(dataLabel[9], perforadora)
+            label = label.replace(dataLabel[10], "$quantityLabel")
+            label = label.replace(dataLabel[11], "${initLabel + 1}/$totalLabel")
+            labels.add(label)
+            initLabel++
+        }
+        mutableTransferUIState.postValue(TransferUIState.Printing(labels))
     }
 
     enum class TypeQuantity {

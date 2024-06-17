@@ -103,10 +103,14 @@ class BottomSheetTransferConfirmation :
         binding.tieTextStandardPack.doOnTextChanged { stdPack, _, _, _ ->
             validateStdPack(stdPack.toString())
         }
+
+        binding.btnSave.setOnClickListener {
+            transferViewModel.replaceDataPrinter()
+        }
     }
 
     private fun validateStdPack(stdPack: String) {
-        if (stdPack.isNullOrEmpty()) {
+        if (stdPack.isEmpty()) {
             binding.tieTextStandardPack.requestFocus()
             transferViewModel.saveReadyPrinter(false, TransferViewModel.ReadyPrinter.LABELS)
         } else if (stdPack == "0") {

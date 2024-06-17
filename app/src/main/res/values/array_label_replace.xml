@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="data_replace">
+        <item>%FechaE%</item>
+        <item>%Descripcion%</item>
+        <item>%NPCL%</item>
+        <item>%Operador%</item>
+        <item>%NPPT%</item>
+        <item>%Pedido%</item>
+        <item>%LoteQR%</item>
+        <item>%Receptor%</item>
+        <item>%Codigo%</item>
+        <item>%Maq%</item>
+        <item>%pza%</item>
+        <item>%X/Y%</item>
+    </string-array>
+</resources>
