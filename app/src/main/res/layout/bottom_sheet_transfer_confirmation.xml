@@ -156,7 +156,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_perforadora"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_width="@dimen/dim_size_150"
+        android:layout_width="@dimen/dim_size_120"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dim_size_8"
         android:hint="@string/title_bottom_transfer_perforadora"
@@ -177,11 +177,11 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_standard_pack"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_width="@dimen/dim_size_150"
+        android:layout_width="@dimen/dim_size_120"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dim_size_8"
         android:hint="@string/title_bottom_transfer_standard_pack"
-        app:counterMaxLength="50"
+        app:counterMaxLength="@integer/dim_7"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="@+id/tv_pt"
         app:layout_constraintTop_toBottomOf="@+id/til_team_worker">
@@ -191,19 +191,21 @@
             style="@style/input_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textCapWords"
-            android:maxLength="50" />
+            android:inputType="numberDecimal"
+            android:maxLength="@integer/dim_7" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_clean"
-        style="@style/Button.Primary"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_note"
+        style="@style/input_text.item.title"
         android:layout_width="@dimen/dim_size_0"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dim_size_16"
-        android:text="@string/text_general_app_clean"
-        app:layout_constraintStart_toStartOf="@+id/tv_pt"
-        app:layout_constraintTop_toBottomOf="@id/til_standard_pack" />
+        android:textAlignment="center"
+        android:text="@string/label_note_printer"
+        app:layout_constraintStart_toStartOf="@id/tv_pt"
+        app:layout_constraintEnd_toEndOf="@id/tv_pt"
+        app:layout_constraintTop_toBottomOf="@+id/til_standard_pack" />
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save"
@@ -214,5 +216,6 @@
         android:layout_marginBottom="@dimen/dim_size_16"
         android:text="@string/text_general_app_save"
         app:layout_constraintEnd_toEndOf="@+id/tv_pt"
-        app:layout_constraintTop_toBottomOf="@id/til_standard_pack" />
+        app:layout_constraintStart_toStartOf="@+id/tv_pt"
+        app:layout_constraintTop_toBottomOf="@id/tv_note" />
 </androidx.constraintlayout.widget.ConstraintLayout>

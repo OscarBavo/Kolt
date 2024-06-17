@@ -73,6 +73,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/dim_text_18</item>
         <item name="android:textColor">@color/gray_own</item>
+        <item name="android:layout_marginTop">@dimen/dim_size_4</item>
     </style>
 
     <style name="input_text.item.title">
@@ -80,6 +81,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/dim_text_20</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:layout_marginTop">@dimen/dim_size_4</item>
     </style>
 
     <style name="input_text.item.title.import">

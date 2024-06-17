@@ -31,18 +31,23 @@ class TransferViewModel(
     var finalProductModel: FinalProductModel = FinalProductModel()
     private var code: String = ""
     private var codeUnique: String = ""
+    private var coWorker: String = ""
+    private var perforadora: String = ""
     private var quantity: Double = 0.0
     private var quantityDone: Double = 0.0
     private var quantityReject: Double = 0.0
     private var quantityDiff: Double = 0.0
     private var quantitySCRAP: Double = 0.0
+    private var isOperardor = false
+    private var isPerforadora = false
+    private var isLabelReady = false
 
     val transferViewState: LiveData<TransferUIState>
         get() = mutableTransferUIState
 
     private fun saveFinalProductModel(finalProductModel: FinalProductModel) {
         this.finalProductModel = finalProductModel
-        this.finalProductModel.codeUnique=codeUnique
+        this.finalProductModel.codeUnique = codeUnique
     }
 
     fun resetFinalProductModel() {
@@ -58,6 +63,17 @@ class TransferViewModel(
     private fun saveCode(code: String) {
         this.code = code
     }
+
+    fun saveCoWorker(coWorker: String) {
+        this.coWorker = coWorker
+        saveReadyPrinter(true, ReadyPrinter.COWORKER)
+    }
+
+    fun savePerforadora(perforadora: String) {
+        this.perforadora = perforadora
+        saveReadyPrinter(true, ReadyPrinter.PERFORADORA)
+    }
+
     private fun saveCodeUnique(code: String) {
         this.codeUnique = code
     }
@@ -142,6 +158,29 @@ class TransferViewModel(
             context.getString(R.string.label_note_printer, quantity.toString())
     }
 
+    fun createNotePrinter(stdPack: Double): String {
+        val labels = (quantityDone / stdPack).toInt()
+        val remainders = quantityDone % stdPack
+        val piecesLabel = labels * stdPack
+        saveReadyPrinter(true, ReadyPrinter.LABELS)
+        return if (remainders > 0.0) {
+            context.getString(
+                R.string.label_note_printer_calculate,
+                labels.toString(),
+                piecesLabel.toString()
+            ) + context.getString(
+                R.string.label_note_printer_calculate_remainders,
+                remainders.toString()
+            )
+        } else {
+            context.getString(
+                R.string.label_note_printer_calculate,
+                labels.toString(),
+                quantityDone.toString()
+            )
+        }
+    }
+
 
     private fun isAvailableQuantity(typeQuantity: TypeQuantity) {
         val quantityTotal = quantityDone + quantityReject + quantityDiff + quantitySCRAP
@@ -159,7 +198,25 @@ class TransferViewModel(
         }
     }
 
+    fun saveReadyPrinter(isReady: Boolean, readyPrinter: ReadyPrinter) {
+        when (readyPrinter) {
+            ReadyPrinter.COWORKER -> this.isOperardor = isReady
+            ReadyPrinter.PERFORADORA -> this.isPerforadora = isReady
+            ReadyPrinter.LABELS -> this.isLabelReady = isReady
+        }
+        isAvailableToPrinter()
+    }
+
+    private fun isAvailableToPrinter() {
+        val printer = isOperardor && isPerforadora && isLabelReady
+        mutableTransferUIState.postValue(TransferUIState.IsEnableTransfer(printer))
+    }
+
     enum class TypeQuantity {
         DONE, REJECT, DIFF, SCRAP
+    }
+
+    enum class ReadyPrinter {
+        COWORKER, PERFORADORA, LABELS
     }
 }

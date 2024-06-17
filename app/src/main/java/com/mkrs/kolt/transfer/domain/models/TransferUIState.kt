@@ -24,4 +24,6 @@ sealed class TransferUIState {
         val typeQuantity: TransferViewModel.TypeQuantity
     ) : TransferUIState()
 
+    data class  IsEnableTransfer(val isReadyToPrinter:Boolean):TransferUIState()
+
 }

@@ -85,7 +85,7 @@
     <string name="success_printer">Impresion correcta</string>
     <!-- Transferencia -->
     <string name="title_exit_transfer">¿Deseas salir de Transferencia?</string>
-    <string name="title_fragment_transfer">Salida Producción</string>
+    <string name="title_fragment_transfer">Transferencia</string>
     <string name="title_bottom_sheet_transfer_done_product">Producto Terminado</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btn_title_in">Entrada</string>
@@ -114,6 +114,9 @@
     <string name="quantity_detail">0</string>
     <string name="quantity_detail_msg">El código único no tiene MP</string>
     <string name="unique_code_error_init">El código único es invalido, verifique</string>
-    <string name="label_note_printer">Se imprimirá 1 etiquetas con cantidad de %s piezas</string>
+    <string name="label_note_printer">Nota: %s</string>
+    <string name="label_note_printer_calculate">Se imprimirá(n) %1s etiquetas con cantidad de %2s piezas </string>
+    <string name="label_note_printer_calculate_remainders">y una etiqueta con el remanente de %s piezas</string>
+
 
 </resources>

@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -159,8 +158,6 @@ open class MKTFragment(@LayoutRes layoutResId: Int) : Fragment() {
     }
 
     private fun isShowingDialog(): Boolean = progressDialog.isShowing
-
-    fun emptyString(): Editable = "".toEditable()
 
     fun hideKeyboard() {
         activity?.hideKeyboard()

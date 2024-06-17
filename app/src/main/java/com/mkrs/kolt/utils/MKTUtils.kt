@@ -1,5 +1,7 @@
 package com.mkrs.kolt.utils
 
+import android.text.Editable
+
 /****
  * Project: Kolt
  * Dev: Oscar Balderas Vazquez
@@ -25,3 +27,12 @@ fun isDigit(word: String): Boolean {
     val regex = "^[\\d]{7}$".toRegex()
     return regex.matches(word)
 }
+
+fun isDigitGeneric(word: String): Boolean {
+    val regex = "^[\\d.\\d]*$".toRegex()
+    return regex.matches(word)
+}
+
+fun emptyStringEditable(): Editable = "".toEditable()
+fun emptyString(): String = ""
+

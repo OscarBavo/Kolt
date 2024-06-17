@@ -13,6 +13,7 @@ import com.mkrs.kolt.transfer.di.TransferModule
 import com.mkrs.kolt.transfer.domain.models.FinalProductModel
 import com.mkrs.kolt.transfer.domain.models.TransferUIState
 import com.mkrs.kolt.utils.disable
+import com.mkrs.kolt.utils.emptyStringEditable
 import com.mkrs.kolt.utils.enable
 import com.mkrs.kolt.utils.isCode
 import com.mkrs.kolt.utils.isCodeFill
@@ -83,7 +84,7 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
             is TransferUIState.NoExistsPT -> {
                 dismissDialog()
                 showAlert(uiState.msg, transferBinding.tieTextKeyItem)
-                transferBinding.tieTextKeyItem.text = emptyString()
+                transferBinding.tieTextKeyItem.text = emptyStringEditable()
                 transferBinding.tieTextKeyItem.requestFocus()
                 transferViewModel.setNoState()
             }
@@ -91,7 +92,7 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
             is TransferUIState.NoExistsDetail -> {
                 dismissDialog()
                 showAlert(uiState.msg, transferBinding.tieTextUniqueCode)
-                transferBinding.tieTextUniqueCode.text = emptyString()
+                transferBinding.tieTextUniqueCode.text = emptyStringEditable()
                 transferBinding.tieTextUniqueCode.enable()
                 transferViewModel.setNoState()
             }
@@ -131,6 +132,8 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
                 transferBinding.tvTextTotal.text = uiState.quantity
                 transferViewModel.setNoState()
             }
+
+            else -> {}
         }
     }
 
@@ -179,7 +182,7 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
     private fun initListener() {
         transferBinding.tieTextKeyItem.doOnTextChanged { code, _, _, _ ->
             if (code.isNullOrEmpty()) {
-                transferBinding.tilKeyItem.error = emptyString()
+                transferBinding.tilKeyItem.error = emptyStringEditable()
                 transferBinding.tieTextKeyItem.requestFocus()
             } else if (isLetter(code.toString())) {
                 transferBinding.tilKeyItem.error = "solo ingresar números"
@@ -208,7 +211,7 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
                     }
                 }
             } else {
-                transferBinding.tilUniqueCode.error = emptyString()
+                transferBinding.tilUniqueCode.error = emptyStringEditable()
             }
         }
 
@@ -259,15 +262,15 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
         transferViewModel.saveQuantityDiff(VERIFY_TOTAL_OK.toString())
         transferViewModel.saveQuantityReject(VERIFY_TOTAL_OK.toString())
         transferViewModel.saveQuantitySCRAP(VERIFY_TOTAL_OK.toString())
-        transferBinding.tieTextUniqueCode.text = emptyString()
-        transferBinding.tieTextKeyItem.text = emptyString()
-        transferBinding.tieTextDoneProduct.text = emptyString()
-        transferBinding.tieTextDifferent.text = emptyString()
-        transferBinding.tieTextReject.text = emptyString()
-        transferBinding.tieTextScrap.text = emptyString()
-        transferBinding.tvPiecesData.text = emptyString()
-        transferBinding.tvBatchRollData.text = emptyString()
-        transferBinding.tvBatchDetailData.text = emptyString()
+        transferBinding.tieTextUniqueCode.text = emptyStringEditable()
+        transferBinding.tieTextKeyItem.text = emptyStringEditable()
+        transferBinding.tieTextDoneProduct.text = emptyStringEditable()
+        transferBinding.tieTextDifferent.text = emptyStringEditable()
+        transferBinding.tieTextReject.text = emptyStringEditable()
+        transferBinding.tieTextScrap.text = emptyStringEditable()
+        transferBinding.tvPiecesData.text = emptyStringEditable()
+        transferBinding.tvBatchRollData.text = emptyStringEditable()
+        transferBinding.tvBatchDetailData.text = emptyStringEditable()
         transferBinding.tvTextTotal.text = "".toEditable()
         transferViewModel.resetFinalProductModel()
         transferBinding.tieTextUniqueCode.disable()
