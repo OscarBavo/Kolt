@@ -117,6 +117,10 @@
     <string name="label_note_printer">Nota: %s</string>
     <string name="label_note_printer_calculate">Se imprimirá(n) %1s etiquetas con cantidad de %2s piezas </string>
     <string name="label_note_printer_calculate_remainders">y una etiqueta con el remanente de %s piezas</string>
-
-
+    <string name="whs_code_pt_02">02</string>
+    <string name="whs_code_pt_03">03</string>
+    <string name="is_pt_03">710</string>
+    <string name="whs_code_rej_04">04</string>
+    <string name="whs_code_scrap_05">05</string>
+    <string name="whs_code_diff_06">06</string>
 </resources>

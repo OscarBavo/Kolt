@@ -13,6 +13,8 @@ import com.mkrs.kolt.transfer.domain.usecase.GetCodePTUseCase
 import com.mkrs.kolt.transfer.domain.usecase.GetCodePTUseCase.CodePTResult
 import com.mkrs.kolt.transfer.domain.usecase.PostDetailInventoryUseCase
 import com.mkrs.kolt.transfer.presentation.TransferFragment.Companion.VERIFY_TOTAL_OK
+import com.mkrs.kolt.transfer.webservices.models.LineasED
+import com.mkrs.kolt.transfer.webservices.models.TransferenciaED
 import com.mkrs.kolt.utils.emptyString
 import kotlinx.coroutines.launch
 
@@ -52,6 +54,7 @@ class TransferViewModel(
 
     private fun saveFinalProductModel(finalProductModel: FinalProductModel) {
         this.finalProductModel = finalProductModel
+        this.finalProductModel.code = code
         this.finalProductModel.codeUnique = codeUnique
         this.finalProductModel.date = "06-10-1991 06:12"
     }
@@ -227,6 +230,7 @@ class TransferViewModel(
 
     fun replaceDataPrinter() {
         mutableTransferUIState.postValue(TransferUIState.Loading)
+        createPost()
         val labels = mutableListOf<String>()
         var initLabel = 0
         val dataLabel: Array<String> = context.resources.getStringArray(R.array.data_replace)
@@ -250,6 +254,57 @@ class TransferViewModel(
             initLabel++
         }
         mutableTransferUIState.postValue(TransferUIState.Printing(labels))
+    }
+
+    private fun createPost() {
+        val lineas: MutableList<LineasED> = mutableListOf()
+        val whsCode =
+            if (finalProductModel.code.startsWith(context.getString(R.string.is_pt_03))) context.getString(
+                R.string.whs_code_pt_03
+            ) else context.getString(R.string.whs_code_pt_02)
+        val transferMP = LineasED(
+            whsCode,
+            finalProductModel.code,
+            finalProductModel.codeUnique,
+            finalProductModel.mnfSerial,
+            finalProductModel.suppCatNum,
+            quantityDone
+        )
+        lineas.add(transferMP)
+        if (quantityReject > 0.0) {
+            val transferRej = LineasED(
+                context.getString(R.string.whs_code_rej_04),
+                finalProductModel.code,
+                finalProductModel.codeUnique,
+                finalProductModel.mnfSerial,
+                finalProductModel.suppCatNum,
+                quantityReject
+            )
+            lineas.add(transferRej)
+        }
+        if (quantitySCRAP > 0.0) {
+            val transferSCRAP = LineasED(
+                context.getString(R.string.whs_code_scrap_05),
+                finalProductModel.code,
+                finalProductModel.codeUnique,
+                finalProductModel.mnfSerial,
+                finalProductModel.suppCatNum,
+                quantitySCRAP
+            )
+            lineas.add(transferSCRAP)
+        }
+        if (quantityDiff > 0.0) {
+            val transferDiff = LineasED(
+                context.getString(R.string.whs_code_diff_06),
+                finalProductModel.code,
+                finalProductModel.codeUnique,
+                finalProductModel.mnfSerial,
+                finalProductModel.suppCatNum,
+                quantityDiff
+            )
+            lineas.add(transferDiff)
+        }
+        val transferencia = TransferenciaED("", lineas)
     }
 
     enum class TypeQuantity {
