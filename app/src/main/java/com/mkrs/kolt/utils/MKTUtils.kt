@@ -13,12 +13,8 @@ import java.lang.reflect.Type
  * From: com.mkrs.kolt.utils
  * Date: 05 / 06 / 2024
  *****/
-fun <T> parse(jsonSrt: String, destination: Class<T>): T {
-    return (GsonBuilder().registerTypeAdapterFactory(PostProcessingEnabler())
-        .create()).fromJson(jsonSrt, destination)
-}
 
-fun <T> parse(jsonSrt: String, type: Type): T {
+fun <T> parse(jsonSrt: String?, type: Type): T {
     return (GsonBuilder().registerTypeAdapterFactory(PostProcessingEnabler())
         .create()).fromJson(jsonSrt, type)
 }

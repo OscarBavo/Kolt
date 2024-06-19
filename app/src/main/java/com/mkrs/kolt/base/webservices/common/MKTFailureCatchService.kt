@@ -13,12 +13,12 @@ abstract class MKTFailureCatchService<T>(
     url: String,
     tag: String,
     codeSuccess: String = MKTGeneralConfig.CODE_SUCCESS.toString()
-) : MKTWebService<T>(url, tag, codeSuccess){
+) : MKTWebService<T>(url, codeSuccess) {
 
     override fun onFailure(code: String?, response: String?, throwable: Throwable?) {
-        if(!response.isNullOrEmpty()){
+        if (!response.isNullOrEmpty()) {
             getListener()?.onFinish(this.response)
-        }else{
+        } else {
             super.onFailure(code, response, throwable)
         }
     }

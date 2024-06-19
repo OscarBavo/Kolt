@@ -26,20 +26,20 @@ suspend inline fun <reified T> convertToSuspend(
             object : MKTWebServiceListener<T> {
                 override fun onFinish(response: MKTResponse<T>?) {
                     continuation.resume(MKTResponse<T>().apply {
-                        responseCode = response?.responseCode ?: ""
-                        msg = response?.msg
+                        ErrorCode = response?.ErrorCode ?: ""
+                        Message = response?.Message
                         if (assertResultSetNotNul) {
-                            if (response?.data == null) {
-                                responseCode = CODE_ERROR_COMMON.toString()
+                            if (response?.Result == null) {
+                                ErrorCode = CODE_ERROR_COMMON.toString()
                             }
-                            if (responseCode != codesuccess) {
-                                data = null
+                            if (ErrorCode != codesuccess) {
+                                Result = null
                             }
                         }
-                        data = when (response?.data) {
+                        Result = when (response?.Result) {
                             null -> null
-                            is Array<*> -> convertToArrayList(response.data as Array<*>) as T
-                            else -> response.data
+                            is Array<*> -> convertToArrayList(response.Result as Array<*>) as T
+                            else -> response.Result
                         }
                     }, null)
                 }

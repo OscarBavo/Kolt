@@ -9,6 +9,5 @@ import com.mkrs.kolt.base.webservices.entity.MKTResponse
  * Date: 05 / 06 / 2024
  *****/
 interface MKTWebServiceListener<T> {
-
     fun onFinish(response: MKTResponse<T>?)
 }

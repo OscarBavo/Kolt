@@ -54,7 +54,9 @@ class MKTHurlStack : BaseHttpStack {
         val headerList: MutableList<Header> = mutableListOf()
         for (entry: Map.Entry<String, List<String>> in headerFields.entries) {
             for (value: String in entry.value) {
-                headerList.add(Header(entry.key, value))
+                if (!entry.key.isNullOrBlank()) {
+                    headerList.add(Header(entry.key, value))
+                }
             }
         }
         return headerList
@@ -66,13 +68,18 @@ class MKTHurlStack : BaseHttpStack {
         additionalHeaders: MutableMap<String, String>?
     ): HttpResponse? {
         var url = request?.url
-        additionalHeaders?.putAll(request?.headers!!)
+        val map = HashMap<String, String>()
+        additionalHeaders?.let {
+            map.putAll(it)
+        }
+        map.putAll(request?.headers!!)
+        /*
         val rewritten = urlRewriter.rewriteUrl(url)
 
         if (rewritten.isNullOrEmpty()) {
             throw IOException("Url blocked by reqwriter: $url")
         }
-        url = rewritten
+        url = rewritten*/
         val parseUrl = URL(url)
         val connection = HttpURLConnection(parseUrl, request!!)
 
@@ -99,7 +106,7 @@ class MKTHurlStack : BaseHttpStack {
                 responseCode,
                 convertHeaders(connection.headerFields),
                 connection.contentLength,
-                MKTHurlStack().UrlConnectionInputStream(connection)
+                UrlConnectionInputStream(connection)
             )
         } finally {
             if (!keepConnectionOpen) {
@@ -119,7 +126,11 @@ class MKTHurlStack : BaseHttpStack {
                 }
             }
 
-            Request.Method.GET -> connection.requestMethod = "GET"
+            Request.Method.GET -> {
+                connection.requestMethod = "GET"
+                connection.doInput = true
+            }
+
             Request.Method.DELETE -> connection.requestMethod = "DELETE"
             Request.Method.POST -> {
                 connection.requestMethod = "POST"
@@ -196,10 +207,11 @@ class MKTHurlStack : BaseHttpStack {
     }
 
     private fun inputStreamFromConnection(connection: HttpURLConnection): InputStream {
-        return try {
+        val input = try {
             connection.inputStream
         } catch (ioe: IOException) {
             connection.errorStream
         }
+        return input
     }
 }

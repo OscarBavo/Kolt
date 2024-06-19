@@ -41,20 +41,20 @@ abstract class MKTRequest<T>(
             if (json.has(DATA)) {
                 responseString?.let {
                     val objResponse: MKTResponse<T> = parse(
-                        it,getType(MKTResponse::class.java, responseModel)
+                        it, getType(MKTResponse::class.java, responseModel)
                     )
-                    response.responseCode = objResponse.responseCode
-                    response.msg=objResponse.msg
-                    response.data=objResponse.data
+                    response.ErrorCode = objResponse.ErrorCode
+                    response.Message = objResponse.Message
+                    response.Result = objResponse.Result
                 }
-            }else{
-                response.responseCode=json.getString(RESPONSE_CODE)
-                response.msg=json.getString(MESSAGE)
+            } else {
+                response.ErrorCode = json.getString(RESPONSE_CODE)
+                response.Message = json.getString(MESSAGE)
             }
-        }catch (ex:Exception){
-            response.msg=DEFAULT_NET_ERROR
-            response.responseCode= CODE_ERROR_COMMON.toString()
-        }finally {
+        } catch (ex: Exception) {
+            response.Message = DEFAULT_NET_ERROR
+            response.ErrorCode = CODE_ERROR_COMMON.toString()
+        } finally {
             getListener()?.onFinish(this.response)
         }
     }

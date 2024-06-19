@@ -13,10 +13,14 @@ import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig.Companion.CODE
 import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig.Companion.EMPTY_TEXT
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.FilterInputStream
+import java.io.IOException
+import java.io.InputStream
 import java.lang.Exception
 import java.lang.StringBuilder
 import java.lang.UnsupportedOperationException
 import java.net.CookieManager
+import java.net.HttpURLConnection
 import java.net.URLEncoder
 
 /****
@@ -26,8 +30,7 @@ import java.net.URLEncoder
  * Date: 05 / 06 / 2024
  *****/
 abstract class MKTWebService<T>(
-    var url: String?,
-    tag: String?,
+    var serviceUrl: String?,
     code: String = MKTGeneralConfig.CODE_SUCCESS.toString()
 ) : MKTFailureService() {
 
@@ -55,8 +58,8 @@ abstract class MKTWebService<T>(
     init {
         this.codeSuccess = code
         this.response = MKTResponse()
-        this.response.tag = tag
-        this.response.responseCode = code
+        //  this.response.tag = tag
+        this.response.ErrorCode = code
     }
 
     fun getListener() = listener
@@ -90,7 +93,7 @@ abstract class MKTWebService<T>(
 
     private fun requestJsonPost(jsonRequest: JSONObject) {
         val jsonObjRequest: JsonObjectRequest = object :
-            JsonObjectRequest(Method.POST, url, jsonRequest, onVolleySuccess(), onVolleyFailure()) {
+            JsonObjectRequest(Method.POST, serviceUrl, jsonRequest, onVolleySuccess(), onVolleyFailure()) {
             override fun getBodyContentType() = APPLICATION_JSON
             override fun getHeaders() = getRequestHeader()
             override fun getParams() = getRequestParams()
@@ -100,7 +103,7 @@ abstract class MKTWebService<T>(
 
     private fun requestStringPost() {
         val jsonObjRequest: StringRequest = object :
-            StringRequest(Method.POST, url, onVolleySuccess(), onVolleyFailure()) {
+            StringRequest(Method.POST, serviceUrl, onVolleySuccess(), onVolleyFailure()) {
             override fun getHeaders() = getRequestHeader()
             override fun getParams() = getRequestParams()
         }
@@ -109,7 +112,7 @@ abstract class MKTWebService<T>(
 
     private fun requestJsonResponseStringPost(body: JSONObject) {
         val stringRequest: StringRequest = object :
-            StringRequest(Method.POST, url, onVolleySuccess(), onVolleyFailure()) {
+            StringRequest(Method.POST, serviceUrl, onVolleySuccess(), onVolleyFailure()) {
             override fun getBodyContentType(): String {
                 return "$APPLICATION_JSON$SEMI_COLON $CHARSET"
             }
@@ -125,7 +128,7 @@ abstract class MKTWebService<T>(
 
     private fun requestJsonPut(jsonRequest: JSONObject) {
         val jsonObjRequest: JsonObjectRequest = object :
-            JsonObjectRequest(Method.PUT, url, jsonRequest, onVolleySuccess(), onVolleyFailure()) {
+            JsonObjectRequest(Method.PUT, serviceUrl, jsonRequest, onVolleySuccess(), onVolleyFailure()) {
             override fun getBodyContentType() = APPLICATION_JSON
             override fun getHeaders() = getRequestHeader()
             override fun getParams() = getRequestParams()
@@ -135,7 +138,7 @@ abstract class MKTWebService<T>(
 
     private fun requestStringPut() {
         val jsonObjRequest: StringRequest = object :
-            StringRequest(Method.PUT, url, onVolleySuccess(), onVolleyFailure()) {
+            StringRequest(Method.PUT, serviceUrl, onVolleySuccess(), onVolleyFailure()) {
             override fun getHeaders() = getRequestHeader()
             override fun getParams() = getRequestParams()
             override fun getBody() = EMPTY_TEXT.toByteArray()
@@ -145,7 +148,7 @@ abstract class MKTWebService<T>(
 
     private fun requestStringPatch() {
         val jsonObjRequest: StringRequest = object :
-            StringRequest(Method.PATCH, url, onVolleySuccess(), onVolleyFailure()) {
+            StringRequest(Method.PATCH, serviceUrl, onVolleySuccess(), onVolleyFailure()) {
             override fun getHeaders() = getRequestHeader()
             override fun getParams() = getRequestParams()
             override fun getBody() = EMPTY_TEXT.toByteArray()
@@ -157,7 +160,7 @@ abstract class MKTWebService<T>(
         val jsonObjRequest: JsonObjectRequest = object :
             JsonObjectRequest(
                 Method.PATCH,
-                url,
+                serviceUrl,
                 jsonRequest,
                 onVolleySuccess(),
                 onVolleyFailure()
@@ -171,11 +174,11 @@ abstract class MKTWebService<T>(
 
     private fun requestStringDelete() {
         val jsonObjRequest: StringRequest = object :
-            StringRequest(Method.DELETE, url, onVolleySuccess(), onVolleyFailure()) {
+            StringRequest(Method.DELETE, serviceUrl, onVolleySuccess(), onVolleyFailure()) {
             override fun getHeaders() = getRequestHeader()
             override fun getParams() = getRequestParams()
             override fun getUrl(): String {
-                var stringBuilder = url?.let {
+                var stringBuilder = serviceUrl?.let {
                     StringBuilder(it)
                 }
                 stringBuilder = getUrlFormat(stringBuilder)
@@ -187,13 +190,19 @@ abstract class MKTWebService<T>(
 
     private fun requestStringGet() {
         val jsonObjRequest: StringRequest = object :
-            StringRequest(Method.GET, url, onVolleySuccess(), onVolleyFailure()) {
-            override fun getHeaders() = getRequestHeader()
-            override fun getParams() = getRequestParams()
+            StringRequest(Method.GET, serviceUrl, onVolleySuccess(), onVolleyFailure()) {
+            override fun getHeaders(): Map<String, String> {
+                return getRequestHeader()
+            }
+
+            override fun getParams(): Map<String, String> {
+                return getRequestParams()
+            }
+
             override fun getUrl(): String {
-                var stringBuilder = url?.let {
-                    StringBuilder(it)
-                }
+                var stringBuilder = serviceUrl?.let { StringBuilder(it) } /*StringBuilder(url)?.let {
+                    java.lang.StringBuilder(it)
+                }*/
                 stringBuilder = getUrlFormat(stringBuilder)
 
                 getMultipleRequestParam()?.map { pair ->
@@ -201,7 +210,7 @@ abstract class MKTWebService<T>(
                         val key = URLEncoder.encode(pair.first, UTF_8)
                         val value = URLEncoder.encode(pair.second, UTF_8)
                         stringBuilder?.append(AMPERSAND)?.append(key)?.append(EQUALS)?.append(value)
-                    } catch (ig: UnsupportedOperationException) {
+                    } catch (_: UnsupportedOperationException) {
                     }
                 }
                 return stringBuilder.toString()
@@ -234,11 +243,11 @@ abstract class MKTWebService<T>(
         requestStringDelete()
     }
 
-    fun put(body: String?){
+    fun put(body: String?) {
         setRequest(body, TypeRequest.PUT)
     }
 
-    fun patch(body: String?){
+    fun patch(body: String?) {
         setRequest(body, TypeRequest.PATCH)
     }
 
@@ -280,24 +289,19 @@ abstract class MKTWebService<T>(
                     return@ErrorListener
                 }
                 if (error.networkResponse != null) {
-                    var bodyRes: String? = tryGetBody(error)
-
+                    val bodyRes: String? = tryGetBody(error)
                     this.onFailure(error.networkResponse.statusCode.toString(), bodyRes, error)
                     return@ErrorListener
                 }
             } catch (ig: Exception) {
+            //    this.onFailure(CODE_ERROR_COMMON.toString(), null, ig.cause)
             }
             this.onFailure(CODE_ERROR_COMMON.toString(), null, error)
         }
     }
 
     override fun onFailure(code: String?, response: String?, throwable: Throwable?) {
-        var res = response
-        this.response.responseCode = CODE_ERROR_COMMON.toString()
-        if (code == CODE_ERROR_500.toString()) {
-            res = null
-        }
-
+        this.response.ErrorCode = CODE_ERROR_COMMON.toString()
         /*
         if(res!=null && !response.isNullOrEmpty()){
           //  val exception=MKTUtils().parse(response, )
@@ -378,6 +382,23 @@ abstract class MKTWebService<T>(
             TypeRequest.POST -> requestJsonPost(json)
             TypeRequest.PUT -> requestJsonPut(json)
             TypeRequest.PATCH -> requestJsonPatch(json)
+        }
+    }
+
+    inner class UrlConnectionInputStream(connection: HttpURLConnection) :
+        FilterInputStream(inputStreamFromConnection(connection)) {
+        private var con = connection
+
+        override fun close() {
+            super.close()
+            con.disconnect()
+        }
+    }
+    private fun inputStreamFromConnection(connection: HttpURLConnection): InputStream {
+        return try {
+            connection.inputStream
+        } catch (ioe: IOException) {
+            connection.errorStream
         }
     }
 }

@@ -8,8 +8,20 @@ package com.mkrs.kolt.base.webservices.entity
  *****/
 
 class MKTResponse<T> {
-    var responseCode: String = ""
-    var msg: String? = null
-    var data: T? = null
-    var tag: String? = null
+    var EsError: Boolean = true
+    var ErrorCode: String = ""
+    var Message: String? = null
+    var DocNum: Int = 0
+    var ObjType: Int = 0
+    var Result: T? = null
 }
+/*
+{
+  "EsError": true,
+  "ErrorCode": 0,
+  "Message": "string",
+  "DocNum": 0,
+  "ObjType": 0,
+  "Result": "string"
+}
+ */
