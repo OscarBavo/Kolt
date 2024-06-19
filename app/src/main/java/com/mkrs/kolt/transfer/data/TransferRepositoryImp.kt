@@ -21,12 +21,14 @@ object TransferRepositoryImp : TransferRepository {
             val service = MKTTransferGetCodeService(claveMaterial)
             val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
             return@withContext if (response.ErrorCode == "0") {
-                response.Result?.response?.let {
-                    MKTGenericResponse.Success(it)
+                response.Result?.uniqueCode?.let { code ->
+                    if (code.isEmpty()) {
+                        MKTGenericResponse.Success("0")
+                    } else {
+                        MKTGenericResponse.Success(code)
+                    }
                 } ?: run {
-                    MKTGenericResponse.Failed(
-                        response.Message ?: "", response.ErrorCode
-                    )
+                    MKTGenericResponse.Success("0")
                 }
             } else {
                 MKTGenericResponse.Failed(

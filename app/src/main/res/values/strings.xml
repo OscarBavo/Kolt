@@ -39,7 +39,7 @@
     <string name="key_pass_web_service">WebServices</string>
     <!-- Web Services -->
     <string name="hint_web_service_ip">IP Web Service</string>
-    <string name="default_web_service">http://40.116.74.20:8081</string>
+    <string name="default_web_service">https://b820-189-141-18-168.ngrok-free.app/KoltWebApp</string>
     <!-- Impresora -->
     <string name="hint_printer_ip">IP Impresora</string>
     <string name="hint_printer_port">Puerto</string>

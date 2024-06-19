@@ -6,4 +6,4 @@ package com.mkrs.kolt.transfer.webservices.models
  * From: com.mkrs.kolt.transfer.webservices.models
  * Date: 18 / 06 / 2024
  *****/
-data class TransferResponse(val response:String)
+data class TransferResponse(val uniqueCode:String)
