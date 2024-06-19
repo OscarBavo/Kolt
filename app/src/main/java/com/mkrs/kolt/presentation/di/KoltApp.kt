@@ -1,6 +1,9 @@
 package com.mkrs.kolt.presentation.di
 
 import android.app.Application
+import com.mkrs.kolt.R
+import com.mkrs.kolt.base.conectivity.webservice.APIKolt
+import com.mkrs.kolt.base.conectivity.webservice.MKTRequestQueue
 import dagger.hilt.android.HiltAndroidApp
 
 /****
@@ -20,5 +23,7 @@ class KoltApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        APIKolt.init(getString(R.string.default_web_service))
+        MKTRequestQueue.init(this)
     }
 }

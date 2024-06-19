@@ -1,4 +1,4 @@
-package com.mkrs.kolt.base
+package com.mkrs.kolt.base.webservices
 
 /****
  * Project: Kolt
