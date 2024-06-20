@@ -2,7 +2,10 @@ package com.mkrs.kolt.transfer.data
 
 import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig
 import com.mkrs.kolt.base.webservices.MKTGenericResponse
+import com.mkrs.kolt.base.webservices.entity.TransferInventoryRequest
+import com.mkrs.kolt.base.webservices.entity.TransferUniqueCodeResponse
 import com.mkrs.kolt.base.webservices.transfer.MKTTransferGetCodeService
+import com.mkrs.kolt.base.webservices.transfer.MKTTransferPOSTUniqueCodeService
 import com.mkrs.kolt.transfer.domain.repositories.TransferRepository
 import com.mkrs.kolt.transfer.domain.models.FinalProductModel
 import com.mkrs.kolt.utils.convertToSuspend
@@ -39,21 +42,31 @@ object TransferRepositoryImp : TransferRepository {
 
 
     override suspend fun postDetailInventory(
-        claveMaterial: String,
-        codigoUnico: String
-    ): MKTGenericResponse<FinalProductModel> {
-        return MKTGenericResponse.Success(
+        request: TransferInventoryRequest
+    ): MKTGenericResponse<FinalProductModel> =
+        withContext(Dispatchers.IO) {
+            val service = MKTTransferPOSTUniqueCodeService(request)
+            val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
+            return@withContext if (response.ErrorCode == "0") {
+                MKTGenericResponse.Success(createInventoryModel(response.Result))
+            } else {
+                MKTGenericResponse.Failed("Error")
+            }
+        }
+
+    private fun createInventoryModel(result: TransferUniqueCodeResponse?): FinalProductModel {
+        return result?.let {
             FinalProductModel(
-                "HB001",
-                "16058",
-                "100",
-                "OSCAR",
-                "HBQRO",
-                "9140874"
+                result.ItemCode,
+                result.MnfSerial,
+                result.Quantity,
+                result.ItemName,
+                result.SuppCatNum,
+                result.PedidoProg
             )
-        )
-
+        } ?: kotlin.run {
+            FinalProductModel()
+        }
     }
-
 
 }

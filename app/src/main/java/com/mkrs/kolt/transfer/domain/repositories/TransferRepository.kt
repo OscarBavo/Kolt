@@ -1,6 +1,7 @@
 package com.mkrs.kolt.transfer.domain.repositories
 
 import com.mkrs.kolt.base.webservices.MKTGenericResponse
+import com.mkrs.kolt.base.webservices.entity.TransferInventoryRequest
 import com.mkrs.kolt.transfer.domain.models.FinalProductModel
 
 /****
@@ -12,7 +13,6 @@ import com.mkrs.kolt.transfer.domain.models.FinalProductModel
 interface TransferRepository {
     suspend fun getCodePT(claveMaterial: String): MKTGenericResponse<String>
     suspend fun postDetailInventory(
-        claveMaterial: String,
-        codigoUnico: String
+        request: TransferInventoryRequest
     ): MKTGenericResponse<FinalProductModel>
 }

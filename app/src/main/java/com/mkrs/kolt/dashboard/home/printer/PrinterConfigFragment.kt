@@ -33,7 +33,7 @@ class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_pri
     private var activity: MKTActivity? = null
     private val preferencesViewModel by activityViewModels<PreferencesViewModel> {
         PreferenceModule.providePreferenceVMFactory(
-            HomeModule.provideHomePReferences(requireActivity(), "Impresoras")
+            HomeModule.provideHomePReferences(requireActivity(), getString(R.string.data_name_printer))
         )
     }
 
@@ -46,7 +46,7 @@ class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_pri
 
             is PrinterUIState.Printed -> {
                 activity?.dismissDialog()
-                showAlert("Impresion correcta", binding.btnTestPrinter)
+                showAlert(getString(R.string.success_printer), binding.btnTestPrinter)
             }
 
             is PrinterUIState.Error -> {

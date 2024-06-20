@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mkrs.kolt.R
+import com.mkrs.kolt.base.webservices.entity.TransferInventoryRequest
 import com.mkrs.kolt.transfer.domain.models.FinalProductModel
 import com.mkrs.kolt.transfer.domain.models.TransferUIState
 import com.mkrs.kolt.transfer.domain.usecase.DetailInventoryResult
@@ -140,7 +141,8 @@ class TransferViewModel(
     fun getDetailInventory(codigoUnico: String) {
         viewModelScope.launch {
             mutableTransferUIState.postValue(TransferUIState.Loading)
-            when (val response = postDetailInventoryUseCase.execute(code, codigoUnico)) {
+            val request=TransferInventoryRequest(itemCode = code, distNumber = codigoUnico)
+            when (val response = postDetailInventoryUseCase.execute(request)) {
                 is DetailInventoryResult.Success -> {
                     if (response.finalProductModel.quantity == context.getString(R.string.quantity_detail)) {
                         mutableTransferUIState.postValue(TransferUIState.Error(context.getString(R.string.quantity_detail_msg)))
@@ -229,31 +231,33 @@ class TransferViewModel(
     }
 
     fun replaceDataPrinter() {
-        mutableTransferUIState.postValue(TransferUIState.Loading)
-        createPost()
-        val labels = mutableListOf<String>()
-        var initLabel = 0
-        val dataLabel: Array<String> = context.resources.getStringArray(R.array.data_replace)
-        while (initLabel < totalLabel) {
-            val quantityLabel =
-                if (initLabel == totalLabel - 1) remaindersLabel else quantityPrinter
-            var label = context.getString(R.string.label_printer_one)
-            label = label.replace(dataLabel[0], finalProductModel.date)
-            label = label.replace(dataLabel[1], finalProductModel.itemName)
-            label = label.replace(dataLabel[2], finalProductModel.suppCatNum)
-            label = label.replace(dataLabel[3], coWorker)
-            label = label.replace(dataLabel[4], code)
-            label = label.replace(dataLabel[5], finalProductModel.uPedidoProg)
-            label = label.replace(dataLabel[6], finalProductModel.mnfSerial)
-            label = label.replace(dataLabel[7], emptyString())
-            label = label.replace(dataLabel[8], finalProductModel.codeUnique)
-            label = label.replace(dataLabel[9], perforadora)
-            label = label.replace(dataLabel[10], "$quantityLabel")
-            label = label.replace(dataLabel[11], "${initLabel + 1}/$totalLabel")
-            labels.add(label)
-            initLabel++
+        viewModelScope.launch {
+            mutableTransferUIState.postValue(TransferUIState.Loading)
+            createPost()
+            val labels = mutableListOf<String>()
+            var initLabel = 0
+            val dataLabel: Array<String> = context.resources.getStringArray(R.array.data_replace)
+            while (initLabel < totalLabel) {
+                val quantityLabel =
+                    if (initLabel == totalLabel - 1) remaindersLabel else quantityPrinter
+                var label = context.getString(R.string.label_printer_one)
+                label = label.replace(dataLabel[0], finalProductModel.date)
+                label = label.replace(dataLabel[1], finalProductModel.itemName)
+                label = label.replace(dataLabel[2], finalProductModel.suppCatNum)
+                label = label.replace(dataLabel[3], coWorker)
+                label = label.replace(dataLabel[4], code)
+                label = label.replace(dataLabel[5], finalProductModel.uPedidoProg)
+                label = label.replace(dataLabel[6], finalProductModel.mnfSerial)
+                label = label.replace(dataLabel[7], emptyString())
+                label = label.replace(dataLabel[8], finalProductModel.codeUnique)
+                label = label.replace(dataLabel[9], perforadora)
+                label = label.replace(dataLabel[10], "$quantityLabel")
+                label = label.replace(dataLabel[11], "${initLabel + 1}/$totalLabel")
+                labels.add(label)
+                initLabel++
+            }
+            mutableTransferUIState.postValue(TransferUIState.Printing(labels))
         }
-        mutableTransferUIState.postValue(TransferUIState.Printing(labels))
     }
 
     private fun createPost() {

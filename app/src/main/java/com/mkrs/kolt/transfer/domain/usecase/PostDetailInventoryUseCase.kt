@@ -1,6 +1,7 @@
 package com.mkrs.kolt.transfer.domain.usecase
 
 import com.mkrs.kolt.base.webservices.MKTGenericResponse
+import com.mkrs.kolt.base.webservices.entity.TransferInventoryRequest
 import com.mkrs.kolt.transfer.domain.models.FinalProductModel
 import com.mkrs.kolt.transfer.domain.repositories.TransferRepository
 
@@ -13,11 +14,10 @@ import com.mkrs.kolt.transfer.domain.repositories.TransferRepository
 
 class PostDetailInventoryUseCase(private val transferRepository: TransferRepository) {
     suspend fun execute(
-        claveMaterial: String,
-        uniqueCode: String
+        request: TransferInventoryRequest
     ): DetailInventoryResult {
         return when (val result =
-            transferRepository.postDetailInventory(claveMaterial, uniqueCode)) {
+            transferRepository.postDetailInventory(request)) {
             is MKTGenericResponse.Success -> DetailInventoryResult.Success(result.content)
             is MKTGenericResponse.Failed -> DetailInventoryResult.Fail(result.errorMsg)
         }

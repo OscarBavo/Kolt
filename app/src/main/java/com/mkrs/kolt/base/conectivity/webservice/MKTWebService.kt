@@ -6,22 +6,20 @@ import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
-import com.mkrs.kolt.base.webservices.entity.MKTResponse
-import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig.Companion.CODE_ERROR_500
+import com.google.gson.JsonArray
 import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig.Companion.CODE_ERROR_COMMON
 import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig.Companion.CODE_ERROR_UNAUTHORIZED_LOCATION
 import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig.Companion.EMPTY_TEXT
+import com.mkrs.kolt.base.webservices.entity.MKTResponse
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.FilterInputStream
 import java.io.IOException
 import java.io.InputStream
-import java.lang.Exception
-import java.lang.StringBuilder
-import java.lang.UnsupportedOperationException
 import java.net.CookieManager
 import java.net.HttpURLConnection
 import java.net.URLEncoder
+
 
 /****
  * Project: Kolt
@@ -279,6 +277,12 @@ abstract class MKTWebService<T>(
         }
     }
 
+    private fun <T> onVolleySuccessArray():Response.Listener<JsonArray>{
+        return Response.Listener { response ->
+            onSuccess(this.codeSuccess, response.toString())
+        }
+    }
+
     abstract fun onSuccess(statusCode: String?, responseString: String?)
 
     protected open fun onVolleyFailure(): Response.ErrorListener? {
@@ -289,7 +293,7 @@ abstract class MKTWebService<T>(
                     return@ErrorListener
                 }
                 if (error.networkResponse != null) {
-                    val bodyRes: String? = tryGetBody(error)
+                    val bodyRes: String = tryGetBody(error)
                     this.onFailure(error.networkResponse.statusCode.toString(), bodyRes, error)
                     return@ErrorListener
                 }
@@ -340,7 +344,7 @@ abstract class MKTWebService<T>(
                 } else {
                     stringFrmt?.append(AMPERSAND)?.append(key)?.append(EQUALS)?.append(value)
                 }
-            } catch (ig: UnsupportedOperationException) {
+            } catch (_: UnsupportedOperationException) {
             }
             i++
         }
@@ -352,11 +356,6 @@ abstract class MKTWebService<T>(
             EMPTY_TEXT -> {
                 selectedTypeRequest(typeRequest)
             }
-
-            null -> {
-                requestStringGet()
-            }
-
             else -> {
                 val jsonObj: JSONObject
                 try {
@@ -382,23 +381,6 @@ abstract class MKTWebService<T>(
             TypeRequest.POST -> requestJsonPost(json)
             TypeRequest.PUT -> requestJsonPut(json)
             TypeRequest.PATCH -> requestJsonPatch(json)
-        }
-    }
-
-    inner class UrlConnectionInputStream(connection: HttpURLConnection) :
-        FilterInputStream(inputStreamFromConnection(connection)) {
-        private var con = connection
-
-        override fun close() {
-            super.close()
-            con.disconnect()
-        }
-    }
-    private fun inputStreamFromConnection(connection: HttpURLConnection): InputStream {
-        return try {
-            connection.inputStream
-        } catch (ioe: IOException) {
-            connection.errorStream
         }
     }
 }

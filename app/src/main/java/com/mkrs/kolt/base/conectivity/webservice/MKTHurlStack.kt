@@ -117,11 +117,13 @@ class MKTHurlStack : BaseHttpStack {
 
     @Throws(IOException::class, AuthFailureError::class)
     private fun setConnectionParamsRequest(connection: HttpURLConnection, req: Request<*>) {
+        connection.doInput = true
         when (req.method) {
             Request.Method.DEPRECATED_GET_OR_POST -> {
                 val postBody = req.body
                 if (postBody.isNotEmpty()) {
                     connection.requestMethod = "POST"
+
                     addBody(connection, req, postBody)
                 }
             }
@@ -133,6 +135,7 @@ class MKTHurlStack : BaseHttpStack {
 
             Request.Method.DELETE -> connection.requestMethod = "DELETE"
             Request.Method.POST -> {
+                connection.doOutput = true
                 connection.requestMethod = "POST"
                 addBodyIfExists(connection, req)
             }
@@ -166,9 +169,9 @@ class MKTHurlStack : BaseHttpStack {
     @Throws(IOException::class)
     private fun addBody(connection: HttpURLConnection, req: Request<*>, postBody: ByteArray?) {
         connection.doOutput = true
-        if (connection.requestProperties.containsKey(CONTENT_TYPE)) {
-            connection.setRequestProperty(CONTENT_TYPE, req.bodyContentType)
-        }
+        // if (connection.requestProperties.containsKey(CONTENT_TYPE)) {
+        connection.setRequestProperty(CONTENT_TYPE, req.bodyContentType)
+        //}
 
         val out = DataOutputStream(connection.outputStream)
         out.write(postBody)

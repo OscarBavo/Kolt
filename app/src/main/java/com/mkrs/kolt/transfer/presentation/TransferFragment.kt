@@ -185,7 +185,7 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
                 transferBinding.tilKeyItem.error = emptyStringEditable()
                 transferBinding.tieTextKeyItem.requestFocus()
             } else if (isLetter(code.toString())) {
-                transferBinding.tilKeyItem.error = "solo ingresar números"
+                transferBinding.tilKeyItem.error = getString(R.string.label_error_digits_item_code)
                 transferBinding.tieTextKeyItem.requestFocus()
             } else if (code.length == CODE_MAX_LENGTH && isDigit(code.toString())) {
                 transferViewModel.getCodePT(code = code.toString())
@@ -194,7 +194,7 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
 
         transferBinding.tieTextUniqueCode.doOnTextChanged { uniqueCode, _, _, _ ->
             if (!uniqueCode.isNullOrEmpty()) {
-                if (uniqueCode.toString().length == CODE_MAX_LENGTH) {
+                if (uniqueCode.toString().length == CODE_UNIQUE_MAX_LENGTH) {
                     hideKeyboard()
                     validateUniqueCode(uniqueCode.toString())
                 } else {
@@ -301,6 +301,7 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
     companion object {
 
         const val CODE_MAX_LENGTH = 7
+        const val CODE_UNIQUE_MAX_LENGTH = 8
         const val VERIFY_TOTAL_OK = 0.0
 
         /**

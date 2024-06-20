@@ -20,7 +20,10 @@ class MKTGeneralConfig {
         const val MESSAGE = "message"
         const val DEFAULT_NET_ERROR = "Lo sentimos tenemos problemas técnicos"
         const val CONTENT_TYPE = "Content-Type"
+        const val ACCEPT = "Accept"
+        const val ACCEPT_JSON = "*/*"
         const val APPLICATION_JSON = "application/json"
+        const val APPLICATION_JSON_CHAR = "application/json; charset=UTF-8"
 
     }
 }

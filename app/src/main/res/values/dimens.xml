@@ -32,5 +32,6 @@
     <integer name="max_user">30</integer>
 
     <integer name="dim_7">7</integer>
+    <integer name="dim_8">8</integer>
     <integer name="dim_21">21</integer>
 </resources>
