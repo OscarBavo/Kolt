@@ -5,6 +5,7 @@ import com.mkrs.kolt.transfer.data.TransferRepositoryImp
 import com.mkrs.kolt.transfer.domain.repositories.TransferRepository
 import com.mkrs.kolt.transfer.domain.usecase.GetCodePTUseCase
 import com.mkrs.kolt.transfer.domain.usecase.PostDetailInventoryUseCase
+import com.mkrs.kolt.transfer.domain.usecase.PostTransferUseCase
 import com.mkrs.kolt.transfer.presentation.TransferViewModelFactory
 import dagger.Module
 import dagger.Provides
@@ -35,7 +36,8 @@ object TransferModule {
         return TransferViewModelFactory(
             application,
             providesGetCodePTUseCase(),
-            providesPostDetailInventoryUseCase()
+            providesPostDetailInventoryUseCase(),
+            providesPostTransferUseCase()
         )
     }
 
@@ -48,5 +50,11 @@ object TransferModule {
     @Provides
     fun providesPostDetailInventoryUseCase() =
         PostDetailInventoryUseCase(providesTransferRepository())
+
+
+    @Singleton
+    @Provides
+    fun providesPostTransferUseCase() =
+        PostTransferUseCase(providesTransferRepository())
 
 }

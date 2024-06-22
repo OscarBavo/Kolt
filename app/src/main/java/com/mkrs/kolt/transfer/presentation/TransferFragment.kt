@@ -154,13 +154,15 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
             tvBatchRollData.text = detail.mnfSerial
             tvPiecesData.text = detail.quantity
             tvBatchDetailData.text = detail.suppCatNum
-
             tieTextDoneProduct.enable()
             tieTextReject.enable()
             tieTextDifferent.enable()
             tieTextScrap.enable()
 
             tieTextDoneProduct.requestFocus()
+            tieTextDoneProduct.text = detail.quantity.toEditable()
+            tieTextDoneProduct.selectAll()
+
 
         }
 

@@ -153,7 +153,7 @@ class BottomSheetTransferConfirmation :
         }
 
         binding.btnSave.setOnClickListener {
-            transferViewModel.replaceDataPrinter()
+            transferViewModel.createTransfer()
         }
     }
 

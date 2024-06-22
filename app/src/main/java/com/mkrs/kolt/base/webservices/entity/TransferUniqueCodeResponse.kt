@@ -1,5 +1,7 @@
 package com.mkrs.kolt.base.webservices.entity
 
+import com.mkrs.kolt.base.webservices.common.ErrorResponse
+
 /****
  * Project: Kolt
  * Dev: Oscar Balderas Vazquez
@@ -13,14 +15,5 @@ data class TransferUniqueCodeResponse(
     val MnfSerial: String = "",
     val SuppCatNum: String = "",
     val PedidoProg: String = "",
-    val Response:ErrorResponse
-)
-
-data class ErrorResponse(
-    val DocNum: String = "",
-    val ErrorCode: String = "",
-    val EsError: Boolean = false,
-    val Message: String = "",
-    val ObjType: Int = 0,
-    val Result: String = ""
+    val Response: ErrorResponse
 )

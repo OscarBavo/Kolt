@@ -1,11 +1,9 @@
 package com.mkrs.kolt.transfer.webservices.models
 
-import com.mkrs.kolt.base.webservices.common.ErrorResponse
-
 /****
  * Project: Kolt
  * Dev: Oscar Balderas Vazquez
  * From: com.mkrs.kolt.transfer.webservices.models
- * Date: 20 / 06 / 2024
+ * Date: 18 / 06 / 2024
  *****/
-data class TransferResponse( val transfer:ErrorResponse)
+data class TransferUniqueCodeResponse(val uniqueCode:String)

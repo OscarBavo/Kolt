@@ -6,7 +6,7 @@ import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig.Companion.APPL
 import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig.Companion.CONTENT_TYPE
 import com.mkrs.kolt.base.conectivity.webservice.MKTWebService
 import com.mkrs.kolt.base.webservices.common.ErrorResponse
-import com.mkrs.kolt.transfer.webservices.models.TransferResponse
+import com.mkrs.kolt.transfer.webservices.models.TransferUniqueCodeResponse
 import java.lang.Exception
 
 /****
@@ -17,7 +17,7 @@ import java.lang.Exception
  *****/
 class MKTTransferGetCodeService(
     val clavePM: String
-) : MKTWebService<TransferResponse>(GET_CODE, CODE) {
+) : MKTWebService<TransferUniqueCodeResponse>(GET_CODE, CODE) {
     companion object {
         const val TAG = "MKTTransferGetCodeService"
         const val CODE = "0"
@@ -40,7 +40,7 @@ class MKTTransferGetCodeService(
             this.response.ErrorCode = response.ErrorCode
             this.response.Message = response.Message
             if (response.ErrorCode == statusCode) {
-                this.response.Result = TransferResponse(response.Result)
+                this.response.Result = TransferUniqueCodeResponse(response.Result)
             }
         } catch (ex: Exception) {
             val response = Gson().fromJson(responseString, ErrorResponse::class.java)

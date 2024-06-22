@@ -16,10 +16,11 @@ class APIKolt {
         }
     }
 
-    class Transfer{
-        companion object{
-            val GET_CODE:String="$BASE_URL_KOLT/GETCodigoPT"
-            val POST_DETAIL:String="$BASE_URL_KOLT/PostDetallesExistencia"
+    class Transfer {
+        companion object {
+            val GET_CODE: String = "$BASE_URL_KOLT/GETCodigoPT"
+            val POST_DETAIL: String = "$BASE_URL_KOLT/PostDetallesExistencia"
+            val POST_TRANSFER: String = "$BASE_URL_KOLT/api/Transferencia"
         }
     }
 }

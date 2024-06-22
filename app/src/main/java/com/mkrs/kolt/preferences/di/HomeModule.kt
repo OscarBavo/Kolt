@@ -10,7 +10,6 @@ import com.mkrs.kolt.utils.MKTSecureSharedPreference
  * Date: 08 / 05 / 2024
  *****/
 object HomeModule {
-    private const val HOME_PREFERENCE_NAME = "Impresoras"
 
     @Volatile
     private var homePreferences: MKTSecureSharedPreference? = null

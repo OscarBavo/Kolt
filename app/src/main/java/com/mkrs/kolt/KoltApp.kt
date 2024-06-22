@@ -1,7 +1,6 @@
-package com.mkrs.kolt.presentation.di
+package com.mkrs.kolt
 
 import android.app.Application
-import com.mkrs.kolt.R
 import com.mkrs.kolt.base.conectivity.webservice.APIKolt
 import com.mkrs.kolt.base.conectivity.webservice.MKTRequestQueue
 import dagger.hilt.android.HiltAndroidApp

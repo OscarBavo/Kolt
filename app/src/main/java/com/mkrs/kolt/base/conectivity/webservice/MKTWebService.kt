@@ -91,7 +91,13 @@ abstract class MKTWebService<T>(
 
     private fun requestJsonPost(jsonRequest: JSONObject) {
         val jsonObjRequest: JsonObjectRequest = object :
-            JsonObjectRequest(Method.POST, serviceUrl, jsonRequest, onVolleySuccess(), onVolleyFailure()) {
+            JsonObjectRequest(
+                Method.POST,
+                serviceUrl,
+                jsonRequest,
+                onVolleySuccess(),
+                onVolleyFailure()
+            ) {
             override fun getBodyContentType() = APPLICATION_JSON
             override fun getHeaders() = getRequestHeader()
             override fun getParams() = getRequestParams()
@@ -126,7 +132,13 @@ abstract class MKTWebService<T>(
 
     private fun requestJsonPut(jsonRequest: JSONObject) {
         val jsonObjRequest: JsonObjectRequest = object :
-            JsonObjectRequest(Method.PUT, serviceUrl, jsonRequest, onVolleySuccess(), onVolleyFailure()) {
+            JsonObjectRequest(
+                Method.PUT,
+                serviceUrl,
+                jsonRequest,
+                onVolleySuccess(),
+                onVolleyFailure()
+            ) {
             override fun getBodyContentType() = APPLICATION_JSON
             override fun getHeaders() = getRequestHeader()
             override fun getParams() = getRequestParams()
@@ -277,7 +289,7 @@ abstract class MKTWebService<T>(
         }
     }
 
-    private fun <T> onVolleySuccessArray():Response.Listener<JsonArray>{
+    private fun <T> onVolleySuccessArray(): Response.Listener<JsonArray> {
         return Response.Listener { response ->
             onSuccess(this.codeSuccess, response.toString())
         }
@@ -298,7 +310,7 @@ abstract class MKTWebService<T>(
                     return@ErrorListener
                 }
             } catch (ig: Exception) {
-            //    this.onFailure(CODE_ERROR_COMMON.toString(), null, ig.cause)
+                //    this.onFailure(CODE_ERROR_COMMON.toString(), null, ig.cause)
             }
             this.onFailure(CODE_ERROR_COMMON.toString(), null, error)
         }
@@ -356,6 +368,7 @@ abstract class MKTWebService<T>(
             EMPTY_TEXT -> {
                 selectedTypeRequest(typeRequest)
             }
+
             else -> {
                 val jsonObj: JSONObject
                 try {

@@ -2,12 +2,16 @@ package com.mkrs.kolt.transfer.data
 
 import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig
 import com.mkrs.kolt.base.webservices.MKTGenericResponse
+import com.mkrs.kolt.base.webservices.common.ErrorResponse
 import com.mkrs.kolt.base.webservices.entity.TransferInventoryRequest
+import com.mkrs.kolt.base.webservices.entity.TransferRequest
 import com.mkrs.kolt.base.webservices.entity.TransferUniqueCodeResponse
 import com.mkrs.kolt.base.webservices.transfer.MKTTransferGetCodeService
-import com.mkrs.kolt.base.webservices.transfer.MKTTransferPOSTUniqueCodeService
+import com.mkrs.kolt.base.webservices.transfer.MKTTransferPostUniqueCodeService
+import com.mkrs.kolt.base.webservices.transfer.MKTTransferPostTransferService
 import com.mkrs.kolt.transfer.domain.repositories.TransferRepository
 import com.mkrs.kolt.transfer.domain.models.FinalProductModel
+import com.mkrs.kolt.transfer.webservices.models.TransferResponse
 import com.mkrs.kolt.utils.convertToSuspend
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -19,19 +23,20 @@ import kotlinx.coroutines.withContext
  * Date: 01 / 06 / 2024
  *****/
 object TransferRepositoryImp : TransferRepository {
+    const val ERROR_ZERO = "0"
     override suspend fun getCodePT(claveMaterial: String): MKTGenericResponse<String> =
         withContext(Dispatchers.IO) {
             val service = MKTTransferGetCodeService(claveMaterial)
             val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
-            return@withContext if (response.ErrorCode == "0") {
+            return@withContext if (response.ErrorCode == ERROR_ZERO) {
                 response.Result?.uniqueCode?.let { code ->
                     if (code.isEmpty()) {
-                        MKTGenericResponse.Success("0")
+                        MKTGenericResponse.Success(ERROR_ZERO)
                     } else {
                         MKTGenericResponse.Success(code)
                     }
                 } ?: run {
-                    MKTGenericResponse.Success("0")
+                    MKTGenericResponse.Success(ERROR_ZERO)
                 }
             } else {
                 MKTGenericResponse.Failed(
@@ -45,14 +50,32 @@ object TransferRepositoryImp : TransferRepository {
         request: TransferInventoryRequest
     ): MKTGenericResponse<FinalProductModel> =
         withContext(Dispatchers.IO) {
-            val service = MKTTransferPOSTUniqueCodeService(request)
+            val service = MKTTransferPostUniqueCodeService(request)
             val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
-            return@withContext if (response.ErrorCode == "0") {
+            return@withContext if (response.ErrorCode == ERROR_ZERO) {
                 MKTGenericResponse.Success(createInventoryModel(response.Result))
             } else {
-                MKTGenericResponse.Failed("Error")
+                MKTGenericResponse.Failed(response.ErrorCode)
             }
         }
+
+    override suspend fun postTransfer(request: TransferRequest): MKTGenericResponse<ErrorResponse> =
+        withContext(Dispatchers.IO) {
+            val service = MKTTransferPostTransferService(request)
+            val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
+            return@withContext if (response.ErrorCode == ERROR_ZERO) {
+                MKTGenericResponse.Success(createResponse(response.Result))
+            } else {
+                MKTGenericResponse.Failed(response.ErrorCode)
+            }
+        }
+
+    private fun createResponse(result: TransferResponse?): ErrorResponse {
+        return result?.transfer ?: kotlin.run {
+            ErrorResponse()
+        }
+    }
+
 
     private fun createInventoryModel(result: TransferUniqueCodeResponse?): FinalProductModel {
         return result?.let {

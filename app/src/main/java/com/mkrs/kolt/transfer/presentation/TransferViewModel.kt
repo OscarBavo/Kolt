@@ -6,16 +6,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mkrs.kolt.R
+import com.mkrs.kolt.base.webservices.entity.LineasED
 import com.mkrs.kolt.base.webservices.entity.TransferInventoryRequest
+import com.mkrs.kolt.base.webservices.entity.TransferRequest
 import com.mkrs.kolt.transfer.domain.models.FinalProductModel
 import com.mkrs.kolt.transfer.domain.models.TransferUIState
 import com.mkrs.kolt.transfer.domain.usecase.DetailInventoryResult
 import com.mkrs.kolt.transfer.domain.usecase.GetCodePTUseCase
 import com.mkrs.kolt.transfer.domain.usecase.GetCodePTUseCase.CodePTResult
 import com.mkrs.kolt.transfer.domain.usecase.PostDetailInventoryUseCase
+import com.mkrs.kolt.transfer.domain.usecase.PostTransferUseCase
+import com.mkrs.kolt.transfer.domain.usecase.TransferResult
 import com.mkrs.kolt.transfer.presentation.TransferFragment.Companion.VERIFY_TOTAL_OK
-import com.mkrs.kolt.transfer.webservices.models.LineasED
-import com.mkrs.kolt.transfer.webservices.models.TransferenciaED
 import com.mkrs.kolt.utils.emptyString
 import kotlinx.coroutines.launch
 
@@ -28,7 +30,8 @@ import kotlinx.coroutines.launch
 class TransferViewModel(
     private val context: Application,
     private val getCodePTUseCase: GetCodePTUseCase,
-    private val postDetailInventoryUseCase: PostDetailInventoryUseCase
+    private val postDetailInventoryUseCase: PostDetailInventoryUseCase,
+    private val postTransferUseCase: PostTransferUseCase
 ) : ViewModel() {
 
     private val mutableTransferUIState = MutableLiveData<TransferUIState>()
@@ -141,7 +144,7 @@ class TransferViewModel(
     fun getDetailInventory(codigoUnico: String) {
         viewModelScope.launch {
             mutableTransferUIState.postValue(TransferUIState.Loading)
-            val request=TransferInventoryRequest(itemCode = code, distNumber = codigoUnico)
+            val request = TransferInventoryRequest(itemCode = code, distNumber = codigoUnico)
             when (val response = postDetailInventoryUseCase.execute(request)) {
                 is DetailInventoryResult.Success -> {
                     if (response.finalProductModel.quantity == context.getString(R.string.quantity_detail)) {
@@ -156,6 +159,25 @@ class TransferViewModel(
 
                 is DetailInventoryResult.Fail -> {
                     mutableTransferUIState.postValue(TransferUIState.Error(response.errorMsg))
+                }
+            }
+        }
+    }
+
+    fun createTransfer() {
+        viewModelScope.launch {
+            mutableTransferUIState.postValue(TransferUIState.Loading)
+            when (val response = postTransferUseCase.execute(createPost())) {
+                is TransferResult.Success -> {
+                    if (response.transfer.DocNum.toInt() > 0) {
+                        replaceDataPrinter()
+                    } else {
+                        mutableTransferUIState.postValue(TransferUIState.Error(response.transfer.Message))
+                    }
+                }
+
+                is TransferResult.Fail -> {
+                    mutableTransferUIState.postValue(TransferUIState.Error(response.message))
                 }
             }
         }
@@ -233,7 +255,6 @@ class TransferViewModel(
     fun replaceDataPrinter() {
         viewModelScope.launch {
             mutableTransferUIState.postValue(TransferUIState.Loading)
-            createPost()
             val labels = mutableListOf<String>()
             var initLabel = 0
             val dataLabel: Array<String> = context.resources.getStringArray(R.array.data_replace)
@@ -260,7 +281,7 @@ class TransferViewModel(
         }
     }
 
-    private fun createPost() {
+    private fun createPost(): TransferRequest {
         val lineas: MutableList<LineasED> = mutableListOf()
         val whsCode =
             if (finalProductModel.code.startsWith(context.getString(R.string.is_pt_03))) context.getString(
@@ -308,7 +329,7 @@ class TransferViewModel(
             )
             lineas.add(transferDiff)
         }
-        val transferencia = TransferenciaED("", lineas)
+        return TransferRequest("", lineas)
     }
 
     enum class TypeQuantity {
