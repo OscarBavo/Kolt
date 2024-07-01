@@ -1,3 +1,5 @@
+
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -30,6 +32,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable true
+            signingConfig signingConfigs.debug
         }
     }
     compileOptions {
@@ -50,6 +53,7 @@ android {
 
 dependencies {
 
+    implementation project(path: ':app')
     def core_ktx="1.8.0"
     def appcompat="1.6.1"
     def material="1.8.0"

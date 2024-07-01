@@ -2,6 +2,7 @@
     <string name="app_name">Kolt</string>
     <string name="generic_yes">Si</string>
     <string name="generic_no">No</string>
+    <string name="generic_ok">OK</string>
     <string name="error_generic">Error al consultar información</string>
     <string name="update_info_generic">Información actualizada</string>
     <string name="load_logo_progress">Cargando información</string>
@@ -85,7 +86,10 @@
     <string name="success_printer">Impresion correcta</string>
     <!-- Transferencia -->
     <string name="title_exit_transfer">¿Deseas salir de Transferencia?</string>
+    <string name="title_add_another_transfer">¿Desea agregar otra transferencia?</string>
     <string name="title_fragment_transfer">Transferencia</string>
+    <string name="title_transfer_complete">Transferencia Completada</string>
+    <string name="title_transfer_not_complete">Ha sucedido un problema en la transferencia favor de revisar</string>
     <string name="title_bottom_sheet_transfer_done_product">Producto Terminado</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btn_title_in">Entrada</string>

@@ -1,6 +1,8 @@
 package com.mkrs.kolt.transfer.presentation
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
@@ -25,7 +27,8 @@ import com.mkrs.kolt.utils.toEditable
  * Use the [TransferFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
+class TransferFragment : MKTFragment(R.layout.fragment_transfer),
+    PrintingBottomSheetDialogListener {
 
     private val transferBinding by viewBinding(FragmentTransferBinding::bind)
     private val vmFactory by lazy {
@@ -37,8 +40,7 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
     private fun showDetailPT() {
         transferViewModel.setNoState()
         activity?.let {
-            BottomSheetTransferConfirmation.newInstance()
-                .show(it.supportFragmentManager, BottomSheetTransferConfirmation.TAG)
+            BottomSheetTransferConfirmation.newInstance(it.supportFragmentManager, this)
         }
 
     }
@@ -183,38 +185,26 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
 
     private fun initListener() {
         transferBinding.tieTextKeyItem.doOnTextChanged { code, _, _, _ ->
-            if (code.isNullOrEmpty()) {
-                transferBinding.tilKeyItem.error = emptyStringEditable()
-                transferBinding.tieTextKeyItem.requestFocus()
-            } else if (isLetter(code.toString())) {
-                transferBinding.tilKeyItem.error = getString(R.string.label_error_digits_item_code)
-                transferBinding.tieTextKeyItem.requestFocus()
-            } else if (code.length == CODE_MAX_LENGTH && isDigit(code.toString())) {
-                transferViewModel.getCodePT(code = code.toString())
+            validateKeyItem(code.toString())
+        }
+
+        transferBinding.tieTextKeyItem.setOnEditorActionListener { textKey, _, keyEvent ->
+            if (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                validateKeyItem(textKey.toString())
             }
+            return@setOnEditorActionListener false
         }
 
         transferBinding.tieTextUniqueCode.doOnTextChanged { uniqueCode, _, _, _ ->
-            if (!uniqueCode.isNullOrEmpty()) {
-                if (uniqueCode.toString().length == CODE_UNIQUE_MAX_LENGTH) {
-                    hideKeyboard()
-                    validateUniqueCode(uniqueCode.toString())
-                } else {
-                    if (!isCodeFill(uniqueCode.toString())) {
-                        hideKeyboard()
-                        transferBinding.tilUniqueCode.error =
-                            getString(R.string.unique_code_error_init)
-                        showAlert(
-                            getString(R.string.unique_code_error_init),
-                            transferBinding.tieTextUniqueCode
-                        )
-                    } else {
-                        transferBinding.tilUniqueCode.error = null
-                    }
-                }
-            } else {
-                transferBinding.tilUniqueCode.error = emptyStringEditable()
+            validateTextUniqueCode(uniqueCode = uniqueCode.toString())
+        }
+
+        transferBinding.tieTextUniqueCode.setOnEditorActionListener { uniqueCode, _, keyEvent ->
+            if (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                validateTextUniqueCode(uniqueCode.toString())
             }
+
+            return@setOnEditorActionListener false
         }
 
         transferBinding.tieTextDoneProduct.doOnTextChanged { qaDone, _, _, _ ->
@@ -224,6 +214,16 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
                 transferViewModel.saveQuantityDone("0")
             }
         }
+        transferBinding.tieTextDoneProduct.setOnEditorActionListener { doneQuantity, _, keyEvent ->
+            if (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (!doneQuantity.text.isNullOrEmpty()) {
+                    transferViewModel.saveQuantityDone(doneQuantity.text.toString())
+                } else {
+                    transferViewModel.saveQuantityDone("0")
+                }
+            }
+            return@setOnEditorActionListener false
+        }
 
         transferBinding.tieTextReject.doOnTextChanged { qaRJ, _, _, _ ->
             if (!qaRJ.isNullOrEmpty()) {
@@ -232,6 +232,18 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
                 transferViewModel.saveQuantityReject("0")
             }
         }
+
+        transferBinding.tieTextReject.setOnEditorActionListener { qaRJ, _, keyEvent ->
+            if (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (!qaRJ.text.isNullOrEmpty()) {
+                    transferViewModel.saveQuantityReject(qaRJ.text.toString())
+                } else {
+                    transferViewModel.saveQuantityReject("0")
+                }
+            }
+            return@setOnEditorActionListener false
+        }
+
         transferBinding.tieTextDifferent.doOnTextChanged { qaDiff, _, _, _ ->
             if (!qaDiff.isNullOrEmpty()) {
                 transferViewModel.saveQuantityDiff(qaDiff.toString())
@@ -240,12 +252,34 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
             }
         }
 
+        transferBinding.tieTextDifferent.setOnEditorActionListener { qaDiff, _, keyEvent ->
+            if (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (!qaDiff.text.isNullOrEmpty()) {
+                    transferViewModel.saveQuantityDiff(qaDiff.text.toString())
+                } else {
+                    transferViewModel.saveQuantityDiff("0")
+                }
+            }
+            return@setOnEditorActionListener false
+        }
+
         transferBinding.tieTextScrap.doOnTextChanged { qaScrap, _, _, _ ->
             if (!qaScrap.isNullOrEmpty()) {
                 transferViewModel.saveQuantitySCRAP(qaScrap.toString())
             } else {
                 transferViewModel.saveQuantitySCRAP("0")
             }
+        }
+
+        transferBinding.tieTextScrap.setOnEditorActionListener { qaScrap, _, keyEvent ->
+            if (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (!qaScrap.text.isNullOrEmpty()) {
+                    transferViewModel.saveQuantitySCRAP(qaScrap.text.toString())
+                } else {
+                    transferViewModel.saveQuantitySCRAP("0")
+                }
+            }
+            return@setOnEditorActionListener false
         }
 
         transferBinding.btnClean.setOnClickListener {
@@ -257,6 +291,41 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
             showDetailPT()
         }
 
+    }
+
+    private fun validateTextUniqueCode(uniqueCode: String) {
+        if (!uniqueCode.isEmpty()) {
+            if (uniqueCode.length == CODE_UNIQUE_MAX_LENGTH) {
+                hideKeyboard()
+                validateUniqueCode(uniqueCode)
+            } else {
+                if (!isCodeFill(uniqueCode)) {
+                    hideKeyboard()
+                    transferBinding.tilUniqueCode.error =
+                        getString(R.string.unique_code_error_init)
+                    showAlert(
+                        getString(R.string.unique_code_error_init),
+                        transferBinding.tieTextUniqueCode
+                    )
+                } else {
+                    transferBinding.tilUniqueCode.error = null
+                }
+            }
+        } else {
+            transferBinding.tilUniqueCode.error = emptyStringEditable()
+        }
+    }
+
+    private fun validateKeyItem(code: String) {
+        if (code.isEmpty()) {
+            transferBinding.tilKeyItem.error = emptyStringEditable()
+            transferBinding.tieTextKeyItem.requestFocus()
+        } else if (isLetter(code)) {
+            transferBinding.tilKeyItem.error = getString(R.string.label_error_digits_item_code)
+            transferBinding.tieTextKeyItem.requestFocus()
+        } else if (code.length == CODE_MAX_LENGTH && isDigit(code)) {
+            transferViewModel.getCodePT(code = code)
+        }
     }
 
     private fun resetView() {
@@ -318,6 +387,32 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer) {
             TransferFragment().apply {
 
             }
+    }
+
+    override fun onPrintingSuccess(result: String) {
+        if (result == getString(R.string.generic_ok)) {
+            activity?.showAlertComplete(
+                getString(R.string.title_transfer_complete),
+                getString(R.string.title_add_another_transfer),
+                getString(R.string.generic_yes),
+                true,
+                { _, _ ->
+                    resetView()
+                },
+                getString(R.string.generic_no),
+                true,
+                { _, _ ->
+                    startActivity(Intent(requireContext(), TransferActivity::class.java))
+                    activity?.finishAffinity()
+
+                })
+        }else{
+            showAlert(getString(R.string.title_transfer_complete), transferBinding.btnNext)
+        }
+    }
+
+    override fun onDismissWithOutAnswer() {
+
     }
 
 

@@ -14,6 +14,10 @@ class APIKolt {
         fun init(serviceURL: String) {
             BASE_URL_KOLT = serviceURL
         }
+
+        fun update(serviceURL: String) {
+            BASE_URL_KOLT = serviceURL
+        }
     }
 
     class Transfer {

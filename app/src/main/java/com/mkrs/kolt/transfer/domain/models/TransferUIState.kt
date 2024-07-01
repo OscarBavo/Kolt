@@ -27,4 +27,6 @@ sealed class TransferUIState {
     data class  IsEnableTransfer(val isReadyToPrinter:Boolean):TransferUIState()
     data class  Printing(val labels:MutableList<String>):TransferUIState()
 
+    data class TransferDone(val date:String):TransferUIState()
+
 }

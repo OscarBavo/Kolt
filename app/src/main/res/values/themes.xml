@@ -1,4 +1,4 @@
-<resources >
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.Kolt" parent="Theme.Material3.DayNight">
         <!-- Customize your light theme here. -->
@@ -21,7 +21,7 @@
         <item name="android:background">@android:color/white</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">@dimen/dim_size_16</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:fontFamily">@font/roboto</item>
     </style>
 
@@ -45,6 +45,7 @@
         <item name="singleLine">true</item>
         <item name="android:imeOptions">actionGo|actionNext</item>
     </style>
+
     <style name="input_text.number_next">
         <item name="android:imeOptions">actionNext</item>
         <item name="singleLine">true</item>
@@ -101,7 +102,7 @@
         <item name="android:textAlignment">textStart</item>
         <item name="android:textSize">@dimen/dim_text_14</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:text"> </item>
+        <item name="android:text"></item>
     </style>
 
     <style name="input_text.version">
@@ -127,6 +128,7 @@
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:textAllCaps">false</item>
     </style>
+
     <style name="button_text">
         <item name="android:background">@drawable/btn_rounded_enable</item>
         <item name="android:textAlignment">center</item>
@@ -144,10 +146,12 @@
 
     <style name="Theme.Kolt" parent="Base.Theme.Kolt" />
 
-    <style name="Theme.Kolt.ActionBar">
-        <item name="colorControlNormal">@color/white</item>
+    <style name="Theme.Kolt.ActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="searchViewStyle">@style/Widget.AppCompat.SearchView.ActionBar</item>
-        <item name="titleTextColor">@color/black</item>
+        <item name="colorControlNormal">@color/text_color</item>
+        <item name="android:textSize">@dimen/dim_text_10</item>
+        <item name="titleTextColor">@color/text_color</item>
+        <item name="navigationIconTint">@color/text_color</item>
     </style>
 
 </resources>

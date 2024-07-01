@@ -2,6 +2,7 @@ package com.mkrs.kolt.transfer.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.addCallback
 import com.mkrs.kolt.MainActivity
 import com.mkrs.kolt.R
@@ -24,6 +25,13 @@ class TransferActivity : MKTActivity() {
 
         transferBinding.tbTransfer.title = getString(R.string.btn_title_transfer)
         setSupportActionBar(transferBinding.tbTransfer)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId > 0) {
+            messageOut()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 

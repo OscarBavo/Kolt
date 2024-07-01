@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.mkrs.kolt.R
@@ -49,6 +50,8 @@ class BottomSheetTransferConfirmation :
         )
     }
 
+    private lateinit var bottomSheetListener: PrintingBottomSheetDialogListener
+
     private val uIStateObserver = Observer<PrinterUIState> { state ->
         when (state) {
             is PrinterUIState.Loading -> activity?.showDialog()
@@ -58,7 +61,10 @@ class BottomSheetTransferConfirmation :
 
             is PrinterUIState.Printed -> {
                 activity?.dismissDialog()
+                this.dismiss()
                 showAlert(getString(R.string.success_printer), binding.btnSave)
+                transferViewModel.setNoState()
+                bottomSheetListener.onPrintingSuccess(getString(R.string.generic_ok))
             }
 
             is PrinterUIState.Error -> {
@@ -108,14 +114,27 @@ class BottomSheetTransferConfirmation :
             }
 
             is TransferUIState.IsEnableTransfer -> {
+                activity?.dismissDialog()
                 binding.btnSave.enableOrDisable { uiState.isReadyToPrinter }
             }
 
             is TransferUIState.Printing -> {
+                activity?.dismissDialog()
                 printingLabel(uiState.labels)
             }
 
+            is TransferUIState.TransferDone -> {
+                activity?.dismissDialog()
+                transferViewModel.replaceDataPrinter(uiState.date)
+            }
+
+            is TransferUIState.Error -> {
+                activity?.dismissDialog()
+                transferViewModel.setNoState()
+            }
+
             else -> {
+                activity?.dismissDialog()
                 transferViewModel.setNoState()
             }
         }
@@ -215,9 +234,20 @@ class BottomSheetTransferConfirmation :
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance() =
+        fun newInstance(
+            fragmentManager: FragmentManager,
+            bottomSheetDialogListener: PrintingBottomSheetDialogListener
+        ) {
+            val dialog = BottomSheetTransferConfirmation()
+            dialog.setListener(bottomSheetDialogListener)
+            dialog.show(fragmentManager, TAG)
             BottomSheetTransferConfirmation().apply {
 
             }
+        }
+    }
+
+    private fun setListener(listener: PrintingBottomSheetDialogListener) {
+        bottomSheetListener = listener
     }
 }

@@ -2,7 +2,7 @@ package com.mkrs.kolt
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.inputmethod.EditorInfo
+import android.view.KeyEvent
 import android.widget.EditText
 import androidx.activity.addCallback
 import androidx.activity.viewModels
@@ -28,7 +28,7 @@ class MainActivity : MKTActivity() {
 
     private val preferencesViewModel by viewModels<PreferencesViewModel> {
         PreferenceModule.providePreferenceVMFactory(
-            HomeModule.provideHomePReferences(this, "Impresoras")
+            HomeModule.provideHomePReferences(this, getString(R.string.config_printer))
         )
     }
 
@@ -50,7 +50,7 @@ class MainActivity : MKTActivity() {
             toSection(item.itemId, false)
             return@setOnItemSelectedListener true
         }
-        binding.tbMain.title = "Dashboard"
+        binding.tbMain.title = getString(R.string.title_dashboard)
     }
 
     fun mainOnBackPress() {
@@ -114,9 +114,19 @@ class MainActivity : MKTActivity() {
             noListener = { _, _ -> }, hasPass = true
         )
         val positiveButton = this.alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        val pass = this.alertDialog.findViewById<EditText>(R.id.tie_pass_config)
+        val tilPass = this.alertDialog.findViewById<TextInputLayout>(R.id.til_pass_config)
+        pass?.requestFocus()
+        pass?.doOnTextChanged { _, _, _, count -> if (count > 0) tilPass?.error = null }
+        pass?.setOnEditorActionListener { tvPass, _, keyEvent ->
+            if (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (!nextFlow(passOpen, tvPass.text.toString(), typeValidate)) {
+                    tilPass?.error = resources.getString(R.string.title_error_password)
+                }
+            }
+            return@setOnEditorActionListener true
+        }
         positiveButton.setOnClickListener {
-            val pass = this.alertDialog.findViewById<EditText>(R.id.tie_pass_config)
-            val tilPass = this.alertDialog.findViewById<TextInputLayout>(R.id.til_pass_config)
             if (pass?.text.isNullOrEmpty()) {
                 tilPass?.error = resources.getString(R.string.title_generic_input_data_required)
             } else {
@@ -124,15 +134,6 @@ class MainActivity : MKTActivity() {
                     tilPass?.error = resources.getString(R.string.title_error_password)
                 }
 
-            }
-            pass?.doOnTextChanged { _, _, _, count -> if (count > 0) tilPass?.error = null }
-            pass?.setOnEditorActionListener { tvPass, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    if (!nextFlow(passOpen, tvPass.text.toString(), typeValidate)) {
-                        tilPass?.error = resources.getString(R.string.title_error_password)
-                    }
-                }
-                return@setOnEditorActionListener true
             }
         }
     }

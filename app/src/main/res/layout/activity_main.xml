@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+        app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineSmall"
         />
 
 <androidx.fragment.app.FragmentContainerView

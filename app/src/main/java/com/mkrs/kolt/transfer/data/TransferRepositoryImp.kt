@@ -23,50 +23,87 @@ import kotlinx.coroutines.withContext
  * Date: 01 / 06 / 2024
  *****/
 object TransferRepositoryImp : TransferRepository {
-    const val ERROR_ZERO = "0"
-    override suspend fun getCodePT(claveMaterial: String): MKTGenericResponse<String> =
+    private const val ERROR_ZERO = "0"
+    override suspend fun getCodePT(claveMaterial: String, isDummy:Boolean): MKTGenericResponse<String> =
         withContext(Dispatchers.IO) {
-            val service = MKTTransferGetCodeService(claveMaterial)
-            val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
-            return@withContext if (response.ErrorCode == ERROR_ZERO) {
-                response.Result?.uniqueCode?.let { code ->
-                    if (code.isEmpty()) {
-                        MKTGenericResponse.Success(ERROR_ZERO)
-                    } else {
-                        MKTGenericResponse.Success(code)
-                    }
-                } ?: run {
-                    MKTGenericResponse.Success(ERROR_ZERO)
-                }
+            return@withContext if (isDummy) {
+                MKTGenericResponse.Success("7135030")
             } else {
-                MKTGenericResponse.Failed(
-                    response.Message ?: ""
-                )
+                val service = MKTTransferGetCodeService(claveMaterial)
+                val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
+                return@withContext if (response.ErrorCode == ERROR_ZERO) {
+                    response.Result?.uniqueCode?.let { code ->
+                        if (code.isEmpty()) {
+                            MKTGenericResponse.Success(ERROR_ZERO)
+                        } else {
+                            MKTGenericResponse.Success(code)
+                        }
+                    } ?: run {
+                        MKTGenericResponse.Success(ERROR_ZERO)
+                    }
+                } else {
+                    MKTGenericResponse.Failed(
+                        response.Message ?: ""
+                    )
+                }
             }
         }
 
 
     override suspend fun postDetailInventory(
-        request: TransferInventoryRequest
+        request: TransferInventoryRequest,
+        isDummy: Boolean
     ): MKTGenericResponse<FinalProductModel> =
         withContext(Dispatchers.IO) {
-            val service = MKTTransferPostUniqueCodeService(request)
-            val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
-            return@withContext if (response.ErrorCode == ERROR_ZERO) {
-                MKTGenericResponse.Success(createInventoryModel(response.Result))
+            return@withContext if (isDummy) {
+                MKTGenericResponse.Success(
+                    createInventoryModel(
+                        TransferUniqueCodeResponse(
+                            "7135030", "Oscar", "50", "AD403769", "AD403769", "AD430",
+                            ErrorResponse("", "", false, "OK", 0, "OK")
+                        )
+                    )
+                )
             } else {
-                MKTGenericResponse.Failed(response.ErrorCode)
+                val service = MKTTransferPostUniqueCodeService(request)
+                val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
+                return@withContext if (response.ErrorCode == ERROR_ZERO) {
+                    MKTGenericResponse.Success(createInventoryModel(response.Result))
+                } else {
+                    MKTGenericResponse.Failed(response.ErrorCode)
+                }
             }
         }
 
-    override suspend fun postTransfer(request: TransferRequest): MKTGenericResponse<ErrorResponse> =
+    override suspend fun postTransfer(
+        request: TransferRequest,
+        isDummy: Boolean
+    ): MKTGenericResponse<ErrorResponse> =
         withContext(Dispatchers.IO) {
-            val service = MKTTransferPostTransferService(request)
-            val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
-            return@withContext if (response.ErrorCode == ERROR_ZERO) {
-                MKTGenericResponse.Success(createResponse(response.Result))
+            return@withContext if (isDummy) {
+                MKTGenericResponse.Success(
+                    createResponse(
+                        TransferResponse(
+                            ErrorResponse(
+                                "27/06/2024 19:09",
+                                "0",
+                                false,
+                                "OK",
+                                4,
+                                "7133238"
+                            )
+                        )
+                    )
+                )
             } else {
-                MKTGenericResponse.Failed(response.ErrorCode)
+
+                val service = MKTTransferPostTransferService(request)
+                val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
+                return@withContext if (response.ErrorCode == ERROR_ZERO) {
+                    MKTGenericResponse.Success(createResponse(response.Result))
+                } else {
+                    MKTGenericResponse.Failed(response.ErrorCode)
+                }
             }
         }
 

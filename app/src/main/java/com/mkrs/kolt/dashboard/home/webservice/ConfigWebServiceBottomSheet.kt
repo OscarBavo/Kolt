@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.mkrs.kolt.R
 import com.mkrs.kolt.base.MKTBottomSheetDialogFragment
+import com.mkrs.kolt.base.conectivity.webservice.APIKolt
 import com.mkrs.kolt.databinding.FragmentBottomSheetConfigWebServiceBinding
 import com.mkrs.kolt.preferences.di.HomeModule
 import com.mkrs.kolt.preferences.di.PreferenceModule
@@ -82,6 +83,7 @@ class ConfigWebServiceBottomSheet :
                 getString(R.string.key_pass_web_service),
                 binding.tieTextIpWebService.text.toString()
             )
+            APIKolt.update(binding.tieTextIpWebService.text.toString())
         }
         showMessageDone(binding.btnSave)
     }

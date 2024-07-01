@@ -18,6 +18,5 @@ data class FinalProductModel(
     var piecesPT: String = "",
     var notePT: String = "",
     var codeUnique: String = "",
-    var date: String = "",
     var code: String = ""
 )

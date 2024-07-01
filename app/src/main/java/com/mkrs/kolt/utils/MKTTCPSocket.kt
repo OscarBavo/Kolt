@@ -30,7 +30,7 @@ class MKTTCPSocket {
         try {
             val socket = Socket(ip, port)
             socket.use {
-                printerStatus.postValue(PrinterUIState.Loading)
+                //printerStatus.postValue(PrinterUIState.Loading)
                 it.getOutputStream().write(data.toByteArray())
                 it.close()
                 printerStatus.postValue(PrinterUIState.Printed(PRINTING_OK))

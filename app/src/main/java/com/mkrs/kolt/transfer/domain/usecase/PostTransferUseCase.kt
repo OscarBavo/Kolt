@@ -12,8 +12,8 @@ import com.mkrs.kolt.transfer.domain.repositories.TransferRepository
  * Date: 20 / 06 / 2024
  *****/
 class PostTransferUseCase(private val transferRepository: TransferRepository) {
-    suspend fun execute(request: TransferRequest): TransferResult {
-        return when (val result = transferRepository.postTransfer(request)) {
+    suspend fun execute(request: TransferRequest, isDummy: Boolean = false): TransferResult {
+        return when (val result = transferRepository.postTransfer(request, isDummy)) {
             is MKTGenericResponse.Success -> TransferResult.Success(result.content)
             is MKTGenericResponse.Failed -> TransferResult.Fail(result.errorMsg)
         }

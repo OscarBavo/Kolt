@@ -17,7 +17,7 @@ class PostDetailInventoryUseCase(private val transferRepository: TransferReposit
         request: TransferInventoryRequest
     ): DetailInventoryResult {
         return when (val result =
-            transferRepository.postDetailInventory(request)) {
+            transferRepository.postDetailInventory(request, isDummy = true)) {
             is MKTGenericResponse.Success -> DetailInventoryResult.Success(result.content)
             is MKTGenericResponse.Failed -> DetailInventoryResult.Fail(result.errorMsg)
         }

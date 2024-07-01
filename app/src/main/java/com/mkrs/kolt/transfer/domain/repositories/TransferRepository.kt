@@ -13,9 +13,18 @@ import com.mkrs.kolt.transfer.domain.models.FinalProductModel
  * Date: 27 / 05 / 2024
  *****/
 interface TransferRepository {
-    suspend fun getCodePT(claveMaterial: String): MKTGenericResponse<String>
+    suspend fun getCodePT(
+        claveMaterial: String,
+        isDummy: Boolean = false
+    ): MKTGenericResponse<String>
+
     suspend fun postDetailInventory(
-        request: TransferInventoryRequest
+        request: TransferInventoryRequest,
+        isDummy: Boolean = false
     ): MKTGenericResponse<FinalProductModel>
-    suspend fun postTransfer(request: TransferRequest): MKTGenericResponse<ErrorResponse>
+
+    suspend fun postTransfer(
+        request: TransferRequest,
+        isDummy: Boolean = false
+    ): MKTGenericResponse<ErrorResponse>
 }

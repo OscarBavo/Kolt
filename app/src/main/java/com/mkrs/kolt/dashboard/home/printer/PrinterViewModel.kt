@@ -25,6 +25,7 @@ class PrinterViewModel : ViewModel() {
 
     fun printTest(ip: String, port: Int, data: String) {
         viewModelScope.launch {
+            mutablePrinterUiState.postValue(PrinterUIState.Loading)
             CoroutineScope(Dispatchers.IO).launch {
                 val printer = MKTTCPSocket()
                 printer.sendDataPrinter(data, ip, port, mutablePrinterUiState)

@@ -60,7 +60,6 @@ class TransferViewModel(
         this.finalProductModel = finalProductModel
         this.finalProductModel.code = code
         this.finalProductModel.codeUnique = codeUnique
-        this.finalProductModel.date = "06-10-1991 06:12"
     }
 
     fun resetFinalProductModel() {
@@ -166,11 +165,11 @@ class TransferViewModel(
 
     fun createTransfer() {
         viewModelScope.launch {
-            mutableTransferUIState.postValue(TransferUIState.Loading)
-            when (val response = postTransferUseCase.execute(createPost())) {
+         //   mutableTransferUIState.postValue(TransferUIState.Loading)
+            when (val response = postTransferUseCase.execute(createPost(), true)) {
                 is TransferResult.Success -> {
-                    if (response.transfer.DocNum.toInt() > 0) {
-                        replaceDataPrinter()
+                    if (response.transfer.Result.toInt() > 0) {
+                        mutableTransferUIState.postValue(TransferUIState.TransferDone(response.transfer.DocNum))
                     } else {
                         mutableTransferUIState.postValue(TransferUIState.Error(response.transfer.Message))
                     }
@@ -252,9 +251,9 @@ class TransferViewModel(
         mutableTransferUIState.postValue(TransferUIState.IsEnableTransfer(printer))
     }
 
-    fun replaceDataPrinter() {
+    fun replaceDataPrinter(date:String) {
         viewModelScope.launch {
-            mutableTransferUIState.postValue(TransferUIState.Loading)
+           // mutableTransferUIState.postValue(TransferUIState.Loading)
             val labels = mutableListOf<String>()
             var initLabel = 0
             val dataLabel: Array<String> = context.resources.getStringArray(R.array.data_replace)
@@ -262,7 +261,7 @@ class TransferViewModel(
                 val quantityLabel =
                     if (initLabel == totalLabel - 1) remaindersLabel else quantityPrinter
                 var label = context.getString(R.string.label_printer_one)
-                label = label.replace(dataLabel[0], finalProductModel.date)
+                label = label.replace(dataLabel[0], date)
                 label = label.replace(dataLabel[1], finalProductModel.itemName)
                 label = label.replace(dataLabel[2], finalProductModel.suppCatNum)
                 label = label.replace(dataLabel[3], coWorker)
