@@ -17,7 +17,7 @@
     <string name="config_web_service">Web Services</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_on_back_press_general">Atención</string>
-    <string name="title_on_back_press_general_message">¿Deseas salir de la pantall actual?</string>
+    <string name="title_on_back_press_general_message">¿Deseas salir de la pantalla actual?</string>
     <string name="title_configure">Para configurar %s debe ingresar la contraseña</string>
     <string name="title_configure_printer">Impresora</string>
     <string name="title_configure_web_service">Web Services</string>
