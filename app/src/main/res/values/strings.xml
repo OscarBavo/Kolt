@@ -6,7 +6,7 @@
     <string name="error_generic">Error al consultar información</string>
     <string name="update_info_generic">Información actualizada</string>
     <string name="load_logo_progress">Cargando información</string>
-    <string name="btn_title_printer_test">Imprimir etiqueta</string>
+    <string name="btn_title_printer_test">Imprimir</string>
     <string name="text_general_app_clean">Limpiar</string>
     <string name="text_general_app_next">Siguiente</string>
     <string name="text_general_app_continue">Continuar</string>
@@ -85,8 +85,10 @@
     </string>
     <string name="success_printer">Impresion correcta</string>
     <!-- Transferencia -->
+    <string name="title_worker_name">Favor de ingresar operador:</string>
+    <string name="hint_worker_name">Operador</string>
     <string name="title_exit_transfer">¿Deseas salir de Transferencia?</string>
-    <string name="title_add_another_transfer">¿Desea agregar otra transferencia?</string>
+    <string name="title_add_another_transfer">¿Desea realizar otra transferencia?</string>
     <string name="title_fragment_transfer">Transferencia</string>
     <string name="title_transfer_complete">Transferencia Completada</string>
     <string name="title_transfer_not_complete">Ha sucedido un problema en la transferencia favor de revisar</string>
@@ -99,6 +101,7 @@
     <string name="title_unique_item">Campo Unico</string>
     <string name="title_tv_transfer_batch">Lote/Rollo</string>
     <string name="title_tv_transfer_batch_detail">Detalles</string>
+    <string name="title_tv_transfer_max_pieces">Piezas máx almacenar</string>
     <string name="title_tv_transfer_pieces">Piezas</string>
     <string name="title_tv_transfer_convert">Conversión</string>
     <string name="title_tv_transfer_done_product">PT</string>
@@ -106,7 +109,7 @@
     <string name="title_tv_transfer_different">Discrepancia</string>
     <string name="title_tv_transfer_scrap">SCRAP</string>
     <string name="title_tv_transfer_total_transfer">Total</string>
-    <string name="title_bottom_transfer_product_done">Producto Terminado</string>
+    <string name="title_bottom_transfer_product_done">Resumen</string>
     <string name="title_bottom_transfer_no_part">No. Parte</string>
     <string name="title_bottom_transfer_unique_code">Código único</string>
     <string name="title_bottom_transfer_order">Pedido Prog.</string>

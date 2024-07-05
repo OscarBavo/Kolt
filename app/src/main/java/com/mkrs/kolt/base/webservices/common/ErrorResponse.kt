@@ -12,5 +12,6 @@ data class ErrorResponse(
     val EsError: Boolean = false,
     val Message: String = "",
     val ObjType: Int = 0,
-    val Result: String = ""
+    val Result: String = "",
+    val FechaHora: String = "04/07/2024 19:53:00 pm"
 )

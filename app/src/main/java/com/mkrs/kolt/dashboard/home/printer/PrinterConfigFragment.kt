@@ -94,9 +94,6 @@ class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_pri
 
             tieTextIpPrinter.text = ipPort[0].toEditable()
             tieTextPortPrinter.text = ipPort[1].toEditable()
-            btnCancel.setOnClickListener {
-                dismiss()
-            }
 
             btnSave.setOnClickListener {
                 saveData()

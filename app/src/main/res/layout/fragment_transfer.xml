@@ -13,14 +13,13 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_key_item"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="@dimen/dim_size_150"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dim_size_5"
             android:hint="@string/title_key_item"
             app:endIconMode="clear_text"
             android:enabled="false"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -37,18 +36,18 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_unique_code"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/dim_size_150"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dim_size_5"
             android:hint="@string/title_unique_item"
             app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_key_item">
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tie_text_unique_code"
                 style="@style/input_text"
+                android:textAlignment="textStart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="textCapWords"
@@ -56,16 +55,17 @@
                 android:maxLength="@integer/dim_8" />
         </com.google.android.material.textfield.TextInputLayout>
 
+
         <View
-            android:id="@+id/vw_divider_detail"
+            android:id="@+id/vw_divider_one"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginStart="@dimen/dim_size_5"
-            android:layout_marginEnd="@dimen/dim_size_5"
+            android:layout_marginTop="@dimen/dim_size_5"
             android:background="@color/color_divider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/til_unique_code"
+            app:layout_constraintEnd_toEndOf="@id/til_unique_code"
+            app:layout_constraintStart_toStartOf="@id/til_key_item"
             app:layout_constraintTop_toBottomOf="@id/til_unique_code" />
+
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_batch_detail"
@@ -74,8 +74,8 @@
             android:layout_height="wrap_content"
             android:text="@string/title_tv_transfer_batch_detail"
             android:textAlignment="center"
-            app:layout_constraintStart_toStartOf="@id/vw_divider_detail"
-            app:layout_constraintTop_toBottomOf="@id/vw_divider_detail" />
+            app:layout_constraintStart_toStartOf="@id/vw_divider_one"
+            app:layout_constraintTop_toBottomOf="@id/vw_divider_one" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_batch_detail_data"
@@ -87,91 +87,62 @@
             app:layout_constraintStart_toStartOf="@id/tv_batch_detail"
             app:layout_constraintTop_toBottomOf="@id/tv_batch_detail"
             tools:text="10140874" />
-
-        <View
-            android:id="@+id/vw_divider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="@color/color_divider"
-            app:layout_constraintEnd_toEndOf="@id/vw_divider_detail"
-            app:layout_constraintStart_toStartOf="@id/vw_divider_detail"
-            app:layout_constraintTop_toBottomOf="@id/tv_batch_detail_data" />
-
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_batch_roll"
             style="@style/input_text.item.title"
             android:layout_width="@dimen/dim_size_0"
             android:layout_height="wrap_content"
             android:text="@string/title_tv_transfer_batch"
-            android:layout_marginEnd="@dimen/dim_size_24"
             android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="@id/vw_divider_detail"
-            app:layout_constraintTop_toBottomOf="@id/vw_divider_detail"/>
+            app:layout_constraintEnd_toEndOf="@id/vw_divider_one"
+            app:layout_constraintTop_toBottomOf="@id/vw_divider_one"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_batch_roll_data"
             style="@style/input_text.item"
             android:layout_width="@dimen/dim_size_0"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dim_size_8"
             android:textAlignment="center"
-            app:layout_constraintStart_toStartOf="@id/tv_batch_roll"
+            app:layout_constraintEnd_toEndOf="@id/tv_batch_roll"
             app:layout_constraintTop_toBottomOf="@id/tv_batch_roll"
             tools:text="10140874" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_pieces"
-            style="@style/input_text.item.title"
-            android:layout_width="@dimen/dim_size_0"
-            android:layout_height="wrap_content"
-            android:text="@string/title_tv_transfer_pieces"
-            android:textAlignment="center"
-            app:layout_constraintStart_toStartOf="@id/vw_divider"
-            app:layout_constraintEnd_toEndOf="@id/tv_batch_detail"
-            app:layout_constraintTop_toBottomOf="@id/vw_divider" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_pieces_data"
-            style="@style/input_text.item"
-            android:layout_width="@dimen/dim_size_0"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            app:layout_constraintStart_toStartOf="@id/tv_pieces"
-            app:layout_constraintEnd_toEndOf="@id/tv_pieces"
-            app:layout_constraintTop_toBottomOf="@id/tv_pieces"
-            tools:text="300" />
 
         <View
             android:id="@+id/vw_divider_two"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="@color/color_divider"
-            app:layout_constraintEnd_toEndOf="@id/vw_divider_detail"
-            app:layout_constraintStart_toStartOf="@id/til_unique_code"
-            app:layout_constraintTop_toBottomOf="@id/tv_pieces_data" />
-
+            app:layout_constraintEnd_toEndOf="@id/vw_divider_one"
+            app:layout_constraintStart_toStartOf="@id/vw_divider_one"
+            app:layout_constraintTop_toBottomOf="@id/tv_batch_detail_data" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_title_total"
+            android:id="@+id/tv_pieces"
             style="@style/input_text.item.title"
             android:layout_width="@dimen/dim_size_0"
             android:layout_height="wrap_content"
-            android:text="@string/title_tv_transfer_total_transfer"
-            app:layout_constraintStart_toStartOf="@id/tv_batch_roll"
-            app:layout_constraintEnd_toEndOf="@id/vw_divider_detail"
-            app:layout_constraintTop_toBottomOf="@id/vw_divider" />
-
+            android:text="@string/title_tv_transfer_max_pieces"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="@id/vw_divider_two"
+            app:layout_constraintTop_toBottomOf="@id/vw_divider_two" />
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_text_total"
+            android:id="@+id/tv_pieces_data"
             style="@style/input_text.item"
             android:layout_width="@dimen/dim_size_0"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            app:layout_constraintStart_toStartOf="@id/tv_title_total"
-            app:layout_constraintEnd_toEndOf="@id/tv_title_total"
-            app:layout_constraintTop_toBottomOf="@id/tv_title_total"
+            app:layout_constraintEnd_toEndOf="@id/vw_divider_two"
+            app:layout_constraintTop_toBottomOf="@id/vw_divider_two"
             tools:text="300" />
 
+        <View
+            android:id="@+id/vw_divider_three"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/color_divider"
+            app:layout_constraintEnd_toEndOf="@id/vw_divider_one"
+            app:layout_constraintStart_toStartOf="@id/vw_divider_one"
+            app:layout_constraintTop_toBottomOf="@id/tv_pieces_data" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_convert"
@@ -180,9 +151,9 @@
             android:layout_height="wrap_content"
             android:text="@string/title_tv_transfer_convert"
             android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="@id/vw_divider_two"
-            app:layout_constraintStart_toStartOf="@id/vw_divider_two"
-            app:layout_constraintTop_toBottomOf="@id/vw_divider_two" />
+            app:layout_constraintEnd_toEndOf="@id/vw_divider_one"
+            app:layout_constraintStart_toStartOf="@id/vw_divider_one"
+            app:layout_constraintTop_toBottomOf="@id/vw_divider_three" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_out_pt"
@@ -191,7 +162,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/title_tv_transfer_done_product"
             app:endIconMode="clear_text"
-            app:layout_constraintStart_toStartOf="@id/vw_divider"
+            app:layout_constraintStart_toStartOf="@id/vw_divider_one"
             app:layout_constraintTop_toBottomOf="@+id/tv_convert">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -209,7 +180,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/title_tv_transfer_reject"
             app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="@id/vw_divider"
+            app:layout_constraintEnd_toEndOf="@id/vw_divider_one"
             app:layout_constraintTop_toBottomOf="@+id/tv_convert">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -258,16 +229,43 @@
                 android:layout_height="match_parent"
                 android:maxLength="@integer/dim_21" />
         </com.google.android.material.textfield.TextInputLayout>
-
         <View
             android:id="@+id/vw_divider_four"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_margin="@dimen/dim_size_5"
+            android:layout_marginTop="@dimen/dim_size_5"
             android:background="@color/color_divider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/vw_divider_two"
+            app:layout_constraintEnd_toEndOf="@id/vw_divider_one"
+            app:layout_constraintStart_toStartOf="@id/vw_divider_one"
             app:layout_constraintTop_toBottomOf="@id/til_scrap" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_title_total"
+            style="@style/input_text.item.title"
+            android:layout_width="@dimen/dim_size_0"
+            android:layout_height="wrap_content"
+            android:text="@string/title_tv_transfer_total_transfer"
+            app:layout_constraintStart_toStartOf="@id/vw_divider_four"
+            app:layout_constraintTop_toBottomOf="@id/vw_divider_four" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_text_total"
+            style="@style/input_text.item"
+            android:layout_width="@dimen/dim_size_0"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="@id/vw_divider_four"
+            app:layout_constraintTop_toBottomOf="@id/vw_divider_four"
+            tools:text="300" />
+        <View
+            android:id="@+id/vw_divider_five"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/dim_size_5"
+            android:background="@color/color_divider"
+            app:layout_constraintEnd_toEndOf="@id/vw_divider_one"
+            app:layout_constraintStart_toStartOf="@id/vw_divider_one"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_total" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_clean"
@@ -276,8 +274,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dim_size_8"
             android:text="@string/text_general_app_clean"
-            app:layout_constraintStart_toStartOf="@+id/vw_divider_four"
-            app:layout_constraintTop_toBottomOf="@id/vw_divider_four" />
+            app:layout_constraintStart_toStartOf="@+id/vw_divider_five"
+            app:layout_constraintTop_toBottomOf="@id/vw_divider_five" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_next"
@@ -287,7 +285,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dim_size_8"
             android:text="@string/text_general_app_next"
-            app:layout_constraintEnd_toEndOf="@id/vw_divider_four"
-            app:layout_constraintTop_toBottomOf="@id/vw_divider_four" />
+            app:layout_constraintEnd_toEndOf="@id/vw_divider_five"
+            app:layout_constraintTop_toBottomOf="@id/vw_divider_five" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

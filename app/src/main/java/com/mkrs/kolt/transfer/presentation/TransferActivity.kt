@@ -68,5 +68,6 @@ class TransferActivity : MKTActivity() {
 
     companion object {
         private const val HOME_TAG = "HOME"
+        const val USER_TRANSFER = "USER"
     }
 }

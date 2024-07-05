@@ -10,6 +10,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.textfield.TextInputLayout
 import com.mkrs.kolt.base.MKTActivity
+import com.mkrs.kolt.base.UserLayout
 import com.mkrs.kolt.databinding.ActivityMainBinding
 import com.mkrs.kolt.dashboard.home.presentacion.MainMenuFragment
 import com.mkrs.kolt.dashboard.home.printer.PrinterConfigFragment
@@ -111,7 +112,7 @@ class MainActivity : MKTActivity() {
             showingOkBtn = true, null,
             resources.getString(R.string.title_on_back_press_cancel),
             showingNoBtn = true,
-            noListener = { _, _ -> }, hasPass = true
+            noListener = { _, _ -> }, UserLayout.PASS
         )
         val positiveButton = this.alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
         val pass = this.alertDialog.findViewById<EditText>(R.id.tie_pass_config)

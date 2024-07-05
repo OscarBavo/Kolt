@@ -85,12 +85,13 @@ object TransferRepositoryImp : TransferRepository {
                     createResponse(
                         TransferResponse(
                             ErrorResponse(
-                                "27/06/2024 19:09",
+                                "0",
                                 "0",
                                 false,
                                 "OK",
                                 4,
-                                "7133238"
+                                "7133238",
+                                FechaHora = "27/06/2024 19:09"
                             )
                         )
                     )

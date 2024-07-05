@@ -70,7 +70,7 @@ open class MKTActivity : AppCompatActivity() {
         cancelButtonText: String,
         showingNoBtn: Boolean = false,
         noListener: DialogInterface.OnClickListener?,
-        hasPass: Boolean = false
+        layoutType: UserLayout = UserLayout.NO_LAYOUT
     ) {
         if (!isFinishing) {
 
@@ -84,8 +84,21 @@ open class MKTActivity : AppCompatActivity() {
                 .setCancelable(false)
             if (showingOkBtn) {
                 builder.setPositiveButton(okButtonText, onClickListener)
-                if (hasPass) {
-                    builder.setView(inflater.inflate(R.layout.dialog_pass_config,null))
+                when (layoutType) {
+                    UserLayout.PASS -> builder.setView(
+                        inflater.inflate(
+                            R.layout.dialog_pass_config,
+                            null
+                        )
+                    )
+
+                    UserLayout.COWORKER -> builder.setView(
+                        inflater.inflate(
+                            R.layout.dialog_user_config,
+                            null
+                        )
+                    )
+                    else->{}
                 }
             }
             if (showingNoBtn) {
@@ -138,6 +151,8 @@ open class MKTActivity : AppCompatActivity() {
             inputManager.hideSoftInputFromWindow(view.windowToken, NONE)
         }
     }
+}
 
-
+enum class UserLayout {
+    PASS, COWORKER, NO_LAYOUT
 }

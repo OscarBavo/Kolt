@@ -23,6 +23,10 @@ class PrinterViewModel : ViewModel() {
     val printerUIState: LiveData<PrinterUIState>
         get() = mutablePrinterUiState
 
+    fun printNoState(){
+        mutablePrinterUiState.postValue(PrinterUIState.NoState)
+    }
+
     fun printTest(ip: String, port: Int, data: String) {
         viewModelScope.launch {
             mutablePrinterUiState.postValue(PrinterUIState.Loading)

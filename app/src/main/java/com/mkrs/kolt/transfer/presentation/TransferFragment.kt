@@ -6,9 +6,11 @@ import android.view.KeyEvent
 import android.view.View
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
+import com.mkrs.kolt.MainActivity
 import com.mkrs.kolt.R
 import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.base.MKTFragment
+import com.mkrs.kolt.base.UserLayout
 import com.mkrs.kolt.base.viewBinding
 import com.mkrs.kolt.databinding.FragmentTransferBinding
 import com.mkrs.kolt.transfer.di.TransferModule
@@ -48,6 +50,11 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity = requireActivity() as MKTActivity
+        activity?.let { act ->
+            act.intent.extras?.let { ext ->
+                transferViewModel.saveCoWorker(ext.getString(TransferActivity.USER_TRANSFER) ?: "")
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -402,11 +409,11 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer),
                 getString(R.string.generic_no),
                 true,
                 { _, _ ->
-                    startActivity(Intent(requireContext(), TransferActivity::class.java))
+                    startActivity(Intent(requireContext(), MainActivity::class.java))
                     activity?.finishAffinity()
 
-                })
-        }else{
+                },UserLayout.NO_LAYOUT)
+        } else {
             showAlert(getString(R.string.title_transfer_complete), transferBinding.btnNext)
         }
     }

@@ -1,6 +1,7 @@
 package com.mkrs.kolt.transfer.presentation
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,6 +64,7 @@ class BottomSheetTransferConfirmation :
                 activity?.dismissDialog()
                 this.dismiss()
                 showAlert(getString(R.string.success_printer), binding.btnSave)
+                printerViewModel.printNoState()
                 transferViewModel.setNoState()
                 bottomSheetListener.onPrintingSuccess(getString(R.string.generic_ok))
             }
@@ -167,6 +169,18 @@ class BottomSheetTransferConfirmation :
             }
         }
 
+        binding.tieTextPerforadora.setOnEditorActionListener { perf, _, keyEvent ->
+            if (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (perf.text.toString().isNotEmpty()) {
+                    transferViewModel.saveReadyPrinter(
+                        true,
+                        TransferViewModel.ReadyPrinter.PERFORADORA
+                    )
+                }
+            }
+            return@setOnEditorActionListener false
+        }
+
         binding.tieTextStandardPack.doOnTextChanged { stdPack, _, _, _ ->
             validateStdPack(stdPack.toString())
         }
@@ -180,7 +194,7 @@ class BottomSheetTransferConfirmation :
         if (stdPack.isEmpty()) {
             binding.tieTextStandardPack.requestFocus()
             transferViewModel.saveReadyPrinter(false, TransferViewModel.ReadyPrinter.LABELS)
-        } else if (stdPack == "0") {
+        } else if (stdPack == ZERO) {
             binding.btnSave.disable()
             transferViewModel.saveReadyPrinter(false, TransferViewModel.ReadyPrinter.LABELS)
         } else {
@@ -203,6 +217,7 @@ class BottomSheetTransferConfirmation :
 
     private fun initView() {
         binding.apply {
+            transferViewModel.initReadyPrinter()
             tvTextNoPart.text = transferViewModel.finalProductModel.itemCode
             tvTextBatch.text = transferViewModel.finalProductModel.mnfSerial
             tvPt.text = transferViewModel.finalProductModel.itemName
@@ -213,6 +228,11 @@ class BottomSheetTransferConfirmation :
             tvNote.text = getString(R.string.label_note_printer, emptyString())
             createNote(transferViewModel.finalProductModel.pieces)
             btnSave.disable()
+            if (transferViewModel.getCoworker().isNotEmpty()) {
+                tieTextTeamWorker.text = transferViewModel.getCoworker().toEditable()
+                tieTextTeamWorker.selectAll()
+                transferViewModel.saveReadyPrinter(true, TransferViewModel.ReadyPrinter.COWORKER)
+            }
             tilTeamWorker.enable()
             tilTeamWorker.requestFocus()
         }
@@ -225,6 +245,7 @@ class BottomSheetTransferConfirmation :
 
     companion object {
         const val TAG = "BOTTOMSHEETTRANSFERCONFIRMATION"
+        const val ZERO = "0"
 
         /**
          * Use this factory method to create a new instance of

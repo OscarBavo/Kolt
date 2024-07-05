@@ -81,6 +81,8 @@ class TransferViewModel(
         saveReadyPrinter(true, ReadyPrinter.COWORKER)
     }
 
+    fun getCoworker() = this.coWorker
+
     fun savePerforadora(perforadora: String) {
         this.perforadora = perforadora
         saveReadyPrinter(true, ReadyPrinter.PERFORADORA)
@@ -165,11 +167,11 @@ class TransferViewModel(
 
     fun createTransfer() {
         viewModelScope.launch {
-         //   mutableTransferUIState.postValue(TransferUIState.Loading)
+            //   mutableTransferUIState.postValue(TransferUIState.Loading)
             when (val response = postTransferUseCase.execute(createPost(), true)) {
                 is TransferResult.Success -> {
                     if (response.transfer.Result.toInt() > 0) {
-                        mutableTransferUIState.postValue(TransferUIState.TransferDone(response.transfer.DocNum))
+                        mutableTransferUIState.postValue(TransferUIState.TransferDone(response.transfer.FechaHora))
                     } else {
                         mutableTransferUIState.postValue(TransferUIState.Error(response.transfer.Message))
                     }
@@ -246,14 +248,20 @@ class TransferViewModel(
         isAvailableToPrinter()
     }
 
+    fun initReadyPrinter() {
+        this.isOperardor = false
+        this.isPerforadora = false
+        this.isLabelReady = false
+    }
+
     private fun isAvailableToPrinter() {
         val printer = isOperardor && isPerforadora && isLabelReady
         mutableTransferUIState.postValue(TransferUIState.IsEnableTransfer(printer))
     }
 
-    fun replaceDataPrinter(date:String) {
+    fun replaceDataPrinter(date: String) {
         viewModelScope.launch {
-           // mutableTransferUIState.postValue(TransferUIState.Loading)
+            // mutableTransferUIState.postValue(TransferUIState.Loading)
             val labels = mutableListOf<String>()
             var initLabel = 0
             val dataLabel: Array<String> = context.resources.getStringArray(R.array.data_replace)

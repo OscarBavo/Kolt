@@ -53,7 +53,6 @@ android {
 
 dependencies {
 
-    implementation project(path: ':app')
     def core_ktx="1.8.0"
     def appcompat="1.6.1"
     def material="1.8.0"
