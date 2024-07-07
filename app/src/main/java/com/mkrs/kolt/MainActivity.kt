@@ -43,7 +43,7 @@ class MainActivity : MKTActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        toSection(R.id.action_homme)
+        toSection(R.id.action_home)
         onBackPressedDispatcher.addCallback(this) {
             mainOnBackPress()
         }
@@ -60,7 +60,7 @@ class MainActivity : MKTActivity() {
     }
 
     private fun verifyFragmentManagerBackStackEntryCount() {
-        val homeId = R.id.action_homme
+        val homeId = R.id.action_home
         when {
             binding.navMainMenu.menu.findItem(homeId).isChecked && supportFragmentManager.backStackEntryCount <= 0 -> {
                 showMessageOut()
@@ -91,7 +91,7 @@ class MainActivity : MKTActivity() {
                 )
             }
 
-            R.id.action_homme -> {
+            R.id.action_home -> {
                 launchMain()
             }
         }

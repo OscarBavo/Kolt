@@ -6,7 +6,7 @@
         android:title="@string/config_printer"
         />
     <item
-        android:id="@+id/action_homme"
+        android:id="@+id/action_home"
         android:icon="@drawable/ic_home"
         android:title="@string/home"
         />
