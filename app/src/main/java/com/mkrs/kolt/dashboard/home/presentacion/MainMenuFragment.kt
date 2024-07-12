@@ -79,10 +79,9 @@ class MainMenuFragment : MKTFragment(R.layout.fragment_main_menu) {
             val pass = it.alertDialog.findViewById<EditText>(R.id.tie_user_config)
             val tilPass = it.alertDialog.findViewById<TextInputLayout>(R.id.til_user_config)
             pass?.requestFocus()
-            pass?.doOnTextChanged { user, _, _, count ->
+            pass?.doOnTextChanged { _, _, _, count ->
                 if (count > 0) {
                     tilPass?.error = null
-                    initTransfer(user.toString())
                 }
             }
             pass?.setOnEditorActionListener { tvPass, _, keyEvent ->

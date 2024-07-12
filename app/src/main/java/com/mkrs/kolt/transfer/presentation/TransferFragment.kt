@@ -301,7 +301,7 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer),
     }
 
     private fun validateTextUniqueCode(uniqueCode: String) {
-        if (!uniqueCode.isEmpty()) {
+        if (uniqueCode.isNotEmpty()) {
             if (uniqueCode.length == CODE_UNIQUE_MAX_LENGTH) {
                 hideKeyboard()
                 validateUniqueCode(uniqueCode)
