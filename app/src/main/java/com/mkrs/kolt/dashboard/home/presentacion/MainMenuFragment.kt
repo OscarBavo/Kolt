@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
@@ -84,10 +85,14 @@ class MainMenuFragment : MKTFragment(R.layout.fragment_main_menu) {
                     tilPass?.error = null
                 }
             }
-            pass?.setOnEditorActionListener { tvPass, _, keyEvent ->
-                if (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+            pass?.setOnEditorActionListener { tvPass, actionId, keyEvent ->
+                if (keyEvent!=null && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
                     initTransfer(tvPass.text.toString())
 
+                }else if(actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_DONE){
+                    if (tvPass.text.toString().isNotEmpty()) {
+                        initTransfer(tvPass.text.toString())
+                    }
                 }
                 return@setOnEditorActionListener true
             }

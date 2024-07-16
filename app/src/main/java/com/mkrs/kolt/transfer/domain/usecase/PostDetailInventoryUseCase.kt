@@ -14,10 +14,10 @@ import com.mkrs.kolt.transfer.domain.repositories.TransferRepository
 
 class PostDetailInventoryUseCase(private val transferRepository: TransferRepository) {
     suspend fun execute(
-        request: TransferInventoryRequest
+        request: TransferInventoryRequest, isDemo: Boolean
     ): DetailInventoryResult {
         return when (val result =
-            transferRepository.postDetailInventory(request, isDummy = true)) {
+            transferRepository.postDetailInventory(request, isDummy = isDemo)) {
             is MKTGenericResponse.Success -> DetailInventoryResult.Success(result.content)
             is MKTGenericResponse.Failed -> DetailInventoryResult.Fail(result.errorMsg)
         }

@@ -10,9 +10,9 @@ import com.mkrs.kolt.transfer.domain.repositories.TransferRepository
  * Date: 07 / 06 / 2024
  *****/
 class GetCodePTUseCase(private val transferRepository: TransferRepository) {
-    suspend fun execute(codePT: String):
+    suspend fun execute(codePT: String, isDemo: Boolean):
             CodePTResult {
-        return when (val result = transferRepository.getCodePT(codePT, isDummy = true)) {
+        return when (val result = transferRepository.getCodePT(codePT, isDummy = isDemo)) {
             is MKTGenericResponse.Success -> CodePTResult.Success(result.content)
             is MKTGenericResponse.Failed -> CodePTResult.Fail(result.errorMsg)
         }

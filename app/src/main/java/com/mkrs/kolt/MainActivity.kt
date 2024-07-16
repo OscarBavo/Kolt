@@ -3,6 +3,7 @@ package com.mkrs.kolt
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.activity.addCallback
 import androidx.activity.viewModels
@@ -29,7 +30,7 @@ class MainActivity : MKTActivity() {
 
     private val preferencesViewModel by viewModels<PreferencesViewModel> {
         PreferenceModule.providePreferenceVMFactory(
-            HomeModule.provideHomePReferences(this, getString(R.string.config_printer))
+            HomeModule.provideHomePreferences(this, getString(R.string.config_printer))
         )
     }
 
@@ -52,6 +53,7 @@ class MainActivity : MKTActivity() {
             return@setOnItemSelectedListener true
         }
         binding.tbMain.title = getString(R.string.title_dashboard)
+        initDialog()
     }
 
     fun mainOnBackPress() {
@@ -78,17 +80,19 @@ class MainActivity : MKTActivity() {
         setBottomNavigationItemCheck(ItemId)
         when (ItemId) {
             R.id.action_print_config -> {
-                showPassRequired(
+                nextFlow("Mkrs2024", "Mkrs2024", VALIDATE_PRINTER)
+                /*showPassRequired(
                     resources.getString(R.string.title_configure_printer),
                     VALIDATE_PRINTER
-                )
+                )*/
             }
 
             R.id.action_config -> {
-                showPassRequired(
+                nextFlow("Mkrs2024", "Mkrs2024", VALIDATE_WEB_SERVICE)
+                /*showPassRequired(
                     resources.getString(R.string.title_configure_web_service),
                     VALIDATE_WEB_SERVICE
-                )
+                )*/
             }
 
             R.id.action_home -> {
@@ -119,8 +123,13 @@ class MainActivity : MKTActivity() {
         val tilPass = this.alertDialog.findViewById<TextInputLayout>(R.id.til_pass_config)
         pass?.requestFocus()
         pass?.doOnTextChanged { _, _, _, count -> if (count > 0) tilPass?.error = null }
-        pass?.setOnEditorActionListener { tvPass, _, keyEvent ->
-            if (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+        pass?.setOnEditorActionListener { tvPass, actionId, keyEvent ->
+
+            if (keyEvent != null && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (!nextFlow(passOpen, tvPass.text.toString(), typeValidate)) {
+                    tilPass?.error = resources.getString(R.string.title_error_password)
+                }
+            } else if (actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_DONE) {
                 if (!nextFlow(passOpen, tvPass.text.toString(), typeValidate)) {
                     tilPass?.error = resources.getString(R.string.title_error_password)
                 }
@@ -143,13 +152,13 @@ class MainActivity : MKTActivity() {
         return if (passOpen == pass) {
             when (typeValidate) {
                 VALIDATE_PRINTER -> {
-                    this.alertDialog.dismiss()
+                    dismissDialog()
                     PrinterConfigFragment.newInstance()
                         .show(supportFragmentManager, PrinterConfigFragment.TAG)
                 }
 
                 VALIDATE_WEB_SERVICE -> {
-                    this.alertDialog.dismiss()
+                    dismissDialog()
                     ConfigWebServiceBottomSheet.newInstance("", "")
                         .show(supportFragmentManager, ConfigWebServiceBottomSheet.TAG)
                 }

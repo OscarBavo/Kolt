@@ -29,7 +29,7 @@ class MKTTransferPostTransferService(private val request: TransferRequest) :
     override fun buildRequest() {
         addHeader(MKTGeneralConfig.CONTENT_TYPE, MKTGeneralConfig.APPLICATION_JSON_CHAR)
         addHeader(MKTGeneralConfig.ACCEPT, MKTGeneralConfig.ACCEPT_JSON)
-
+        addHeader(MKTGeneralConfig.NGROK_WARNING, MKTGeneralConfig.NGROK_WARNING_NUM)
     }
 
     override fun execute() {

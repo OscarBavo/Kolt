@@ -2,6 +2,7 @@ package com.mkrs.kolt.base.webservices.transfer
 
 import com.google.gson.Gson
 import com.mkrs.kolt.base.conectivity.webservice.APIKolt.Transfer.Companion.GET_CODE
+import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig
 import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig.Companion.APPLICATION_JSON
 import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig.Companion.CONTENT_TYPE
 import com.mkrs.kolt.base.conectivity.webservice.MKTWebService
@@ -26,6 +27,8 @@ class MKTTransferGetCodeService(
 
     override fun buildRequest() {
         addHeader(CONTENT_TYPE, APPLICATION_JSON)
+        addHeader(MKTGeneralConfig.ACCEPT, MKTGeneralConfig.ACCEPT_JSON)
+        addHeader(MKTGeneralConfig.NGROK_WARNING, MKTGeneralConfig.NGROK_WARNING_NUM)
         addParams(PM_KEY, clavePM)
     }
 

@@ -38,9 +38,11 @@
     <string name="key_pass_config_open">PassPrinter</string>
     <string name="default_pass_config_open">Mkrs2024</string>
     <string name="key_pass_web_service">WebServices</string>
+    <string name="key_pass_is_demo">IsDemo</string>
     <!-- Web Services -->
     <string name="hint_web_service_ip">IP Web Service</string>
     <string name="default_web_service">https://b820-189-141-18-168.ngrok-free.app/KoltWebApp</string>
+    <string name="active_dummy">Demo</string>
     <!-- Impresora -->
     <string name="hint_printer_ip">IP Impresora</string>
     <string name="hint_printer_port">Puerto</string>

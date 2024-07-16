@@ -14,7 +14,7 @@ object HomeModule {
     @Volatile
     private var homePreferences: MKTSecureSharedPreference? = null
 
-    fun provideHomePReferences(context: Context, name: String): MKTSecureSharedPreference {
+    fun provideHomePreferences(context: Context, name: String): MKTSecureSharedPreference {
         return homePreferences ?: MKTSecureSharedPreference.newInstance(context, name)
             .also { homePreferences = it }
     }

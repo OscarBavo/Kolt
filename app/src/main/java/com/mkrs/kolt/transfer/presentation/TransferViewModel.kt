@@ -52,7 +52,6 @@ class TransferViewModel(
     private var totalLabel = 0
     private var remaindersLabel = 0
 
-
     val transferViewState: LiveData<TransferUIState>
         get() = mutableTransferUIState
 
@@ -96,6 +95,15 @@ class TransferViewModel(
         this.quantity = quantity.toDouble()
     }
 
+    fun resetQuantity(){
+        this.quantityDone = 0.0
+        this.quantityReject = 0.0
+        this.quantityDiff = 0.0
+        this.quantitySCRAP = 0.0
+        this.quantity = 0.0
+        this.quantityPrinter = 0.0
+    }
+
     fun saveQuantityDone(quantity: String) {
         this.quantityDone = quantity.toDouble()
         isAvailableQuantity(TypeQuantity.DONE)
@@ -116,10 +124,10 @@ class TransferViewModel(
         isAvailableQuantity(TypeQuantity.SCRAP)
     }
 
-    fun getCodePT(code: String) {
+    fun getCodePT(code: String, isDummy: Boolean) {
         viewModelScope.launch {
             mutableTransferUIState.postValue(TransferUIState.Loading)
-            when (val response = getCodePTUseCase.execute(code)) {
+            when (val response = getCodePTUseCase.execute(code, isDemo = isDummy)) {
                 is CodePTResult.Success -> {
                     if (response.data == context.getString(R.string.not_found_data_code_pt)) {
                         mutableTransferUIState.postValue(
@@ -136,17 +144,17 @@ class TransferViewModel(
                 }
 
                 is CodePTResult.Fail -> {
-                    mutableTransferUIState.postValue(TransferUIState.Error(response.errorMsg))
+                    mutableTransferUIState.postValue(TransferUIState.Error("No se encontro la información del código: $code"))
                 }
             }
         }
     }
 
-    fun getDetailInventory(codigoUnico: String) {
+    fun getDetailInventory(codigoUnico: String, isDemo: Boolean) {
         viewModelScope.launch {
             mutableTransferUIState.postValue(TransferUIState.Loading)
             val request = TransferInventoryRequest(itemCode = code, distNumber = codigoUnico)
-            when (val response = postDetailInventoryUseCase.execute(request)) {
+            when (val response = postDetailInventoryUseCase.execute(request, isDemo)) {
                 is DetailInventoryResult.Success -> {
                     if (response.finalProductModel.quantity == context.getString(R.string.quantity_detail)) {
                         mutableTransferUIState.postValue(TransferUIState.Error(context.getString(R.string.quantity_detail_msg)))
@@ -165,10 +173,10 @@ class TransferViewModel(
         }
     }
 
-    fun createTransfer() {
+    fun createTransfer(isDummy: Boolean) {
         viewModelScope.launch {
-            //   mutableTransferUIState.postValue(TransferUIState.Loading)
-            when (val response = postTransferUseCase.execute(createPost(), true)) {
+            mutableTransferUIState.postValue(TransferUIState.Loading)
+            when (val response = postTransferUseCase.execute(createPost(), isDummy)) {
                 is TransferResult.Success -> {
                     if (response.transfer.Result.toInt() > 0) {
                         mutableTransferUIState.postValue(TransferUIState.TransferDone(response.transfer.FechaHora))
@@ -225,6 +233,7 @@ class TransferViewModel(
 
     private fun isAvailableQuantity(typeQuantity: TypeQuantity) {
         val quantityTotal = quantityDone + quantityReject + quantityDiff + quantitySCRAP
+        if(quantity==0.0) return
         if (quantity - quantityTotal < VERIFY_TOTAL_OK) {
             mutableTransferUIState.postValue(
                 TransferUIState.UpperQuantity(

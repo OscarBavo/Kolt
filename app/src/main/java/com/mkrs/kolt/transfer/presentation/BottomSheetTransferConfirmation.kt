@@ -44,12 +44,13 @@ class BottomSheetTransferConfirmation :
 
     private val preferencesViewModel by activityViewModels<PreferencesViewModel> {
         PreferenceModule.providePreferenceVMFactory(
-            HomeModule.provideHomePReferences(
+            HomeModule.provideHomePreferences(
                 requireActivity(),
                 getString(R.string.data_name_printer)
             )
         )
     }
+    private var isDemo = false
 
     private lateinit var bottomSheetListener: PrintingBottomSheetDialogListener
 
@@ -103,6 +104,7 @@ class BottomSheetTransferConfirmation :
             observeTransferState(it)
         }
         printerViewModel.printerUIState.observe(viewLifecycleOwner, uIStateObserver)
+        isDemo = preferencesViewModel.getInt(getString(R.string.key_pass_is_demo), 0) == 1
     }
 
     private fun observeTransferState(uiState: TransferUIState) {
@@ -186,7 +188,7 @@ class BottomSheetTransferConfirmation :
         }
 
         binding.btnSave.setOnClickListener {
-            transferViewModel.createTransfer()
+            transferViewModel.createTransfer(isDemo)
         }
     }
 

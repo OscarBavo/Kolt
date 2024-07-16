@@ -33,7 +33,7 @@ class PrinterConfigFragment : MKTBottomSheetDialogFragment(R.layout.fragment_pri
     private var activity: MKTActivity? = null
     private val preferencesViewModel by activityViewModels<PreferencesViewModel> {
         PreferenceModule.providePreferenceVMFactory(
-            HomeModule.provideHomePReferences(requireActivity(), getString(R.string.data_name_printer))
+            HomeModule.provideHomePreferences(requireActivity(), getString(R.string.data_name_printer))
         )
     }
 

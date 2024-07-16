@@ -26,6 +26,7 @@ class MKTTransferPostUniqueCodeService(private val request: TransferInventoryReq
 
     override fun buildRequest() {
         addHeader(MKTGeneralConfig.CONTENT_TYPE, MKTGeneralConfig.APPLICATION_JSON_CHAR)
+        addHeader(MKTGeneralConfig.NGROK_WARNING, MKTGeneralConfig.NGROK_WARNING_NUM)
         addHeader(MKTGeneralConfig.ACCEPT, MKTGeneralConfig.ACCEPT_JSON)
     }
 

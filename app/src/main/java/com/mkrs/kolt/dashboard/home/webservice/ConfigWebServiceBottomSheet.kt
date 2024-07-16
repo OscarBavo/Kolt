@@ -26,7 +26,7 @@ class ConfigWebServiceBottomSheet :
 
     private val preferencesViewModel by activityViewModels<PreferencesViewModel> {
         PreferenceModule.providePreferenceVMFactory(
-            HomeModule.provideHomePReferences(requireActivity(), "Impresoras")
+            HomeModule.provideHomePreferences(requireActivity(), "Impresoras")
         )
     }
     private lateinit var binding: FragmentBottomSheetConfigWebServiceBinding
@@ -71,6 +71,17 @@ class ConfigWebServiceBottomSheet :
             btnSave.setOnClickListener {
                 validateData()
             }
+            switchId.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    preferencesViewModel.saveInt(getString(R.string.key_pass_is_demo), 1)
+                } else {
+                    preferencesViewModel.saveInt(getString(R.string.key_pass_is_demo), 0)
+                }
+            }
+
+            switchId.isChecked =
+                preferencesViewModel.getInt(getString(R.string.key_pass_is_demo), 0) == 1
+
         }
     }
 

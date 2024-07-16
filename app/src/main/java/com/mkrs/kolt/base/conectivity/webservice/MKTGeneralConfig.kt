@@ -22,6 +22,8 @@ class MKTGeneralConfig {
         const val CONTENT_TYPE = "Content-Type"
         const val ACCEPT = "Accept"
         const val ACCEPT_JSON = "*/*"
+        const val NGROK_WARNING = "ngrok-skip-browser-warning"
+        const val NGROK_WARNING_NUM = "91100"
         const val APPLICATION_JSON = "application/json"
         const val APPLICATION_JSON_CHAR = "application/json; charset=UTF-8"
 

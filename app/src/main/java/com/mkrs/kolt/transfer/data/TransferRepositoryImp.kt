@@ -97,7 +97,6 @@ object TransferRepositoryImp : TransferRepository {
                     )
                 )
             } else {
-
                 val service = MKTTransferPostTransferService(request)
                 val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
                 return@withContext if (response.ErrorCode == ERROR_ZERO) {
