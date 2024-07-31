@@ -5,6 +5,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
@@ -134,6 +135,22 @@ class BottomSheetTransferConfirmation :
 
             is TransferUIState.Error -> {
                 activity?.dismissDialog()
+                activity?.showAlertComplete(
+                    getString(R.string.generic_information),
+                    uiState.msg,
+                    getString(R.string.generic_ok),
+                    true,
+                    { _, _ -> },
+                    "",
+                    false,
+                    null
+                )
+                transferViewModel.setNoState()
+            }
+
+            is TransferUIState.ErrorCustom -> {
+                activity?.dismissDialog()
+                activity?.showAlert(uiState.msg, binding.root)
                 transferViewModel.setNoState()
             }
 
@@ -171,8 +188,15 @@ class BottomSheetTransferConfirmation :
             }
         }
 
-        binding.tieTextPerforadora.setOnEditorActionListener { perf, _, keyEvent ->
-            if (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+        binding.tieTextPerforadora.setOnEditorActionListener { perf, actionId, keyEvent ->
+            if (keyEvent != null && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (perf.text.toString().isNotEmpty()) {
+                    transferViewModel.saveReadyPrinter(
+                        true,
+                        TransferViewModel.ReadyPrinter.PERFORADORA
+                    )
+                }
+            } else if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO) {
                 if (perf.text.toString().isNotEmpty()) {
                     transferViewModel.saveReadyPrinter(
                         true,

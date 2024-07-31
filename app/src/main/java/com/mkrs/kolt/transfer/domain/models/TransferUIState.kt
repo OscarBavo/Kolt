@@ -14,6 +14,7 @@ sealed class TransferUIState {
     data class NoExistsPT(val msg: String) : TransferUIState()
     data class NoExistsDetail(val msg: String) : TransferUIState()
     data class Error(val msg: String) : TransferUIState()
+    data class ErrorCustom(val msg: String) : TransferUIState()
     object SuccessCode : TransferUIState()
     data class SuccessDetail(val detail: FinalProductModel) : TransferUIState()
 

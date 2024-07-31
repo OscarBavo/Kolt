@@ -60,7 +60,21 @@ class MainMenuFragment : MKTFragment(R.layout.fragment_main_menu) {
             consultWorker()
 
         }
+        binding.btnAboutUs.setOnClickListener {
+            showAboutUs()
+        }
         registerForContextMenu(binding.btnTransfer)
+    }
+
+    private fun showAboutUs() {
+        activity?.let {
+            it.showAlertComplete(
+                resources.getString(R.string.title_about_us),
+                "",
+                resources.getString(R.string.generic_ok),
+                true, { _, _ -> it.alertDialog.dismiss() }, "", false, null, UserLayout.ABOUT_US
+            )
+        }
     }
 
     private fun consultWorker() {
@@ -86,10 +100,10 @@ class MainMenuFragment : MKTFragment(R.layout.fragment_main_menu) {
                 }
             }
             pass?.setOnEditorActionListener { tvPass, actionId, keyEvent ->
-                if (keyEvent!=null && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (keyEvent != null && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
                     initTransfer(tvPass.text.toString())
 
-                }else if(actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_DONE){
+                } else if (actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_DONE) {
                     if (tvPass.text.toString().isNotEmpty()) {
                         initTransfer(tvPass.text.toString())
                     }

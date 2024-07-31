@@ -96,6 +96,8 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer),
             is TransferUIState.SuccessCode -> {
                 dismissDialog()
                 transferBinding.tieTextKeyItem.disable()
+                transferBinding.tilKeyItem.disable()
+                transferBinding.tieTextKeyItem.setTextAppearance(R.style.input_text_ready)
                 transferBinding.tieTextUniqueCode.enable()
                 transferBinding.btnClean.enable()
                 transferBinding.tieTextUniqueCode.requestFocus()

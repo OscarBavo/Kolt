@@ -3,6 +3,7 @@
     <string name="generic_yes">Si</string>
     <string name="generic_no">No</string>
     <string name="generic_ok">OK</string>
+    <string name="generic_information">Información</string>
     <string name="error_generic">Error al consultar información</string>
     <string name="update_info_generic">Información actualizada</string>
     <string name="load_logo_progress">Cargando información</string>
@@ -31,6 +32,14 @@
     <string name="title_required_text">Dato Necesario</string>
     <string name="title_generic_input_data_required">Campo obligatorio</string>
     <string name="title_split_ip">:</string>
+    <!-- about us -->
+    <string name="title_about_us">Acerca de…</string>
+    <string name="title_about_us_name">App Kolt</string>
+    <string name="title_about_us_version">v 1.0.2</string>
+    <string name="title_about_us_email">soporte@mkrs.com</string>
+    <string name="title_about_us_author">MKRS</string>
+    <string name="title_about_us_close">Gracias</string>
+
     <!-- Shared Preference -->
     <string name="data_name_printer">Impresoras</string>
     <string name="key_value_printer">PrinterIPPort</string>

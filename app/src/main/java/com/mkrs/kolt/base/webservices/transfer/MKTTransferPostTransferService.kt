@@ -47,8 +47,9 @@ class MKTTransferPostTransferService(private val request: TransferRequest) :
             }
         } catch (ex: Exception) {
             val response = Gson().fromJson(responseString, ErrorResponse::class.java)
-            this.response.ErrorCode = response.Message
+            this.response.ErrorCode = this.serviceUrl ?: ""
         } finally {
+
             getListener()?.onFinish(this.response)
         }
     }

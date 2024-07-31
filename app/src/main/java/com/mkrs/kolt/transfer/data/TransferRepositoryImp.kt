@@ -59,7 +59,7 @@ object TransferRepositoryImp : TransferRepository {
                 MKTGenericResponse.Success(
                     createInventoryModel(
                         TransferUniqueCodeResponse(
-                            "7135030", "Oscar", "50", "AD403769", "AD403769", "AD430",
+                            "7135030", "Oscar", "50", "OGN0818/85B134377A2", "AD403769", "AD430",
                             ErrorResponse("", "", false, "OK", 0, "OK")
                         )
                     )

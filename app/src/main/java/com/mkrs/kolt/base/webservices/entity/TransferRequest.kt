@@ -15,6 +15,22 @@ class TransferRequest(
     val lines: MutableList<LineasED>
 )
 
+/*
+
+{
+  "Referencia": "string",
+  "Lineas": [
+    {
+      "WhsCode": "string",
+      "ItemCodeMP": "string",
+      "ItemCodePT": "string",
+      "BatchNuber": "string",
+      "ManufacturerSerialNumber": "string",
+      "Quantity": 0
+    }
+  ]
+}
+ */
 class LineasED(
     @SerializedName("WhsCode")
     val whsCode: String = "",
@@ -22,7 +38,7 @@ class LineasED(
     val code: String = "",
     @SerializedName("ItemCodePT")
     val itemCode: String = "",
-    @SerializedName("BatchNuber")
+    @SerializedName("BatchNumber")
     val batchNumber: String = "",
     @SerializedName("ManufacturerSerialNumber")
     val manSerialNum: String = "",

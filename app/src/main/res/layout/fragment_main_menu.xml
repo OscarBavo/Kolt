@@ -19,7 +19,7 @@
         android:padding="@dimen/dim_size_16"
         android:layout_margin="@dimen/dim_size_5"
         app:layout_constraintVertical_bias="0.380"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 
     <com.google.android.material.button.MaterialButton
@@ -33,7 +33,7 @@
         app:layout_constraintStart_toStartOf="@id/btn_in"
         app:layout_constraintEnd_toEndOf="@id/btn_in"
         android:text="@string/btn_title_out"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 
     <com.google.android.material.button.MaterialButton
@@ -47,5 +47,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="@dimen/dim_size_5"
         android:text="@string/btn_title_transfer"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_about_us"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        style="@style/button_simple"
+        app:layout_constraintEnd_toEndOf="@id/btn_transfer"
+        app:layout_constraintTop_toBottomOf="@id/btn_transfer"
+        app:layout_constraintStart_toStartOf="@id/btn_transfer"
+        android:layout_marginTop="@dimen/dim_size_5"
+        android:text="@string/title_about_us"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

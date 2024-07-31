@@ -98,7 +98,12 @@ open class MKTActivity : AppCompatActivity() {
                             null
                         )
                     )
-                    else->{}
+
+                    UserLayout.ABOUT_US -> {
+                        builder.setView(inflater.inflate(R.layout.dialog_about_us, null))
+                    }
+
+                    else -> {}
                 }
             }
             if (showingNoBtn) {
@@ -154,5 +159,5 @@ open class MKTActivity : AppCompatActivity() {
 }
 
 enum class UserLayout {
-    PASS, COWORKER, NO_LAYOUT
+    PASS, COWORKER, NO_LAYOUT, ABOUT_US
 }

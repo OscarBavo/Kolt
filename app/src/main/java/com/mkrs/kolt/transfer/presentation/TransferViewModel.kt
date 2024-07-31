@@ -95,7 +95,7 @@ class TransferViewModel(
         this.quantity = quantity.toDouble()
     }
 
-    fun resetQuantity(){
+    fun resetQuantity() {
         this.quantityDone = 0.0
         this.quantityReject = 0.0
         this.quantityDiff = 0.0
@@ -181,7 +181,7 @@ class TransferViewModel(
                     if (response.transfer.Result.toInt() > 0) {
                         mutableTransferUIState.postValue(TransferUIState.TransferDone(response.transfer.FechaHora))
                     } else {
-                        mutableTransferUIState.postValue(TransferUIState.Error(response.transfer.Message))
+                        mutableTransferUIState.postValue(TransferUIState.ErrorCustom(response.transfer.Message))
                     }
                 }
 
@@ -233,7 +233,7 @@ class TransferViewModel(
 
     private fun isAvailableQuantity(typeQuantity: TypeQuantity) {
         val quantityTotal = quantityDone + quantityReject + quantityDiff + quantitySCRAP
-        if(quantity==0.0) return
+        if (quantity == 0.0) return
         if (quantity - quantityTotal < VERIFY_TOTAL_OK) {
             mutableTransferUIState.postValue(
                 TransferUIState.UpperQuantity(
@@ -304,44 +304,44 @@ class TransferViewModel(
                 R.string.whs_code_pt_03
             ) else context.getString(R.string.whs_code_pt_02)
         val transferMP = LineasED(
-            whsCode,
-            finalProductModel.code,
-            finalProductModel.codeUnique,
-            finalProductModel.mnfSerial,
-            finalProductModel.suppCatNum,
-            quantityDone
+            whsCode = whsCode,
+            code = finalProductModel.code,
+            itemCode = finalProductModel.code,
+            batchNumber = finalProductModel.codeUnique,
+            manSerialNum = finalProductModel.mnfSerial,
+            quantity = quantityDone
         )
         lineas.add(transferMP)
         if (quantityReject > 0.0) {
             val transferRej = LineasED(
-                context.getString(R.string.whs_code_rej_04),
-                finalProductModel.code,
-                finalProductModel.codeUnique,
-                finalProductModel.mnfSerial,
-                finalProductModel.suppCatNum,
-                quantityReject
+                whsCode = context.getString(R.string.whs_code_rej_04),
+                code = finalProductModel.code,
+                itemCode = finalProductModel.code,
+                batchNumber = finalProductModel.codeUnique,
+                manSerialNum = finalProductModel.mnfSerial,
+                quantity = quantityReject
             )
             lineas.add(transferRej)
         }
         if (quantitySCRAP > 0.0) {
             val transferSCRAP = LineasED(
-                context.getString(R.string.whs_code_scrap_05),
-                finalProductModel.code,
-                finalProductModel.codeUnique,
-                finalProductModel.mnfSerial,
-                finalProductModel.suppCatNum,
-                quantitySCRAP
+                whsCode = context.getString(R.string.whs_code_scrap_05),
+                code = finalProductModel.code,
+                itemCode = finalProductModel.code,
+                batchNumber = finalProductModel.codeUnique,
+                manSerialNum = finalProductModel.mnfSerial,
+                quantity = quantitySCRAP
             )
             lineas.add(transferSCRAP)
         }
         if (quantityDiff > 0.0) {
             val transferDiff = LineasED(
-                context.getString(R.string.whs_code_diff_06),
-                finalProductModel.code,
-                finalProductModel.codeUnique,
-                finalProductModel.mnfSerial,
-                finalProductModel.suppCatNum,
-                quantityDiff
+                whsCode = context.getString(R.string.whs_code_diff_06),
+                code = finalProductModel.code,
+                itemCode = finalProductModel.code,
+                batchNumber = finalProductModel.codeUnique,
+                manSerialNum = finalProductModel.mnfSerial,
+                quantity = quantityDiff
             )
             lineas.add(transferDiff)
         }
