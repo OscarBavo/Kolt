@@ -178,7 +178,7 @@ class TransferViewModel(
             mutableTransferUIState.postValue(TransferUIState.Loading)
             when (val response = postTransferUseCase.execute(createPost(), isDummy)) {
                 is TransferResult.Success -> {
-                    if (response.transfer.Result.toInt() > 0) {
+                    if (response.transfer.Result == context.getString(R.string.generic_ok)) {
                         mutableTransferUIState.postValue(TransferUIState.TransferDone(response.transfer.FechaHora))
                     } else {
                         mutableTransferUIState.postValue(TransferUIState.ErrorCustom(response.transfer.Message))
@@ -278,7 +278,18 @@ class TransferViewModel(
                 val quantityLabel =
                     if (initLabel == totalLabel - 1) remaindersLabel else quantityPrinter
                 var label = context.getString(R.string.label_printer_one)
-                label = label.replace(dataLabel[0], date)
+                val dateTime = date.split(" ", ignoreCase = false)
+                var dateMonth = ""
+                var dateHour = ""
+                if (dateTime.isNotEmpty()) {
+                    if (dateTime.size == 1) {
+                        dateMonth = dateTime[0]
+                    } else {
+                        dateMonth = dateTime[0]
+                        dateHour = dateTime[1]
+                    }
+                }
+                label = label.replace(dataLabel[0], dateMonth)
                 label = label.replace(dataLabel[1], finalProductModel.itemName)
                 label = label.replace(dataLabel[2], finalProductModel.suppCatNum)
                 label = label.replace(dataLabel[3], coWorker)
@@ -290,6 +301,7 @@ class TransferViewModel(
                 label = label.replace(dataLabel[9], perforadora)
                 label = label.replace(dataLabel[10], "$quantityLabel")
                 label = label.replace(dataLabel[11], "${initLabel + 1}/$totalLabel")
+                label = label.replace(dataLabel[12], dateHour)
                 labels.add(label)
                 initLabel++
             }

@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.textfield.TextInputLayout
 import com.mkrs.kolt.MainActivity
 import com.mkrs.kolt.R
@@ -19,12 +20,23 @@ import com.mkrs.kolt.transfer.presentation.TransferActivity
 import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.base.MKTFragment
 import com.mkrs.kolt.base.UserLayout
+import com.mkrs.kolt.base.conectivity.webservice.APIKolt
 import com.mkrs.kolt.databinding.FragmentMainMenuBinding
+import com.mkrs.kolt.preferences.di.HomeModule
+import com.mkrs.kolt.preferences.di.PreferenceModule
+import com.mkrs.kolt.preferences.presentation.PreferencesViewModel
 import com.mkrs.kolt.transfer.presentation.TransferActivity.Companion.USER_TRANSFER
 
 class MainMenuFragment : MKTFragment(R.layout.fragment_main_menu) {
 
     private lateinit var binding: FragmentMainMenuBinding
+    private var urlAPI = ""
+
+    private val preferencesViewModel by activityViewModels<PreferencesViewModel> {
+        PreferenceModule.providePreferenceVMFactory(
+            HomeModule.provideHomePreferences(requireActivity(), "Impresoras")
+        )
+    }
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -56,6 +68,7 @@ class MainMenuFragment : MKTFragment(R.layout.fragment_main_menu) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupBar(resources.getString(R.string.title_dashboard), true)
+        initAPI()
         binding.btnTransfer.setOnClickListener {
             consultWorker()
 
@@ -64,6 +77,14 @@ class MainMenuFragment : MKTFragment(R.layout.fragment_main_menu) {
             showAboutUs()
         }
         registerForContextMenu(binding.btnTransfer)
+    }
+
+    private fun initAPI() {
+        urlAPI = preferencesViewModel.getString(
+            getString(R.string.key_pass_web_service),
+            getString(R.string.default_web_service)
+        )
+        APIKolt.update(urlAPI)
     }
 
     private fun showAboutUs() {

@@ -44,7 +44,7 @@ class MainActivity : MKTActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        toSection(R.id.action_home)
+        toSection(R.id.action_home, true)
         onBackPressedDispatcher.addCallback(this) {
             mainOnBackPress()
         }
@@ -96,8 +96,23 @@ class MainActivity : MKTActivity() {
             }
 
             R.id.action_home -> {
+                if(!isDifferentFlow) {
+                    showAboutUs()
+                    true
+                }
                 launchMain()
             }
+        }
+    }
+
+    private fun showAboutUs() {
+        this.let {
+            it.showAlertComplete(
+                resources.getString(R.string.title_about_us),
+                "",
+                resources.getString(R.string.generic_ok),
+                true, { _, _ -> it.alertDialog.dismiss() }, "", false, null, UserLayout.ABOUT_US
+            )
         }
     }
 

@@ -182,6 +182,7 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer),
             tieTextDifferent.enable()
             tieTextScrap.enable()
 
+            tieTextUniqueCode.setTextAppearance(R.style.input_text_ready)
             tieTextDoneProduct.requestFocus()
             tieTextDoneProduct.text = detail.quantity.toEditable()
             tieTextDoneProduct.selectAll()
