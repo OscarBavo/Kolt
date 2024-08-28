@@ -74,7 +74,9 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer),
         setupBar(resources.getString(R.string.title_fragment_transfer), true)
         initDialog()
         initView()
+        initListener()
         loadLiveData()
+        transferBinding.tieTextKeyItem.requestFocus()
     }
 
     private fun loadLiveData() {
@@ -195,14 +197,13 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer),
     private fun initView() {
         transferBinding.apply {
             btnClean.disable()
-            tieTextDoneProduct.enable()
-            tieTextReject.enable()
-            tieTextDifferent.enable()
-            tieTextScrap.enable()
+            tieTextDoneProduct.disable()
+            tieTextReject.disable()
+            tieTextDifferent.disable()
+            tieTextScrap.disable()
             tilKeyItem.enable()
-            tieTextKeyItem.requestFocus()
         }
-        initListener()
+
     }
 
     private fun initListener() {

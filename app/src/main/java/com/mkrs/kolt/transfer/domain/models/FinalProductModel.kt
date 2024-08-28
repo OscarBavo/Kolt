@@ -7,7 +7,7 @@ package com.mkrs.kolt.transfer.domain.models
  * Date: 27 / 05 / 2024
  *****/
 data class FinalProductModel(
-    val itemCode: String = "",
+    var itemCode: String = "",
     val mnfSerial: String = "",
     val quantity: String = "",
     val itemName: String = "",

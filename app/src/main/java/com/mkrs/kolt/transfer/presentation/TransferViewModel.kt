@@ -36,7 +36,9 @@ class TransferViewModel(
 
     private val mutableTransferUIState = MutableLiveData<TransferUIState>()
     var finalProductModel: FinalProductModel = FinalProductModel()
+    private val totalLabels = mutableListOf<String>()
     private var code: String = ""
+    private var itemCode: String = ""
     private var codeUnique: String = ""
     private var coWorker: String = ""
     private var perforadora: String = ""
@@ -59,6 +61,7 @@ class TransferViewModel(
         this.finalProductModel = finalProductModel
         this.finalProductModel.code = code
         this.finalProductModel.codeUnique = codeUnique
+        this.finalProductModel.itemCode = itemCode
     }
 
     fun resetFinalProductModel() {
@@ -71,8 +74,9 @@ class TransferViewModel(
         mutableTransferUIState.postValue(TransferUIState.NoState)
     }
 
-    private fun saveCode(code: String) {
+    private fun saveCode(code: String, itemCode: String) {
         this.code = code
+        this.itemCode = itemCode
     }
 
     fun saveCoWorker(coWorker: String) {
@@ -81,6 +85,8 @@ class TransferViewModel(
     }
 
     fun getCoworker() = this.coWorker
+
+    fun getLabels() = this.totalLabels
 
     fun savePerforadora(perforadora: String) {
         this.perforadora = perforadora
@@ -138,7 +144,7 @@ class TransferViewModel(
                             )
                         )
                     } else {
-                        saveCode(code)
+                        saveCode(code, response.data)
                         mutableTransferUIState.postValue(TransferUIState.SuccessCode)
                     }
                 }
@@ -271,7 +277,7 @@ class TransferViewModel(
     fun replaceDataPrinter(date: String) {
         viewModelScope.launch {
             // mutableTransferUIState.postValue(TransferUIState.Loading)
-            val labels = mutableListOf<String>()
+
             var initLabel = 0
             val dataLabel: Array<String> = context.resources.getStringArray(R.array.data_replace)
             while (initLabel < totalLabel) {
@@ -302,10 +308,10 @@ class TransferViewModel(
                 label = label.replace(dataLabel[10], "$quantityLabel")
                 label = label.replace(dataLabel[11], "${initLabel + 1}/$totalLabel")
                 label = label.replace(dataLabel[12], dateHour)
-                labels.add(label)
+                totalLabels.add(label)
                 initLabel++
             }
-            mutableTransferUIState.postValue(TransferUIState.Printing(labels))
+            mutableTransferUIState.postValue(TransferUIState.Printing(totalLabels))
         }
     }
 
@@ -318,7 +324,7 @@ class TransferViewModel(
         val transferMP = LineasED(
             whsCode = whsCode,
             code = finalProductModel.code,
-            itemCode = finalProductModel.code,
+            itemCode = finalProductModel.itemCode,
             batchNumber = finalProductModel.codeUnique,
             manSerialNum = finalProductModel.mnfSerial,
             quantity = quantityDone
@@ -328,7 +334,7 @@ class TransferViewModel(
             val transferRej = LineasED(
                 whsCode = context.getString(R.string.whs_code_rej_04),
                 code = finalProductModel.code,
-                itemCode = finalProductModel.code,
+                itemCode = finalProductModel.itemCode,
                 batchNumber = finalProductModel.codeUnique,
                 manSerialNum = finalProductModel.mnfSerial,
                 quantity = quantityReject
@@ -339,7 +345,7 @@ class TransferViewModel(
             val transferSCRAP = LineasED(
                 whsCode = context.getString(R.string.whs_code_scrap_05),
                 code = finalProductModel.code,
-                itemCode = finalProductModel.code,
+                itemCode = finalProductModel.itemCode,
                 batchNumber = finalProductModel.codeUnique,
                 manSerialNum = finalProductModel.mnfSerial,
                 quantity = quantitySCRAP
@@ -350,7 +356,7 @@ class TransferViewModel(
             val transferDiff = LineasED(
                 whsCode = context.getString(R.string.whs_code_diff_06),
                 code = finalProductModel.code,
-                itemCode = finalProductModel.code,
+                itemCode = finalProductModel.itemCode,
                 batchNumber = finalProductModel.codeUnique,
                 manSerialNum = finalProductModel.mnfSerial,
                 quantity = quantityDiff

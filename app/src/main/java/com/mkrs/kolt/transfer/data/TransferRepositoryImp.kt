@@ -24,7 +24,10 @@ import kotlinx.coroutines.withContext
  *****/
 object TransferRepositoryImp : TransferRepository {
     private const val ERROR_ZERO = "0"
-    override suspend fun getCodePT(claveMaterial: String, isDummy:Boolean): MKTGenericResponse<String> =
+    override suspend fun getCodePT(
+        claveMaterial: String,
+        isDummy: Boolean
+    ): MKTGenericResponse<String> =
         withContext(Dispatchers.IO) {
             return@withContext if (isDummy) {
                 MKTGenericResponse.Success("7135030")
@@ -88,9 +91,9 @@ object TransferRepositoryImp : TransferRepository {
                                 "0",
                                 "0",
                                 false,
-                                "OK",
-                                4,
                                 "7133238",
+                                4,
+                                "OK",
                                 FechaHora = "27/06/2024 19:09"
                             )
                         )

@@ -64,18 +64,56 @@ class BottomSheetTransferConfirmation :
 
             is PrinterUIState.Printed -> {
                 activity?.dismissDialog()
-                this.dismiss()
-                showAlert(getString(R.string.success_printer), binding.btnSave)
                 printerViewModel.printNoState()
                 transferViewModel.setNoState()
-                bottomSheetListener.onPrintingSuccess(getString(R.string.generic_ok))
+                questionLabelOk()
             }
 
             is PrinterUIState.Error -> {
                 activity?.dismissDialog()
+                printerViewModel.printNoState()
                 showAlert(state.message, binding.btnSave)
             }
 
+        }
+    }
+
+    private fun questionLabelOk() {
+        activity?.showAlertComplete(
+            getString(R.string.generic_information),
+            getString(R.string.success_label_question),
+            getString(R.string.generic_yes),
+            true,
+            { _, _ ->
+                this.dismiss()
+                activity?.alertDialog?.dismiss()
+                bottomSheetListener.onPrintingSuccess(getString(R.string.generic_ok))
+            },
+            getString(R.string.generic_no),
+            true,
+            { _, _ ->
+                activity?.alertDialog?.dismiss()
+                showRetrievePrinterLabel()
+            })
+    }
+
+    private fun showRetrievePrinterLabel() {
+        activity?.let {
+            it.showAlertComplete(
+                getString(R.string.generic_information),
+                getString(R.string.retrieve_printer_label),
+                getString(R.string.generic_yes),
+                true, { _, _ ->
+                    it.alertDialog.dismiss()
+                    printingLabel(transferViewModel.getLabels())
+                },
+                getString(R.string.generic_no),
+                true,
+                { _, _ ->
+                    it.alertDialog.dismiss()
+                    bottomSheetListener.onPrintingSuccess(getString(R.string.generic_ok))
+                }
+            )
         }
     }
 

@@ -95,6 +95,8 @@
         ^XZ
     </string>
     <string name="success_printer">Impresion correcta</string>
+    <string name="success_label_question">¿La etiqueta se ha impreso correctamente?</string>
+    <string name="retrieve_printer_label">¿Deseas imprimir nuevamente la etiqueta?</string>
     <!-- Transferencia -->
     <string name="title_worker_name">Favor de ingresar operador:</string>
     <string name="hint_worker_name">Operador</string>
