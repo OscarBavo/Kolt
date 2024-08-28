@@ -6,11 +6,11 @@
     <color name="color_white_t">#CCFFFFFF</color>
     <color name="color_link">#0D47A1</color>
 
-    <color name="primaryColor">#009688</color>
-    <color name="primaryDarkColor">#00675b</color>
-    <color name="secondaryColor">#ff1744</color>
-    <color name="secondaryDarkColor">#c4001d</color>
-    <color name="color_divider">#1E000000</color>
+    <color name="primaryColor">#2196F3</color>
+    <color name="primaryDarkColor">#1976D2</color>
+    <color name="secondaryColor">#757575</color>
+    <color name="secondaryDarkColor">#4E4E4E</color>
+    <color name="color_divider">#BDBDBD</color>
     <color name="btnAbd">#DEE308</color>
     <color name="btnBcTc">#E34908</color>
     <color name="btn_dlt_brs">#C1C42F</color>
@@ -23,4 +23,9 @@
     <color name="letter">#148ABF</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+    <color name="text_color">#FFFFFF</color>
+    <color name="color_accent">#536DFE</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="ready_color">#4CAF50</color>
 </resources>

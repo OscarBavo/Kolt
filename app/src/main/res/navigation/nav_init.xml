@@ -3,16 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_init"
-    app:startDestination="@id/transferFragment">
+    app:startDestination="@id/mainMenuFragment">
 
     <fragment
-        android:id="@+id/transferFragment"
-        android:name="com.mkrs.kolt.presentation.transfer.TransferFragment"
-        android:label="fragment_transfer"
-        tools:layout="@layout/fragment_transfer" />
-    <fragment
         android:id="@+id/mainMenuFragment"
-        android:name="com.mkrs.kolt.presentation.transfer.MainMenuFragment"
+        android:name="com.mkrs.kolt.dashboard.home.presentacion.MainMenuFragment"
         android:label="fragment_main_menu"
         tools:layout="@layout/fragment_main_menu" />
 </navigation>

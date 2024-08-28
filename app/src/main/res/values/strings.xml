@@ -1,15 +1,147 @@
 <resources>
     <string name="app_name">Kolt</string>
+    <string name="generic_yes">Si</string>
+    <string name="generic_no">No</string>
+    <string name="generic_ok">OK</string>
+    <string name="generic_information">Información</string>
     <string name="error_generic">Error al consultar información</string>
+    <string name="update_info_generic">Información actualizada</string>
     <string name="load_logo_progress">Cargando información</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="btn_title_printer_test">Imprimir</string>
+    <string name="text_general_app_clean">Limpiar</string>
+    <string name="text_general_app_next">Siguiente</string>
+    <string name="text_general_app_continue">Continuar</string>
+    <string name="text_general_app_save">Guardar</string>
+    <string name="text_general_accept">Aceptar</string>
+    <string name="config_printer">Impresora</string>
+    <string name="home">Inicio</string>
+    <string name="config_web_service">Web Service</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_on_back_press_general">Atención</string>
+    <string name="title_on_back_press_general_message">¿Deseas salir de la pantalla actual?</string>
+    <string name="title_configure">Para configurar %s debe ingresar la contraseña</string>
+    <string name="title_configure_printer">Impresora</string>
+    <string name="title_configure_web_service">Web Services</string>
+    <string name="title_on_back_press_message_close_app">¿Deseas cerrar la aplicación?</string>
+    <string name="title_on_back_press_ret">Regresar</string>
+    <string name="title_on_back_press_out">Salir</string>
+    <string name="title_on_back_press_cancel">Cancelar</string>
+    <string name="color_title_bar">#0E4741</string>
+    <string name="title_edit_password">Contraseña</string>
+    <string name="title_error_password">Contraseña incorrecta</string>
+    <string name="title_required_text">Dato Necesario</string>
+    <string name="title_generic_input_data_required">Campo obligatorio</string>
+    <string name="title_split_ip">:</string>
+    <!-- about us -->
+    <string name="title_about_us">Acerca de…</string>
+    <string name="title_about_us_name">App Kolt</string>
+    <string name="title_about_us_version">v 1.0.2</string>
+    <string name="title_about_us_email">soporte@mkrs.com</string>
+    <string name="title_about_us_author">MKRS</string>
+    <string name="title_about_us_close">Gracias</string>
+
+    <!-- Shared Preference -->
+    <string name="data_name_printer">Impresoras</string>
+    <string name="key_value_printer">PrinterIPPort</string>
+    <string name="default_value_printer">127.0.0.1:9100</string>
+    <string name="key_pass_config_open">PassPrinter</string>
+    <string name="default_pass_config_open">Mkrs2024</string>
+    <string name="key_pass_web_service">WebServices</string>
+    <string name="key_pass_is_demo">IsDemo</string>
+    <!-- Web Services -->
+    <string name="hint_web_service_ip">IP Web Service</string>
+    <string name="default_web_service">https://b820-189-141-18-168.ngrok-free.app/KoltWebApp</string>
+    <string name="active_dummy">Demo</string>
+    <!-- Impresora -->
+    <string name="hint_printer_ip">IP Impresora</string>
+    <string name="hint_printer_port">Puerto</string>
+    <string name="title_printer_config">Configurar Impresora</string>
+    <string name="label_test">
+        ^XA
+        ^FX Top section with logo, name and address.
+        ^CF0,60
+        ^FO50,50^GB100,100,100^FS
+        ^FO75,75^FR^GB100,100,100^FS
+        ^FO93,93^GB40,40,40^FS
+        ^FO220,50^FDIntershipping, Inc.^FS
+        ^CF0,30
+        ^FO220,115^FD1000 Shipping Lane^FS
+        ^FO220,155^FDShelbyville TN 38102^FS
+        ^FO220,195^FDUnited States (USA)^FS
+        ^FO50,250^GB700,3,3^FS
+        ^FX Second section with recipient address and permit information.
+        ^CFA,30
+        ^FO50,300^FDJohn Doe^FS
+        ^FO50,340^FD100 Main Street^FS
+        ^FO50,380^FDSpringfield TN 39021^FS
+        ^FO50,420^FDUnited States (USA)^FS
+        ^CFA,15
+        ^FO600,300^GB150,150,3^FS
+        ^FO638,340^FDPermit^FS
+        ^FO638,390^FD123456^FS
+        ^FO50,500^GB700,3,3^FS
+        ^FX Third section with bar code.
+        ^BY5,2,270
+        ^FO100,550^BC^FD12345678^FS
+        ^FX Fourth section (the two boxes on the bottom).
+        ^FO50,900^GB700,250,3^FS
+        ^FO400,900^GB3,250,3^FS
+        ^CF0,40
+        ^FO100,960^FDCtr. X34B-1^FS
+        ^FO100,1010^FDREF1 F00B47^FS
+        ^FO100,1060^FDREF2 BL4H8^FS
+        ^CF0,190
+        ^FO470,955^FDCA^FS
+        ^XZ
+    </string>
+    <string name="success_printer">Impresion correcta</string>
+    <string name="success_label_question">¿La etiqueta se ha impreso correctamente?</string>
+    <string name="retrieve_printer_label">¿Deseas imprimir nuevamente la etiqueta?</string>
+    <!-- Transferencia -->
+    <string name="title_worker_name">Favor de ingresar operador:</string>
+    <string name="hint_worker_name">Operador</string>
+    <string name="title_exit_transfer">¿Deseas salir de Transferencia?</string>
+    <string name="title_add_another_transfer">¿Desea realizar otra transferencia?</string>
+    <string name="title_fragment_transfer">Transferencia</string>
+    <string name="title_transfer_complete">Transferencia Completada</string>
+    <string name="title_transfer_not_complete">Ha sucedido un problema en la transferencia favor de revisar</string>
+    <string name="title_bottom_sheet_transfer_done_product">Producto Terminado</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btn_title_in">Entrada</string>
     <string name="btn_title_out">Salida</string>
     <string name="btn_title_transfer">Transferencia</string>
-    <string name="title_generic_input_data_required">Campo obligatorio</string>
     <string name="title_key_item">Clave Material</string>
     <string name="title_unique_item">Campo Unico</string>
-    <string name="title_tv_batch">Lote/Rollo</string>
-    <string name="title_tv_pieces">Piezas</string>
+    <string name="title_tv_transfer_batch">Lote/Rollo</string>
+    <string name="title_tv_transfer_batch_detail">Detalles</string>
+    <string name="title_tv_transfer_max_pieces">Piezas máx almacenar</string>
+    <string name="title_tv_transfer_pieces">Piezas</string>
+    <string name="title_tv_transfer_convert">Conversión</string>
+    <string name="title_tv_transfer_done_product">PT</string>
+    <string name="title_tv_transfer_reject">Devolución</string>
+    <string name="title_tv_transfer_different">Discrepancia</string>
+    <string name="title_tv_transfer_scrap">SCRAP</string>
+    <string name="title_tv_transfer_total_transfer">Total</string>
+    <string name="title_bottom_transfer_product_done">Resumen</string>
+    <string name="title_bottom_transfer_no_part">No. Parte</string>
+    <string name="title_bottom_transfer_unique_code">Código único</string>
+    <string name="title_bottom_transfer_order">Pedido Prog.</string>
+    <string name="title_bottom_transfer_team_work">Operador</string>
+    <string name="title_bottom_transfer_perforadora">Perforadora</string>
+    <string name="title_bottom_transfer_standard_pack">Standard Pack</string>
+    <string name="not_found_data_code_pt">0</string>
+    <string name="not_found_data_code_p_msg">No existe PT en SAP para la clave ingresada, verifique.</string>
+    <string name="quantity_detail">0</string>
+    <string name="quantity_detail_msg">El código único no tiene MP</string>
+    <string name="unique_code_error_init">El código único es invalido, verifique</string>
+    <string name="label_note_printer">Nota: %s</string>
+    <string name="label_note_printer_calculate">Se imprimirá(n) %1s etiquetas con cantidad de %2s piezas </string>
+    <string name="label_note_printer_calculate_remainders">y una etiqueta con el remanente de %s piezas</string>
+    <string name="whs_code_pt_02">02</string>
+    <string name="whs_code_pt_03">03</string>
+    <string name="is_pt_03">710</string>
+    <string name="whs_code_rej_04">04</string>
+    <string name="whs_code_scrap_05">05</string>
+    <string name="whs_code_diff_06">06</string>
+    <string name="label_error_digits_item_code">solo ingresar números</string>
 </resources>
