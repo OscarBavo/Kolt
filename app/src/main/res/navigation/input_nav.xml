@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/input_nav"
+    app:startDestination="@id/inputFragment">
+
+    <fragment
+        android:id="@+id/inputFragment"
+        android:name="com.mkrs.kolt.input.presentation.InputFragment"
+        android:label="fragment_input"
+        tools:layout="@layout/fragment_input" />
+    <activity
+        android:id="@+id/inputActivity"
+        android:name="com.mkrs.kolt.input.presentation.InputActivity"
+        android:label="activity_input"
+        tools:layout="@layout/activity_input" />
+    <fragment
+        android:id="@+id/outputFragment"
+        android:name="com.mkrs.kolt.input.presentation.OutputFragment"
+        android:label="fragment_output"
+        tools:layout="@layout/fragment_output" />
+</navigation>

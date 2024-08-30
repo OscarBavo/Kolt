@@ -17,9 +17,9 @@
             android:layout_width="@dimen/dim_size_150"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dim_size_5"
+            android:enabled="false"
             android:hint="@string/title_key_item"
             app:endIconMode="clear_text"
-            android:enabled="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -28,8 +28,8 @@
                 style="@style/input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="numberDecimal"
                 android:enabled="false"
+                android:inputType="numberDecimal"
                 android:maxLength="@integer/dim_7" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,12 +47,12 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tie_text_unique_code"
                 style="@style/input_text"
-                android:textAlignment="textStart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textCapWords"
                 android:enabled="false"
-                android:maxLength="@integer/dim_8" />
+                android:inputType="textCapWords"
+                android:maxLength="@integer/dim_8"
+                android:textAlignment="textStart" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -87,6 +87,7 @@
             app:layout_constraintStart_toStartOf="@id/tv_batch_detail"
             app:layout_constraintTop_toBottomOf="@id/tv_batch_detail"
             tools:text="10140874" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_batch_roll"
             style="@style/input_text.item.title"
@@ -95,7 +96,7 @@
             android:text="@string/title_tv_transfer_batch"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="@id/vw_divider_one"
-            app:layout_constraintTop_toBottomOf="@id/vw_divider_one"/>
+            app:layout_constraintTop_toBottomOf="@id/vw_divider_one" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_batch_roll_data"
@@ -125,6 +126,7 @@
             android:textAlignment="center"
             app:layout_constraintStart_toStartOf="@id/vw_divider_two"
             app:layout_constraintTop_toBottomOf="@id/vw_divider_two" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_pieces_data"
             style="@style/input_text.item"
@@ -198,10 +200,9 @@
             android:layout_height="wrap_content"
             android:hint="@string/title_tv_transfer_different"
             app:endIconMode="clear_text"
-            app:layout_constraintStart_toStartOf="@id/til_out_pt"
             app:layout_constraintEnd_toEndOf="@id/til_out_pt"
-            app:layout_constraintTop_toBottomOf="@+id/til_out_pt"
-            >
+            app:layout_constraintStart_toStartOf="@id/til_out_pt"
+            app:layout_constraintTop_toBottomOf="@+id/til_out_pt">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tie_text_different"
@@ -229,6 +230,7 @@
                 android:layout_height="match_parent"
                 android:maxLength="@integer/dim_21" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <View
             android:id="@+id/vw_divider_four"
             android:layout_width="0dp"
@@ -257,6 +259,7 @@
             app:layout_constraintEnd_toEndOf="@id/vw_divider_four"
             app:layout_constraintTop_toBottomOf="@id/vw_divider_four"
             tools:text="300" />
+
         <View
             android:id="@+id/vw_divider_five"
             android:layout_width="0dp"
@@ -280,10 +283,10 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_next"
             style="@style/button_text"
-            android:enabled="false"
             android:layout_width="@dimen/dim_size_0"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dim_size_8"
+            android:enabled="false"
             android:text="@string/text_general_app_next"
             app:layout_constraintEnd_toEndOf="@id/vw_divider_five"
             app:layout_constraintTop_toBottomOf="@id/vw_divider_five" />

@@ -85,6 +85,15 @@
         <item name="android:layout_marginTop">@dimen/dim_size_4</item>
     </style>
 
+    <style name="input_text.item_no_top">
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/dim_text_16</item>
+        <item name="android:textColor">@color/gray_own</item>
+    </style>
+
     <style name="input_text.item.title">
         <item name="android:textAlignment">textStart</item>
         <item name="android:textStyle">bold</item>

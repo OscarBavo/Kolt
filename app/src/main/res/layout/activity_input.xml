@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".input.presentation.InputActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/tb_input"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primaryColor"
+        android:elevation="@dimen/dim_size_4"
+        style="@style/Theme.Kolt.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:title="@string/btn_title_in"
+        app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+        />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fr_input"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="@dimen/dim_size_0"
+        android:layout_height="@dimen/dim_size_0"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tb_input"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

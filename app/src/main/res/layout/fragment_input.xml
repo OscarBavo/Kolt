@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".input.presentation.InputFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_no_batch"
+            style="@style/input_text.item.title"
+            android:layout_width="@dimen/dim_size_0"
+            android:layout_height="wrap_content"
+            android:text="@string/title_label_no_batch"
+            android:textAlignment="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/dim_size_80"
+            />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_no_batch_data"
+            style="@style/input_text.item"
+            android:layout_width="@dimen/dim_size_0"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="@id/tv_no_batch"
+            app:layout_constraintTop_toBottomOf="@id/tv_no_batch"
+            tools:text="300" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_refer"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dim_size_5"
+            android:hint="@string/title_label_refer"
+            app:endIconMode="clear_text"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@id/tv_no_batch_data"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tie_refer_data"
+                style="@style/input_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="numberDecimal"
+                android:enabled="false"
+                android:maxLength="@integer/dim_7" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_key_item"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dim_size_5"
+            android:hint="@string/title_key_item"
+            app:endIconMode="clear_text"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@id/til_refer"
+            app:layout_constraintStart_toStartOf="@id/til_refer"
+            app:layout_constraintEnd_toEndOf="@id/til_refer"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tie_key_item_data"
+                style="@style/input_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="numberDecimal"
+                android:enabled="false"
+                android:maxLength="@integer/dim_7" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_unique_code"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dim_size_5"
+            android:hint="@string/title_unique_item"
+            app:endIconMode="clear_text"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@id/til_key_item"
+            app:layout_constraintStart_toStartOf="@id/til_key_item"
+            app:layout_constraintEnd_toEndOf="@id/til_key_item"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tie_unique_code_data"
+                style="@style/input_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="numberDecimal"
+                android:enabled="false"
+                android:maxLength="@integer/dim_7" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_pieces"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dim_size_5"
+            android:hint="@string/title_tv_transfer_pieces"
+            app:endIconMode="clear_text"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@id/til_unique_code"
+            app:layout_constraintStart_toStartOf="@id/til_unique_code"
+            app:layout_constraintEnd_toEndOf="@id/til_unique_code"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tie_pieces_data"
+                style="@style/input_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="numberDecimal"
+                android:enabled="false"
+                android:maxLength="@integer/dim_7" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_batch_roll"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dim_size_5"
+            android:hint="@string/title_tv_transfer_batch"
+            app:endIconMode="clear_text"
+            android:enabled="false"
+            app:layout_constraintTop_toBottomOf="@id/til_pieces"
+            app:layout_constraintStart_toStartOf="@id/til_pieces"
+            app:layout_constraintEnd_toEndOf="@id/til_pieces"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tie_batch_roll_data"
+                style="@style/input_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="numberDecimal"
+                android:enabled="false"
+                android:maxLength="@integer/dim_7" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_clean"
+            style="@style/button_text"
+            android:layout_width="@dimen/dim_size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_size_4"
+            android:text="@string/text_general_app_clean"
+            app:layout_constraintStart_toStartOf="@+id/til_batch_roll"
+            app:layout_constraintTop_toBottomOf="@id/til_batch_roll" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_next"
+            style="@style/button_text"
+            android:layout_width="@dimen/dim_size_0"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="@string/text_general_app_next"
+            app:layout_constraintTop_toTopOf="@id/btn_clean"
+            app:layout_constraintEnd_toEndOf="@id/til_batch_roll"
+            app:layout_constraintTop_toBottomOf="@id/til_batch_roll" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save"
+            style="@style/button_text"
+            android:layout_width="@dimen/dim_size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_size_4"
+            android:enabled="false"
+            android:text="@string/text_general_app_save"
+            app:layout_constraintStart_toStartOf="@id/btn_clean"
+            app:layout_constraintEnd_toEndOf="@id/btn_next"
+            app:layout_constraintTop_toBottomOf="@id/btn_next" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
