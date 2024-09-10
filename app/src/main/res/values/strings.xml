@@ -155,4 +155,7 @@
     <string name="btn_title_output_receive">Receptor:</string>
     <string name="title_key_pt">Clave PT:</string>
     <string name="title_output_to">Salida a:</string>
+
+    <string name="title_exit_in_out">¿Deseas salir de %s?</string>
+
 </resources>

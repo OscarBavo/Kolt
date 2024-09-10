@@ -22,6 +22,9 @@ import com.mkrs.kolt.base.MKTFragment
 import com.mkrs.kolt.base.UserLayout
 import com.mkrs.kolt.base.conectivity.webservice.APIKolt
 import com.mkrs.kolt.databinding.FragmentMainMenuBinding
+import com.mkrs.kolt.input.presentation.InputActivity.Companion.INOUT_FLOW
+import com.mkrs.kolt.input.presentation.InputActivity.Companion.IN_FLOW
+import com.mkrs.kolt.input.presentation.InputActivity.Companion.OUT_FLOW
 import com.mkrs.kolt.preferences.di.HomeModule
 import com.mkrs.kolt.preferences.di.PreferenceModule
 import com.mkrs.kolt.preferences.presentation.PreferencesViewModel
@@ -72,6 +75,12 @@ class MainMenuFragment : MKTFragment(R.layout.fragment_main_menu) {
         binding.btnTransfer.setOnClickListener {
             consultWorker()
 
+        }
+        binding.btnIn.setOnClickListener {
+            inout(IN_FLOW)
+        }
+        binding.btnOut.setOnClickListener {
+            inout(OUT_FLOW)
         }
         binding.btnAboutUs.setOnClickListener {
             showAboutUs()
@@ -144,6 +153,13 @@ class MainMenuFragment : MKTFragment(R.layout.fragment_main_menu) {
     private fun initTransfer(user: String) {
         val intent = Intent(requireContext(), TransferActivity::class.java).apply {
             putExtra(USER_TRANSFER, user)
+        }
+        startActivity(intent)
+    }
+
+    private fun inout(type:Int){
+        val intent = Intent(requireContext(), TransferActivity::class.java).apply {
+            putExtra(INOUT_FLOW, type)
         }
         startActivity(intent)
     }

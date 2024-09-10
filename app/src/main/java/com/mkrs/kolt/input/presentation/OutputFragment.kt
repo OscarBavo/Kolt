@@ -5,56 +5,127 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.mkrs.kolt.R
+import com.mkrs.kolt.base.MKTActivity
+import com.mkrs.kolt.base.MKTFragment
+import com.mkrs.kolt.databinding.FragmentOutputBinding
+import com.mkrs.kolt.input.di.InputModule
+import com.mkrs.kolt.preferences.di.HomeModule
+import com.mkrs.kolt.preferences.di.PreferenceModule
+import com.mkrs.kolt.preferences.presentation.PreferencesViewModel
+import com.mkrs.kolt.utils.disable
+import com.mkrs.kolt.utils.enable
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [OutputFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class OutputFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentOutputBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private val preferencesViewModel by activityViewModels<PreferencesViewModel> {
+        PreferenceModule.providePreferenceVMFactory(
+            HomeModule.provideHomePreferences(requireActivity(), "Impresoras")
+        )
     }
+
+    private val vmFactory by lazy {
+        InputModule.providesInputViewModelFactory(requireActivity().application)
+    }
+
+    private val inputViewModel: InputViewModel by activityViewModels { vmFactory }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_output, container, false)
+        activity = requireActivity() as? MKTActivity
+        binding = FragmentOutputBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment OutputFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            OutputFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initDialog()
+        initView()
+        initListener()
+        loadLiveData()
+        binding.tieOutputReferData.requestFocus()
+    }
+
+    private fun loadLiveData() {
+        inputViewModel.inOutViewState.observe(viewLifecycleOwner) {
+            observerOutputState(it)
+        }
+    }
+
+
+    private fun observerOutputState(state: InOutputUiState?) {
+        when (state) {
+            is InOutputUiState.Loading -> showDialog()
+            is InOutputUiState.NoState -> dismissDialog()
+            is InOutputUiState.Error -> {
+                dismissDialog()
+                showAlert(msg = state.msg, view = binding.btnOutputNext)
+                inputViewModel.setNoState()
             }
+
+            is InOutputUiState.SaveOutPutReference -> {
+                binding.btnOutputClean.enable()
+                binding.tieOutputKeyPtData.enable()
+                binding.tieOutputKeyPtData.requestFocus()
+            }
+
+            is InOutputUiState.SaveOutPutKeyPT -> {
+                binding.tieOutputUniqueCodeData.enable()
+                binding.tieOutputUniqueCodeData.requestFocus()
+            }
+
+            is InOutputUiState.SaveOutPutKeyUnique -> {
+                binding.tieOutputPerfoData.enable()
+                binding.tieOutputPerfoData.requestFocus()
+            }
+
+            is InOutputUiState.SaveOutPutPerfo -> {
+                binding.tieOutputCoworkerData.enable()
+                binding.tieOutputCoworkerData.requestFocus()
+            }
+
+            is InOutputUiState.SaveOutputCoworker -> {
+                binding.tieOutputTo.enable()
+                binding.tieOutputTo.requestFocus()
+            }
+
+            is InOutputUiState.SaveOutputTo -> {
+                binding.btnOutputNext.enable()
+                binding.btnOutputSave.enable()
+            }
+
+            else -> {
+                dismissDialog()
+                inputViewModel.setNoState()
+            }
+        }
+    }
+
+    private fun initListener() {
+        TODO("Not yet implemented")
+    }
+
+    private fun initView() {
+        binding.tvOutputLabelsData.text = "10"
+        binding.tvOutputDateData.text = "29/08/2024"
+        binding.tvOutputEmitData.text = "KOLT TECHNOLOGY SA de CV"
+        binding.tvOutputReceiveData.text = "MKRS"
+
+        binding.tieOutputKeyPtData.disable()
+        binding.tieOutputUniqueCodeData.disable()
+        binding.tieOutputPerfoData.disable()
+        binding.tieOutputCoworkerData.disable()
+        binding.tieOutputTo.disable()
+
+        binding.btnOutputClean.disable()
+        binding.btnOutputNext.disable()
+        binding.btnOutputSave.disable()
+
     }
 }

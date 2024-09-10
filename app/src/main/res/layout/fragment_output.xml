@@ -126,7 +126,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_output_key_item"
+            android:id="@+id/til_output_key_pt"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tie_output_key_item_data"
+                android:id="@+id/tie_output_key_pt_data"
                 style="@style/input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -158,9 +158,9 @@
             android:hint="@string/title_unique_item"
             app:endIconMode="clear_text"
             android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@id/til_output_key_item"
-            app:layout_constraintStart_toStartOf="@id/til_output_key_item"
-            app:layout_constraintEnd_toEndOf="@id/til_output_key_item"
+            app:layout_constraintTop_toBottomOf="@id/til_output_key_pt"
+            app:layout_constraintStart_toStartOf="@id/til_output_key_pt"
+            app:layout_constraintEnd_toEndOf="@id/til_output_key_pt"
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -174,7 +174,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_output_pieces"
+            android:id="@+id/til_output_perfo"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -188,7 +188,7 @@
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tie_output_pieces_data"
+                android:id="@+id/tie_output_perfo_data"
                 style="@style/input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -206,13 +206,13 @@
             android:hint="@string/hint_worker_name"
             app:endIconMode="clear_text"
             android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@id/til_output_pieces"
-            app:layout_constraintStart_toStartOf="@id/til_output_pieces"
-            app:layout_constraintEnd_toEndOf="@id/til_output_pieces"
+            app:layout_constraintTop_toBottomOf="@id/til_output_perfo"
+            app:layout_constraintStart_toStartOf="@id/til_output_perfo"
+            app:layout_constraintEnd_toEndOf="@id/til_output_perfo"
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tie_output_batch_roll_data"
+                android:id="@+id/tie_output_coworker_data"
                 style="@style/input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
