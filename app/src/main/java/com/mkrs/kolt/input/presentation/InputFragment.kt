@@ -64,6 +64,10 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
         when (state) {
             is InOutputUiState.Loading -> showDialog()
             is InOutputUiState.NoState -> dismissDialog()
+            is InOutputUiState.ErrorSaveKeyItem->{
+                dismissDialog()
+                binding.tieKeyItemData.error="La clave de materia prima {"
+            }
             is InOutputUiState.SaveReference -> {
                 binding.btnClean.enable()
                 binding.tieKeyItemData.enable()

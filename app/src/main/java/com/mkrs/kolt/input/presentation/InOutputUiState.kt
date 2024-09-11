@@ -13,6 +13,7 @@ sealed class InOutputUiState {
     data class ErrorCustom(val msg: String) : InOutputUiState()
     object SaveReference : InOutputUiState()
     object SaveKeyItem : InOutputUiState()
+    object ErrorSaveKeyItem : InOutputUiState()
     object SaveKeyUnique : InOutputUiState()
     object SavePieces : InOutputUiState()
     object SaveBatchRoll : InOutputUiState()

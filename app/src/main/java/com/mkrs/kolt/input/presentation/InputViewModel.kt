@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mkrs.kolt.input.domain.models.InputModel
+import com.mkrs.kolt.utils.isCode
 
 /****
  * Project: Kolt
@@ -14,6 +15,7 @@ import com.mkrs.kolt.input.domain.models.InputModel
  *****/
 class InputViewModel(private val context: Application) : ViewModel() {
     private val mutableInOutUiState = MutableLiveData<InOutputUiState>()
+    private val listAddItem:MutableList<InputModel> = mutableListOf()
     var inputModel: InputModel = InputModel()
     var reference: String = ""
     var keyItem: String = ""
@@ -34,8 +36,12 @@ class InputViewModel(private val context: Application) : ViewModel() {
     }
 
     fun saveKeyItem(keyItem: String) {
-        this.keyItem = keyItem
-        mutableInOutUiState.postValue(InOutputUiState.SaveKeyItem)
+        if(isCode(keyItem)) {
+            this.keyItem = keyItem
+            mutableInOutUiState.postValue(InOutputUiState.SaveKeyItem)
+        }else{
+            mutableInOutUiState.postValue(InOutputUiState.ErrorSaveKeyItem)
+        }
     }
 
     fun saveKeyUnique(keyUnique: String) {

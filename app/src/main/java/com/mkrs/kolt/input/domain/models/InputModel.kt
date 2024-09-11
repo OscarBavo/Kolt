@@ -11,5 +11,6 @@ data class InputModel(
     var keyItem: String = "",
     var keyUnique: String = "",
     var Qty: Double = 0.0,
-    var batchRoll: String = ""
+    var batchRoll: String = "",
+    var labelBatch: String = ""
 )
