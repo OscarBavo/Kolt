@@ -36,7 +36,7 @@ class TransferViewModel(
 
     private val mutableTransferUIState = MutableLiveData<TransferUIState>()
     var finalProductModel: FinalProductModel = FinalProductModel()
-    private val totalLabels = mutableListOf<String>()
+    private var totalLabels = mutableListOf<String>()
     private var code: String = ""
     private var itemCode: String = ""
     private var codeUnique: String = ""
@@ -108,6 +108,8 @@ class TransferViewModel(
         this.quantitySCRAP = 0.0
         this.quantity = 0.0
         this.quantityPrinter = 0.0
+        this.totalLabels.clear()
+        this.totalLabels= mutableListOf()
     }
 
     fun saveQuantityDone(quantity: String) {
