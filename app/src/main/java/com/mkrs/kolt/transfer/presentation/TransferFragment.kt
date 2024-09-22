@@ -20,6 +20,8 @@ import com.mkrs.kolt.preferences.presentation.PreferencesViewModel
 import com.mkrs.kolt.transfer.di.TransferModule
 import com.mkrs.kolt.transfer.domain.models.FinalProductModel
 import com.mkrs.kolt.transfer.domain.models.TransferUIState
+import com.mkrs.kolt.utils.CONSTANST.Companion.CODE_MAX_LENGTH
+import com.mkrs.kolt.utils.CONSTANST.Companion.CODE_UNIQUE_MAX_LENGTH
 import com.mkrs.kolt.utils.disable
 import com.mkrs.kolt.utils.emptyStringEditable
 import com.mkrs.kolt.utils.enable
@@ -420,17 +422,6 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer),
 
     companion object {
 
-        const val CODE_MAX_LENGTH = 7
-        const val CODE_UNIQUE_MAX_LENGTH = 8
-        const val VERIFY_TOTAL_OK = 0.0
-
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @return A new instance of fragment TransferFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance() =
             TransferFragment().apply {

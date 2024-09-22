@@ -1,5 +1,7 @@
 package com.mkrs.kolt.input.presentation
 
+import com.mkrs.kolt.input.domain.models.InputModel
+
 /****
  * Project: Kolt
  * Dev: Oscar Balderas Vazquez
@@ -17,7 +19,9 @@ sealed class InOutputUiState {
     object SaveKeyUnique : InOutputUiState()
     object SavePieces : InOutputUiState()
     object SaveBatchRoll : InOutputUiState()
+    data class ErrorBatchRoll (val inputModel: InputModel) : InOutputUiState()
 
+    data class SaveAll(val totalBatch:Int):InOutputUiState()
 
     object SaveOutPutReference : InOutputUiState()
     object SaveOutPutKeyPT : InOutputUiState()

@@ -22,6 +22,7 @@ import com.mkrs.kolt.base.MKTFragment
 import com.mkrs.kolt.base.UserLayout
 import com.mkrs.kolt.base.conectivity.webservice.APIKolt
 import com.mkrs.kolt.databinding.FragmentMainMenuBinding
+import com.mkrs.kolt.input.presentation.InputActivity
 import com.mkrs.kolt.input.presentation.InputActivity.Companion.INOUT_FLOW
 import com.mkrs.kolt.input.presentation.InputActivity.Companion.IN_FLOW
 import com.mkrs.kolt.input.presentation.InputActivity.Companion.OUT_FLOW
@@ -158,7 +159,7 @@ class MainMenuFragment : MKTFragment(R.layout.fragment_main_menu) {
     }
 
     private fun inout(type:Int){
-        val intent = Intent(requireContext(), TransferActivity::class.java).apply {
+        val intent = Intent(requireContext(), InputActivity::class.java).apply {
             putExtra(INOUT_FLOW, type)
         }
         startActivity(intent)

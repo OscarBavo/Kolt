@@ -1,7 +1,6 @@
 package com.mkrs.kolt.input.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -108,7 +107,6 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
     }
 
     private fun initListener() {
-        TODO("Not yet implemented")
     }
 
     private fun initView() {

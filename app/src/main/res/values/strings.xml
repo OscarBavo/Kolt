@@ -110,7 +110,7 @@
 
     <string name="btn_title_transfer">Transferencia</string>
     <string name="title_key_item">Clave Material</string>
-    <string name="title_unique_item">Campo Unico</string>
+    <string name="title_unique_item">Código único</string>
     <string name="title_tv_transfer_batch">Lote/Rollo</string>
     <string name="title_tv_transfer_batch_detail">Detalles</string>
     <string name="title_tv_transfer_max_pieces">Piezas máx almacenar</string>
@@ -147,6 +147,8 @@
     <string name="btn_title_in">Entrada</string>
     <string name="title_label_no_batch">No. Lotes:</string>
     <string name="title_label_refer">Referencia:</string>
+    <string name="title_message_batch_repeated">El lote %s ya fue agregado con %2s desea agregar nuevamente</string>
+    <string name="title_batch_repeated">Debe cambiar lote</string>
     <!-- Salida -->
     <string name="btn_title_out">Salida</string>
     <string name="btn_title_date">Fecha</string>

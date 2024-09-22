@@ -68,3 +68,5 @@ fun isDigitGeneric(word: String): Boolean {
 fun emptyStringEditable(): Editable = "".toEditable()
 fun emptyString(): String = ""
 
+
+

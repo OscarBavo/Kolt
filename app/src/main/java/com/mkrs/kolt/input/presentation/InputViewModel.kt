@@ -4,8 +4,10 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.mkrs.kolt.base.webservices.entity.LineasED
+import com.mkrs.kolt.input.domain.entity.InputRequest
 import com.mkrs.kolt.input.domain.models.InputModel
-import com.mkrs.kolt.utils.isCode
+import com.mkrs.kolt.utils.CONSTANST.Companion.WHS_CODE_IN
 
 /****
  * Project: Kolt
@@ -15,13 +17,14 @@ import com.mkrs.kolt.utils.isCode
  *****/
 class InputViewModel(private val context: Application) : ViewModel() {
     private val mutableInOutUiState = MutableLiveData<InOutputUiState>()
-    private val listAddItem:MutableList<InputModel> = mutableListOf()
+    private val listAddItem: MutableList<InputModel> = mutableListOf()
     var inputModel: InputModel = InputModel()
     var reference: String = ""
     var keyItem: String = ""
     var keyUnique: String = ""
     var pieces: Double = 0.0
     var batchRoll: String = ""
+    var numPart: String = "" //Se devuelve en endpoint
 
     val inOutViewState: LiveData<InOutputUiState>
         get() = mutableInOutUiState
@@ -30,18 +33,16 @@ class InputViewModel(private val context: Application) : ViewModel() {
         mutableInOutUiState.postValue(InOutputUiState.NoState)
     }
 
+    fun getItemsAdded() = listAddItem.size
+
     fun saveReference(reference: String) {
         this.reference = reference
         mutableInOutUiState.postValue(InOutputUiState.SaveReference)
     }
 
     fun saveKeyItem(keyItem: String) {
-        if(isCode(keyItem)) {
-            this.keyItem = keyItem
-            mutableInOutUiState.postValue(InOutputUiState.SaveKeyItem)
-        }else{
-            mutableInOutUiState.postValue(InOutputUiState.ErrorSaveKeyItem)
-        }
+        this.keyItem = keyItem
+        mutableInOutUiState.postValue(InOutputUiState.SaveKeyItem)
     }
 
     fun saveKeyUnique(keyUnique: String) {
@@ -54,24 +55,73 @@ class InputViewModel(private val context: Application) : ViewModel() {
         mutableInOutUiState.postValue(InOutputUiState.SavePieces)
     }
 
-    fun saveBatchRoll(batchRoll: String) {
-        this.batchRoll = batchRoll
-        mutableInOutUiState.postValue(InOutputUiState.SaveBatchRoll)
+    fun saveBatchRoll(batchRoll: String, addDefinitive: Boolean = false) {
+        if (!addDefinitive) {
+            val inputAdded = isBatchRepeated(batchRoll)
+            if (inputAdded == null) {
+                this.batchRoll = batchRoll
+                saveData()
+            } else {
+                mutableInOutUiState.postValue(InOutputUiState.ErrorBatchRoll(inputAdded))
+            }
+        } else {
+            this.batchRoll = batchRoll
+            saveData()
+        }
+
     }
 
+    fun isBatchRepeated(batchRoll: String) = listAddItem.find { it.batchRoll == batchRoll }
     fun resetData() {
-        reference = ""
         keyItem = ""
         keyUnique = ""
         pieces = 0.0
         batchRoll = ""
+        numPart = ""
     }
 
-    private fun saveData() {
-        inputModel.reference = reference
+    fun saveData() {
         inputModel.keyUnique = keyUnique
         inputModel.keyItem = keyItem
         inputModel.Qty = pieces
         inputModel.batchRoll = batchRoll
+
+        listAddItem.add(inputModel)
+        resetData()
+        mutableInOutUiState.postValue(InOutputUiState.SaveAll(listAddItem.size))
+
     }
+
+    fun saveIn() {
+        val lineas = createRequest()
+        val request = InputRequest(reference = reference, lines = lineas)
+
+    }
+
+    fun resetAllData() {
+        resetData()
+        reference = ""
+        listAddItem.clear()
+    }
+
+    private fun createRequest(): MutableList<LineasED> {
+        val lines: MutableList<LineasED> = mutableListOf()
+        listAddItem.forEach { item ->
+            val line =
+                LineasED(
+                    WHS_CODE_IN,
+                    item.keyItem,
+                    item.numPart,
+                    item.keyUnique,
+                    item.batchRoll,
+                    item.Qty
+                )
+            lines.add(line)
+        }
+        lines.sortedByDescending { it.code }
+        lines.sortedByDescending { it.batchNumber }
+        lines.reverse()
+        return lines
+    }
+
 }

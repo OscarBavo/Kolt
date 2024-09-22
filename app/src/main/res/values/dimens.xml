@@ -33,5 +33,6 @@
 
     <integer name="dim_7">7</integer>
     <integer name="dim_8">8</integer>
+    <integer name="dim_11">11</integer>
     <integer name="dim_21">21</integer>
 </resources>

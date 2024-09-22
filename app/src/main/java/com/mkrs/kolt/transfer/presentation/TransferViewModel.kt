@@ -17,7 +17,7 @@ import com.mkrs.kolt.transfer.domain.usecase.GetCodePTUseCase.CodePTResult
 import com.mkrs.kolt.transfer.domain.usecase.PostDetailInventoryUseCase
 import com.mkrs.kolt.transfer.domain.usecase.PostTransferUseCase
 import com.mkrs.kolt.transfer.domain.usecase.TransferResult
-import com.mkrs.kolt.transfer.presentation.TransferFragment.Companion.VERIFY_TOTAL_OK
+import com.mkrs.kolt.utils.CONSTANST.Companion.VERIFY_TOTAL_OK
 import com.mkrs.kolt.utils.emptyString
 import kotlinx.coroutines.launch
 

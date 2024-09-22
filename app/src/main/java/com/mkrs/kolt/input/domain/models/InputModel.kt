@@ -7,10 +7,10 @@ package com.mkrs.kolt.input.domain.models
  * Date: 29 / 08 / 2024
  *****/
 data class InputModel(
-    var reference: String = "",
     var keyItem: String = "",
     var keyUnique: String = "",
     var Qty: Double = 0.0,
     var batchRoll: String = "",
-    var labelBatch: String = ""
+    var labelBatch: String = "",
+    var numPart: String = ""
 )

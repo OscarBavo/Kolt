@@ -53,7 +53,7 @@
                 android:layout_height="match_parent"
                 android:inputType="numberDecimal"
                 android:enabled="false"
-                android:maxLength="@integer/dim_7" />
+                android:maxLength="@integer/dim_11" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -101,9 +101,9 @@
                 style="@style/input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="numberDecimal"
+                android:inputType="textCapWords"
                 android:enabled="false"
-                android:maxLength="@integer/dim_7" />
+                android:maxLength="@integer/dim_8" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -149,9 +149,9 @@
                 style="@style/input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="numberDecimal"
+                android:inputType="textCapWords"
                 android:enabled="false"
-                android:maxLength="@integer/dim_7" />
+                android:maxLength="@integer/dim_21" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
