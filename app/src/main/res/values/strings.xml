@@ -130,6 +130,7 @@
     <string name="title_bottom_transfer_standard_pack">Standard Pack</string>
     <string name="not_found_data_code_pt">0</string>
     <string name="not_found_data_code_p_msg">No existe PT en SAP para la clave ingresada, verifique.</string>
+    <string name="error_get_code_pt_general">No se encuentra la información del código: %s</string>
     <string name="quantity_detail">0</string>
     <string name="quantity_detail_msg">El código único no tiene MP</string>
     <string name="unique_code_error_init">El código único es invalido, verifique</string>
@@ -149,6 +150,8 @@
     <string name="title_label_refer">Referencia:</string>
     <string name="title_message_batch_repeated">El lote %s ya fue agregado con %2s desea agregar nuevamente</string>
     <string name="title_batch_repeated">Debe cambiar lote</string>
+    <string name="title_created_in">Número de documento creado: %s</string>
+    <string name="title_create_in_again">Desea crear otra Enterada</string>
     <!-- Salida -->
     <string name="btn_title_out">Salida</string>
     <string name="btn_title_date">Fecha</string>

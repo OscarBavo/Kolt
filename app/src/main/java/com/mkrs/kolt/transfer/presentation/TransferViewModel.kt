@@ -152,7 +152,7 @@ class TransferViewModel(
                 }
 
                 is CodePTResult.Fail -> {
-                    mutableTransferUIState.postValue(TransferUIState.Error("No se encontro la información del código: $code"))
+                    mutableTransferUIState.postValue(TransferUIState.Error(context.getString(R.string.error_get_code_pt_general, code)))
                 }
             }
         }

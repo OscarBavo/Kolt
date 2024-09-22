@@ -12,6 +12,7 @@ import com.mkrs.kolt.base.webservices.transfer.MKTTransferPostTransferService
 import com.mkrs.kolt.transfer.domain.repositories.TransferRepository
 import com.mkrs.kolt.transfer.domain.models.FinalProductModel
 import com.mkrs.kolt.transfer.webservices.models.TransferResponse
+import com.mkrs.kolt.utils.CONSTANST.Companion.ERROR_ZERO
 import com.mkrs.kolt.utils.convertToSuspend
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -23,7 +24,7 @@ import kotlinx.coroutines.withContext
  * Date: 01 / 06 / 2024
  *****/
 object TransferRepositoryImp : TransferRepository {
-    private const val ERROR_ZERO = "0"
+
     override suspend fun getCodePT(
         claveMaterial: String,
         isDummy: Boolean

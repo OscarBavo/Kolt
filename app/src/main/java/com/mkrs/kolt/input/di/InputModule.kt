@@ -3,8 +3,10 @@ package com.mkrs.kolt.input.di
 import android.app.Application
 import com.mkrs.kolt.input.data.InputRepositoryImp
 import com.mkrs.kolt.input.domain.repositories.InputRepository
-import com.mkrs.kolt.input.presentation.InputViewModel
+import com.mkrs.kolt.input.domain.usecase.GetInCodePTUseCase
+import com.mkrs.kolt.input.domain.usecase.PostAddInUseCase
 import com.mkrs.kolt.input.presentation.InputViewModelFactory
+
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,6 +33,16 @@ object InputModule {
     @Provides
 
     fun providesInputViewModelFactory(application: Application): InputViewModelFactory {
-        return InputViewModelFactory(application)
+        return InputViewModelFactory(application, providesInGetCodePTUseCase(), providesInUseCase())
     }
+
+    @Singleton
+    @Provides
+    fun providesInGetCodePTUseCase() =
+        GetInCodePTUseCase(providesInputRepository())
+
+    @Singleton
+    @Provides
+    fun providesInUseCase() =
+        PostAddInUseCase(providesInputRepository())
 }

@@ -13,7 +13,6 @@ import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.base.MKTFragment
 import com.mkrs.kolt.databinding.FragmentInputBinding
 import com.mkrs.kolt.input.di.InputModule
-import com.mkrs.kolt.input.domain.entity.InputRequest
 import com.mkrs.kolt.input.domain.models.InputModel
 import com.mkrs.kolt.preferences.di.HomeModule
 import com.mkrs.kolt.preferences.di.PreferenceModule
@@ -31,6 +30,7 @@ import com.mkrs.kolt.utils.isLetter
 class InputFragment : MKTFragment(R.layout.fragment_input) {
 
     private lateinit var binding: FragmentInputBinding
+    private var isDemo = false
     private val preferencesViewModel by activityViewModels<PreferencesViewModel> {
         PreferenceModule.providePreferenceVMFactory(
             HomeModule.provideHomePreferences(requireActivity(), "Impresoras")
@@ -68,6 +68,7 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
         inputViewModel.inOutViewState.observe(viewLifecycleOwner) {
             observerInputState(it)
         }
+        isDemo = preferencesViewModel.getInt(getString(R.string.key_pass_is_demo), 0) == 1
     }
 
     private fun observerInputState(state: InOutputUiState?) {
@@ -77,6 +78,12 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
             is InOutputUiState.ErrorSaveKeyItem -> {
                 dismissDialog()
                 binding.tieKeyItemData.error = "La clave de materia prima "
+            }
+
+            is InOutputUiState.ErrorReference -> {
+                dismissDialog()
+                binding.tilRefer.error = "Debe ingresar referencia"
+                binding.tieReferData.requestFocus()
             }
 
             is InOutputUiState.SaveReference -> {
@@ -123,13 +130,20 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
             is InOutputUiState.SaveAll -> {
                 dismissDialog()
                 binding.tvNoBatchData.text = state.totalBatch.toString()
-                binding.tieReferData.requestFocus()
+                binding.tieKeyItemData.requestFocus()
                 resetView()
                 binding.btnSave.enable()
             }
 
             is InOutputUiState.ErrorBatchRoll -> {
+                dismissDialog()
                 showMessageAddOrDeleteBatch(state.inputModel)
+            }
+
+            is InOutputUiState.CreateInReady -> {
+                dismissDialog()
+                resetView()
+                createdInReady(state.docNum)
             }
 
             else -> {
@@ -138,11 +152,48 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
         }
     }
 
+    private fun createdInReady(docNum: Int) {
+        activity?.let {
+            it.showAlertComplete(
+                getString(R.string.generic_information),
+                getString(R.string.title_created_in, docNum.toString()),
+                getString(R.string.generic_ok),
+                true, { _, _ -> resetIn() }, "", false, null
+            )
+        }
+    }
+
+    private fun resetIn() {
+        activity?.let {
+            it.showAlertComplete(
+                getString(R.string.generic_information),
+                getString(R.string.title_create_in_again),
+                getString(R.string.generic_yes),
+                true,
+                { _, _ -> resetAllView() },
+                getString(R.string.generic_no),
+                true,
+                { _, _ -> it.onBackPressed() }
+            )
+        }
+    }
+
+    private fun resetAllView() {
+        resetView()
+        binding.btnSave.disable()
+        binding.btnNext.disable()
+        binding.btnClean.disable()
+    }
+
     private fun showMessageAddOrDeleteBatch(inputModel: InputModel) {
         activity?.let {
             it.showAlertComplete(
                 getString(R.string.generic_information),
-                getString(R.string.title_message_batch_repeated,inputModel.batchRoll,inputModel.Qty.toString()),
+                getString(
+                    R.string.title_message_batch_repeated,
+                    inputModel.batchRoll,
+                    inputModel.Qty.toString()
+                ),
                 getString(R.string.generic_yes),
                 true,
                 { _, _ ->
@@ -165,7 +216,11 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
         }
 
         binding.btnSave.setOnClickListener {
+            inputViewModel.saveIn(isDemo)
+        }
 
+        binding.tieReferData.doOnTextChanged { _, _, _, _ ->
+            binding.tilRefer.error = null
         }
 
         binding.tieReferData.setOnEditorActionListener { textView, actionId, keyEvent ->
@@ -253,7 +308,7 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
         binding.tieUniqueCodeData.disable()
         binding.tiePiecesData.disable()
         binding.tieBatchRollData.disable()
-        binding.tieReferData.requestFocus()
+        binding.tieKeyItemData.requestFocus()
     }
 
     private fun validateKeyItem(code: String) {
@@ -264,7 +319,7 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
             binding.tilKeyItem.error = getString(R.string.label_error_digits_item_code)
             binding.tieKeyItemData.requestFocus()
         } else if (code.length == CODE_MAX_LENGTH && isDigit(code)) {
-            inputViewModel.saveKeyItem(code)
+            inputViewModel.getCodePT(code, isDemo)
         }
 
     }
@@ -317,7 +372,6 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
             )
         }
     }
-
 
 
 }

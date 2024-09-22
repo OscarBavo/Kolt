@@ -8,4 +8,4 @@ import com.mkrs.kolt.base.webservices.common.ErrorResponse
  * From: com.mkrs.kolt.transfer.webservices.models
  * Date: 20 / 06 / 2024
  *****/
-data class TransferResponse( val transfer:ErrorResponse)
+data class TransferResponse(val transfer: ErrorResponse)

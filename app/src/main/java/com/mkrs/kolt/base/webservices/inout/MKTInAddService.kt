@@ -1,12 +1,12 @@
-package com.mkrs.kolt.base.webservices.transfer
+package com.mkrs.kolt.base.webservices.inout
 
 import com.google.gson.Gson
-import com.mkrs.kolt.base.conectivity.webservice.APIKolt.Transfer.Companion.POST_DETAIL
+import com.mkrs.kolt.base.conectivity.webservice.APIKolt.InOut.Companion.POST_IN
 import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig
 import com.mkrs.kolt.base.conectivity.webservice.MKTWebService
 import com.mkrs.kolt.base.webservices.common.ErrorResponse
-import com.mkrs.kolt.base.webservices.entity.TransferInventoryRequest
-import com.mkrs.kolt.base.webservices.entity.TransferUniqueCodeResponse
+import com.mkrs.kolt.input.domain.entity.InputRequest
+import com.mkrs.kolt.input.webservices.models.InAddResponse
 import com.mkrs.kolt.utils.CONSTANST.Companion.CODE
 import com.mkrs.kolt.utils.toJsonString
 import java.lang.Exception
@@ -14,11 +14,11 @@ import java.lang.Exception
 /****
  * Project: Kolt
  * Dev: Oscar Balderas Vazquez
- * From: com.mkrs.kolt.base.webservices.transfer
- * Date: 19 / 06 / 2024
+ * From: com.mkrs.kolt.base.webservices.inout
+ * Date: 21 / 09 / 2024
  *****/
-class MKTTransferPostUniqueCodeService(private val request: TransferInventoryRequest) :
-    MKTWebService<TransferUniqueCodeResponse>(POST_DETAIL, CODE) {
+class MKTInAddService(private val request: InputRequest) :
+    MKTWebService<InAddResponse>(POST_IN, CODE) {
 
     companion object {
         const val TAG = "MKTTransferPOSTUniqueCodeService"
@@ -38,15 +38,16 @@ class MKTTransferPostUniqueCodeService(private val request: TransferInventoryReq
 
     override fun onSuccess(statusCode: String?, responseString: String?) {
         try {
-            val response = Gson().fromJson(responseString, TransferUniqueCodeResponse::class.java)
-            this.response.ErrorCode = response.Response.ErrorCode
-            this.response.Message = response.Response.Message
-            if (!response.Response.EsError) {
-                this.response.Result = response
+            val response = Gson().fromJson(responseString, ErrorResponse::class.java)
+            this.response.ErrorCode = response.ErrorCode
+            this.response.Message = response.Message
+            if (!response.EsError) {
+                this.response.Result = InAddResponse(response)
             }
         } catch (ex: Exception) {
             val response = Gson().fromJson(responseString, ErrorResponse::class.java)
-            this.response.ErrorCode = response.Message
+            this.response.ErrorCode = this.serviceUrl ?: ""
+            this.response.Result = InAddResponse(response)
         } finally {
             getListener()?.onFinish(this.response)
         }

@@ -27,4 +27,11 @@ class APIKolt {
             val POST_TRANSFER: String = "$BASE_URL_KOLT/CrearTransferenciaInventario"
         }
     }
+
+    class InOut {
+        companion object {
+            val POST_IN: String = "$BASE_URL_KOLT/CrearEntradaInventario"
+            val POST_OUT: String = "$BASE_URL_KOLT/CrearSalidaInventario"
+        }
+    }
 }

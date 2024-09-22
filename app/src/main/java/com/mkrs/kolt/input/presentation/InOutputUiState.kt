@@ -12,16 +12,16 @@ sealed class InOutputUiState {
     object Loading : InOutputUiState()
     object NoState : InOutputUiState()
     data class Error(val msg: String) : InOutputUiState()
-    data class ErrorCustom(val msg: String) : InOutputUiState()
     object SaveReference : InOutputUiState()
+    object ErrorReference : InOutputUiState()
     object SaveKeyItem : InOutputUiState()
-    object ErrorSaveKeyItem : InOutputUiState()
+    data class ErrorSaveKeyItem(val msg: String) : InOutputUiState()
     object SaveKeyUnique : InOutputUiState()
     object SavePieces : InOutputUiState()
     object SaveBatchRoll : InOutputUiState()
-    data class ErrorBatchRoll (val inputModel: InputModel) : InOutputUiState()
+    data class ErrorBatchRoll(val inputModel: InputModel) : InOutputUiState()
 
-    data class SaveAll(val totalBatch:Int):InOutputUiState()
+    data class SaveAll(val totalBatch: Int) : InOutputUiState()
 
     object SaveOutPutReference : InOutputUiState()
     object SaveOutPutKeyPT : InOutputUiState()
@@ -29,4 +29,6 @@ sealed class InOutputUiState {
     object SaveOutPutPerfo : InOutputUiState()
     object SaveOutputCoworker : InOutputUiState()
     object SaveOutputTo : InOutputUiState()
+
+    data class CreateInReady(val docNum: Int) : InOutputUiState()
 }
