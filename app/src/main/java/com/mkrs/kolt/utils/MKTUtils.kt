@@ -48,6 +48,7 @@ fun isCode(word: String): Boolean {
 fun isCodeFill(word: String): Boolean {
     val regex = "^[A-Za-z]{1,2}[\\d]*\$".toRegex()
     return regex.matches(word)
+    //^[w+][-]{1}[/]{1}$
 }
 
 fun isLetter(word: String): Boolean {
@@ -63,6 +64,11 @@ fun isDigit(word: String): Boolean {
 fun isDigitGeneric(word: String): Boolean {
     val regex = "^[\\d.\\d]*$".toRegex()
     return regex.matches(word)
+}
+
+fun isBatchValid(batch:String):Boolean{
+    val regex="^\\w+(-|\\/)\\w+\$".toRegex()
+    return regex.matches(batch)
 }
 
 fun emptyStringEditable(): Editable = "".toEditable()

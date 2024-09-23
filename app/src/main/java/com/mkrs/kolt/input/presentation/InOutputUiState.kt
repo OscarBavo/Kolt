@@ -20,6 +20,7 @@ sealed class InOutputUiState {
     object SavePieces : InOutputUiState()
     object SaveBatchRoll : InOutputUiState()
     data class ErrorBatchRoll(val inputModel: InputModel) : InOutputUiState()
+    data class ErrorRegexBatchRoll(val errorBarch:String) : InOutputUiState()
 
     data class SaveAll(val totalBatch: Int) : InOutputUiState()
 

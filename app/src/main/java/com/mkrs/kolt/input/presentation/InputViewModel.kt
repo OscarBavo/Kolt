@@ -14,6 +14,7 @@ import com.mkrs.kolt.input.domain.usecase.GetInCodePTUseCase
 import com.mkrs.kolt.input.domain.usecase.PostAddInUseCase
 import com.mkrs.kolt.utils.CONSTANST.Companion.REFERENCE_MAX_LENGTH
 import com.mkrs.kolt.utils.CONSTANST.Companion.WHS_CODE_IN
+import com.mkrs.kolt.utils.isBatchValid
 import kotlinx.coroutines.launch
 
 /****
@@ -68,7 +69,10 @@ class InputViewModel(
     }
 
     fun saveBatchRoll(batchRoll: String, addDefinitive: Boolean = false) {
-        if (!addDefinitive) {
+        if(!isBatchValid(batchRoll)){
+            mutableInOutUiState.postValue(InOutputUiState.ErrorRegexBatchRoll(batchRoll))
+        }
+        else if (!addDefinitive) {
             val inputAdded = isBatchRepeated(batchRoll)
             if (inputAdded == null) {
                 this.batchRoll = batchRoll

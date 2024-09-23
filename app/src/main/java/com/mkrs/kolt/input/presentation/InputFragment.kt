@@ -77,13 +77,19 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
             is InOutputUiState.NoState -> dismissDialog()
             is InOutputUiState.ErrorSaveKeyItem -> {
                 dismissDialog()
-                binding.tieKeyItemData.error = "La clave de materia prima "
+                binding.tieKeyItemData.error = state.msg
             }
 
             is InOutputUiState.ErrorReference -> {
                 dismissDialog()
-                binding.tilRefer.error = "Debe ingresar referencia"
+                binding.tilRefer.error = getString(R.string.title_error_empty_reference)
                 binding.tieReferData.requestFocus()
+            }
+
+            is InOutputUiState.ErrorRegexBatchRoll -> {
+                dismissDialog()
+                binding.tilBatchRoll.error = getString(R.string.title_error_bad_batch)
+                binding.tilBatchRoll.requestFocus()
             }
 
             is InOutputUiState.SaveReference -> {
@@ -183,6 +189,9 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
         binding.btnSave.disable()
         binding.btnNext.disable()
         binding.btnClean.disable()
+        binding.tieReferData.text = emptyStringEditable()
+        binding.tieReferData.enable()
+        binding.tieKeyItemData.disable()
     }
 
     private fun showMessageAddOrDeleteBatch(inputModel: InputModel) {
@@ -219,8 +228,9 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
             inputViewModel.saveIn(isDemo)
         }
 
-        binding.tieReferData.doOnTextChanged { _, _, _, _ ->
+        binding.tieReferData.doOnTextChanged { code, _, _, _ ->
             binding.tilRefer.error = null
+            inputViewModel.saveReference(code.toString())
         }
 
         binding.tieReferData.setOnEditorActionListener { textView, actionId, keyEvent ->
@@ -304,7 +314,7 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
         binding.tieBatchRollData.text = emptyStringEditable()
         binding.tieBatchRollData.setTextAppearance(R.style.input_text)
 
-        binding.tieKeyItemData.disable()
+        binding.tieReferData.disable()
         binding.tieUniqueCodeData.disable()
         binding.tiePiecesData.disable()
         binding.tieBatchRollData.disable()

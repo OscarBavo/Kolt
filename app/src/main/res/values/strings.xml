@@ -152,6 +152,9 @@
     <string name="title_batch_repeated">Debe cambiar lote</string>
     <string name="title_created_in">Número de documento creado: %s</string>
     <string name="title_create_in_again">Desea crear otra Enterada</string>
+    <string name="title_error_empty_reference">Debe ingresar referencia</string>
+    <string name="title_error_bad_batch">El lote no es correcto</string>
+
     <!-- Salida -->
     <string name="btn_title_out">Salida</string>
     <string name="btn_title_date">Fecha</string>
