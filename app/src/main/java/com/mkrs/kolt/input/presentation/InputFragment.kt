@@ -192,6 +192,7 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
         binding.tieReferData.text = emptyStringEditable()
         binding.tieReferData.enable()
         binding.tieKeyItemData.disable()
+        binding.tvNoBatchData.text = "0"
     }
 
     private fun showMessageAddOrDeleteBatch(inputModel: InputModel) {
@@ -323,10 +324,10 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
 
     private fun validateKeyItem(code: String) {
         if (code.isEmpty()) {
-            binding.tilKeyItem.error = emptyStringEditable()
+            binding.tilKeyItemIn.error = emptyStringEditable()
             binding.tieKeyItemData.requestFocus()
         } else if (isLetter(code)) {
-            binding.tilKeyItem.error = getString(R.string.label_error_digits_item_code)
+            binding.tilKeyItemIn.error = getString(R.string.label_error_digits_item_code)
             binding.tieKeyItemData.requestFocus()
         } else if (code.length == CODE_MAX_LENGTH && isDigit(code)) {
             inputViewModel.getCodePT(code, isDemo)

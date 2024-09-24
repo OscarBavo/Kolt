@@ -50,7 +50,7 @@ class InputViewModel(
     fun saveReference(reference: String) {
         if (reference.length < REFERENCE_MAX_LENGTH) {
             mutableInOutUiState.postValue(InOutputUiState.ErrorReference)
-        } else if(reference.length> REFERENCE_MAX_LENGTH){
+        } else if (reference.length > REFERENCE_MAX_LENGTH) {
             mutableInOutUiState.postValue(InOutputUiState.ErrorReference)
         } else {
             this.reference = reference
@@ -69,10 +69,9 @@ class InputViewModel(
     }
 
     fun saveBatchRoll(batchRoll: String, addDefinitive: Boolean = false) {
-        if(!isBatchValid(batchRoll)){
+        if (!isBatchValid(batchRoll)) {
             mutableInOutUiState.postValue(InOutputUiState.ErrorRegexBatchRoll(batchRoll))
-        }
-        else if (!addDefinitive) {
+        } else if (!addDefinitive) {
             val inputAdded = isBatchRepeated(batchRoll)
             if (inputAdded == null) {
                 this.batchRoll = batchRoll
