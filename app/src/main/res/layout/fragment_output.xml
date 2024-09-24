@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".input.presentation.OutputFragment">
+    tools:context=".input.presentation.output.OutputFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -120,7 +120,7 @@
                 android:layout_height="match_parent"
                 android:inputType="numberDecimal"
                 android:enabled="false"
-                android:maxLength="@integer/dim_7" />
+                android:maxLength="@integer/dim_11" />
         </com.google.android.material.textfield.TextInputLayout>
 
 

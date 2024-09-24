@@ -32,6 +32,7 @@
     <string name="title_required_text">Dato Necesario</string>
     <string name="title_generic_input_data_required">Campo obligatorio</string>
     <string name="title_split_ip">:</string>
+    <string name="title_output_kolt">KOLT TECHNOLOGY SA de CV</string>
     <!-- about us -->
     <string name="title_about_us">Acerca de…</string>
     <string name="title_about_us_name">App Kolt</string>
@@ -153,7 +154,7 @@
     <string name="title_created_in">Número de documento creado: %s</string>
     <string name="title_create_in_again">Desea crear otra Enterada</string>
     <string name="title_error_empty_reference">Debe ingresar referencia</string>
-    <string name="title_error_bad_batch">El lote no es correcto</string>
+    <string name="title_error_bad_batch">El lote %s no es correcto</string>
 
     <!-- Salida -->
     <string name="btn_title_out">Salida</string>

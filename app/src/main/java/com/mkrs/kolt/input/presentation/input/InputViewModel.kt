@@ -1,4 +1,4 @@
-package com.mkrs.kolt.input.presentation
+package com.mkrs.kolt.input.presentation.input
 
 import android.app.Application
 import androidx.lifecycle.LiveData

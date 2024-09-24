@@ -1,4 +1,4 @@
-package com.mkrs.kolt.input.presentation
+package com.mkrs.kolt.input.presentation.output
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,8 @@ import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.base.MKTFragment
 import com.mkrs.kolt.databinding.FragmentOutputBinding
 import com.mkrs.kolt.input.di.InputModule
+import com.mkrs.kolt.input.presentation.input.InOutputUiState
+import com.mkrs.kolt.input.presentation.input.InputViewModel
 import com.mkrs.kolt.preferences.di.HomeModule
 import com.mkrs.kolt.preferences.di.PreferenceModule
 import com.mkrs.kolt.preferences.presentation.PreferencesViewModel
@@ -19,6 +21,7 @@ import com.mkrs.kolt.utils.enable
 class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
     private lateinit var binding: FragmentOutputBinding
+    private var isDemo = false
 
     private val preferencesViewModel by activityViewModels<PreferencesViewModel> {
         PreferenceModule.providePreferenceVMFactory(
@@ -30,7 +33,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         InputModule.providesInputViewModelFactory(requireActivity().application)
     }
 
-    private val inputViewModel: InputViewModel by activityViewModels { vmFactory }
+    private val outputViewModel: InputViewModel by activityViewModels { vmFactory }
 
 
     override fun onCreateView(
@@ -55,10 +58,11 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         inputViewModel.inOutViewState.observe(viewLifecycleOwner) {
             observerOutputState(it)
         }
+        isDemo = preferencesViewModel.getInt(getString(R.string.key_pass_is_demo), 0) == 1
     }
 
 
-    private fun observerOutputState(state: InOutputUiState?) {
+    private fun observerOutputState(state: OutputUiState?) {
         when (state) {
             is InOutputUiState.Loading -> showDialog()
             is InOutputUiState.NoState -> dismissDialog()
@@ -68,7 +72,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
                 inputViewModel.setNoState()
             }
 
-            is InOutputUiState.SaveOutPutReference -> {
+            is OutputUiState.SaveOutPutReference -> {
                 binding.btnOutputClean.enable()
                 binding.tieOutputKeyPtData.enable()
                 binding.tieOutputKeyPtData.requestFocus()
@@ -110,10 +114,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
     }
 
     private fun initView() {
-        binding.tvOutputLabelsData.text = "10"
-        binding.tvOutputDateData.text = "29/08/2024"
-        binding.tvOutputEmitData.text = "KOLT TECHNOLOGY SA de CV"
-        binding.tvOutputReceiveData.text = "MKRS"
+        binding.tvOutputEmitData.text = getString(R.string.title_output_kolt)
 
         binding.tieOutputKeyPtData.disable()
         binding.tieOutputUniqueCodeData.disable()
