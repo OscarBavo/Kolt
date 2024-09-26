@@ -17,4 +17,6 @@ sealed class OutputUiState {
     object SaveOutPutPerfo : OutputUiState()
     object SaveOutputCoworker : OutputUiState()
     object SaveOutputTo : OutputUiState()
+    data class OutputTotalItems(val total: Int) : OutputUiState()
+    data class GetDate(val date:String):OutputUiState()
 }

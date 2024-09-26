@@ -9,6 +9,7 @@ import com.mkrs.kolt.R
 import com.mkrs.kolt.base.webservices.entity.LineasED
 import com.mkrs.kolt.input.domain.entity.InputRequest
 import com.mkrs.kolt.input.domain.models.InputModel
+import com.mkrs.kolt.input.domain.usecase.CodeInPTResult
 import com.mkrs.kolt.input.domain.usecase.CreateInResult
 import com.mkrs.kolt.input.domain.usecase.GetInCodePTUseCase
 import com.mkrs.kolt.input.domain.usecase.PostAddInUseCase
@@ -113,7 +114,7 @@ class InputViewModel(
         viewModelScope.launch {
             mutableInOutUiState.postValue(InOutputUiState.Loading)
             when (val response = getInCodePTUseCase.execute(code, isDummy)) {
-                is GetInCodePTUseCase.CodeInPTResult.Success -> {
+                is CodeInPTResult.Success -> {
                     if (response.data == context.getString(R.string.not_found_data_code_pt)) {
                         mutableInOutUiState.postValue(
                             InOutputUiState.ErrorSaveKeyItem(
@@ -129,7 +130,7 @@ class InputViewModel(
                     }
                 }
 
-                is GetInCodePTUseCase.CodeInPTResult.Fail -> {
+                is CodeInPTResult.Fail -> {
                     mutableInOutUiState.postValue(
                         InOutputUiState.Error(
                             context.getString(

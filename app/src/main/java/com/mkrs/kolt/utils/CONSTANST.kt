@@ -15,5 +15,8 @@ class CONSTANST {
         const val WHS_CODE_IN = "01"
         const val ERROR_ZERO = "0"
         const val CODE = "0"
+        const val EMPTY_DATA = ""
+        const val NO_DATE="ND"
+        const val WHS_CODE_DATE="01"
     }
 }

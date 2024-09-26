@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -14,46 +14,46 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_output_date"
             style="@style/input_text.item.title"
-            android:layout_marginStart="@dimen/dim_size_8"
             android:layout_width="@dimen/dim_size_0"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dim_size_8"
             android:text="@string/btn_title_date"
             android:textAlignment="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_output_date_data"
             style="@style/input_text.item.title"
             android:layout_width="@dimen/dim_size_0"
-            android:layout_marginStart="@dimen/dim_size_4"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dim_size_4"
             android:textAlignment="center"
-            app:layout_constraintStart_toEndOf="@id/tv_output_date"
             app:layout_constraintBottom_toBottomOf="@id/tv_output_date"
+            app:layout_constraintStart_toEndOf="@id/tv_output_date"
             tools:text="24/08/2024" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_output_labels"
             style="@style/input_text.item.title"
             android:layout_width="@dimen/dim_size_0"
-            android:layout_marginEnd="@dimen/dim_size_8"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dim_size_8"
             android:text="@string/btn_title_labels"
             android:textAlignment="center"
             app:layout_constraintEnd_toStartOf="@id/tv_output_labels_data"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_output_labels_data"
             style="@style/input_text.item.title"
             android:layout_width="@dimen/dim_size_0"
-            android:layout_marginStart="@dimen/dim_size_4"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dim_size_4"
+            android:layout_marginEnd="@dimen/dim_size_8"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="@dimen/dim_size_8"
             tools:text="1" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -64,17 +64,17 @@
             android:text="@string/btn_title_output_emit"
             android:textAlignment="center"
             app:layout_constraintStart_toStartOf="@id/tv_output_date"
-            app:layout_constraintTop_toBottomOf="@id/tv_output_date"
-            />
+            app:layout_constraintTop_toBottomOf="@id/tv_output_date" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_output_emit_data"
             style="@style/input_text.item.title"
             android:layout_width="@dimen/dim_size_0"
-            android:layout_marginStart="@dimen/dim_size_4"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dim_size_4"
             android:textAlignment="center"
-            app:layout_constraintStart_toEndOf="@id/tv_output_emit"
             app:layout_constraintBottom_toBottomOf="@id/tv_output_emit"
+            app:layout_constraintStart_toEndOf="@id/tv_output_emit"
             tools:text="KOLT TECHNOLOGY SA de CV" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -85,17 +85,17 @@
             android:text="@string/btn_title_output_receive"
             android:textAlignment="center"
             app:layout_constraintStart_toStartOf="@id/tv_output_date"
-            app:layout_constraintTop_toBottomOf="@id/tv_output_emit_data"
-            />
+            app:layout_constraintTop_toBottomOf="@id/tv_output_emit_data" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_output_receive_data"
             style="@style/input_text.item.title"
             android:layout_width="@dimen/dim_size_0"
-            android:layout_marginStart="@dimen/dim_size_4"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dim_size_4"
             android:textAlignment="center"
-            app:layout_constraintStart_toEndOf="@id/tv_output_receive"
             app:layout_constraintBottom_toBottomOf="@id/tv_output_receive"
+            app:layout_constraintStart_toEndOf="@id/tv_output_receive"
             tools:text="" />
 
 
@@ -107,22 +107,19 @@
             android:layout_margin="@dimen/dim_size_5"
             android:hint="@string/title_label_refer"
             app:endIconMode="clear_text"
-            android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@id/tv_output_receive"
-            app:layout_constraintStart_toStartOf="@id/tv_output_receive"
             app:layout_constraintEnd_toEndOf="parent"
-            >
+            app:layout_constraintStart_toStartOf="@id/tv_output_receive"
+            app:layout_constraintTop_toBottomOf="@id/tv_output_receive">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tie_output_refer_data"
                 style="@style/input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="numberDecimal"
                 android:enabled="false"
+                android:inputType="numberDecimal"
                 android:maxLength="@integer/dim_11" />
         </com.google.android.material.textfield.TextInputLayout>
-
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -133,19 +130,17 @@
             android:layout_margin="@dimen/dim_size_5"
             android:hint="@string/title_key_pt"
             app:endIconMode="clear_text"
-            android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@id/til_output_refer"
-            app:layout_constraintStart_toStartOf="@id/til_output_refer"
             app:layout_constraintEnd_toEndOf="@id/til_output_refer"
-            >
+            app:layout_constraintStart_toStartOf="@id/til_output_refer"
+            app:layout_constraintTop_toBottomOf="@id/til_output_refer">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tie_output_key_pt_data"
                 style="@style/input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="numberDecimal"
                 android:enabled="false"
+                android:inputType="numberDecimal"
                 android:maxLength="@integer/dim_7" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -157,19 +152,17 @@
             android:layout_margin="@dimen/dim_size_5"
             android:hint="@string/title_unique_item"
             app:endIconMode="clear_text"
-            android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@id/til_output_key_pt"
-            app:layout_constraintStart_toStartOf="@id/til_output_key_pt"
             app:layout_constraintEnd_toEndOf="@id/til_output_key_pt"
-            >
+            app:layout_constraintStart_toStartOf="@id/til_output_key_pt"
+            app:layout_constraintTop_toBottomOf="@id/til_output_key_pt">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tie_output_unique_code_data"
                 style="@style/input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="numberDecimal"
                 android:enabled="false"
+                android:inputType="numberDecimal"
                 android:maxLength="@integer/dim_7" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -181,19 +174,17 @@
             android:layout_margin="@dimen/dim_size_5"
             android:hint="@string/title_bottom_transfer_perforadora"
             app:endIconMode="clear_text"
-            android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@id/til_output_unique_code"
-            app:layout_constraintStart_toStartOf="@id/til_output_unique_code"
             app:layout_constraintEnd_toEndOf="@id/til_output_unique_code"
-            >
+            app:layout_constraintStart_toStartOf="@id/til_output_unique_code"
+            app:layout_constraintTop_toBottomOf="@id/til_output_unique_code">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tie_output_perfo_data"
                 style="@style/input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="numberDecimal"
                 android:enabled="false"
+                android:inputType="numberDecimal"
                 android:maxLength="@integer/dim_7" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -205,19 +196,17 @@
             android:layout_margin="@dimen/dim_size_5"
             android:hint="@string/hint_worker_name"
             app:endIconMode="clear_text"
-            android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@id/til_output_perfo"
-            app:layout_constraintStart_toStartOf="@id/til_output_perfo"
             app:layout_constraintEnd_toEndOf="@id/til_output_perfo"
-            >
+            app:layout_constraintStart_toStartOf="@id/til_output_perfo"
+            app:layout_constraintTop_toBottomOf="@id/til_output_perfo">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tie_output_coworker_data"
                 style="@style/input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="numberDecimal"
                 android:enabled="false"
+                android:inputType="numberDecimal"
                 android:maxLength="@integer/dim_7" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -229,19 +218,17 @@
             android:layout_margin="@dimen/dim_size_5"
             android:hint="@string/title_output_to"
             app:endIconMode="clear_text"
-            android:enabled="false"
-            app:layout_constraintTop_toBottomOf="@id/til_output_batch_roll"
-            app:layout_constraintStart_toStartOf="@id/til_output_batch_roll"
             app:layout_constraintEnd_toEndOf="@id/til_output_batch_roll"
-            >
+            app:layout_constraintStart_toStartOf="@id/til_output_batch_roll"
+            app:layout_constraintTop_toBottomOf="@id/til_output_batch_roll">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tie_output_to"
                 style="@style/input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="numberDecimal"
                 android:enabled="false"
+                android:inputType="numberDecimal"
                 android:maxLength="@integer/dim_7" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -262,9 +249,9 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:text="@string/text_general_app_next"
-            app:layout_constraintTop_toTopOf="@id/btn_output_clean"
             app:layout_constraintEnd_toEndOf="@id/til_output_to"
-            app:layout_constraintTop_toBottomOf="@id/til_output_to" />
+            app:layout_constraintTop_toBottomOf="@id/til_output_to"
+            app:layout_constraintTop_toTopOf="@id/btn_output_clean" />
 
 
         <com.google.android.material.button.MaterialButton
@@ -275,8 +262,8 @@
             android:layout_marginTop="@dimen/dim_size_4"
             android:enabled="false"
             android:text="@string/text_general_app_save"
-            app:layout_constraintStart_toStartOf="@id/btn_output_clean"
             app:layout_constraintEnd_toEndOf="@id/btn_output_next"
+            app:layout_constraintStart_toStartOf="@id/btn_output_clean"
             app:layout_constraintTop_toBottomOf="@id/btn_output_next" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

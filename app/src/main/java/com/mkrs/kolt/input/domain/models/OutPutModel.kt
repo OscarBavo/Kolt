@@ -1,5 +1,7 @@
 package com.mkrs.kolt.input.domain.models
 
+import com.google.gson.annotations.SerializedName
+
 /****
  * Project: Kolt
  * Dev: Oscar Balderas Vazquez
@@ -7,13 +9,16 @@ package com.mkrs.kolt.input.domain.models
  * Date: 29 / 08 / 2024
  *****/
 data class OutPutModel(
-    var date: String = "",
-    var emit: String = "",
-    var receiver: String = "",
-    var reference: String = "",
-    var keyPT: String = "",
-    var keyUnique: String = "",
-    var perfo: String = "",
-    var coworker: String = "",
-    var shipTo: String = ""
+    @SerializedName("WhsCode")
+    var whsCode: String = "",
+    @SerializedName("ItemCodeMP")
+    var itemCodeMP: String = "",
+    @SerializedName("ItemCodePT")
+    var itemCodePT: String = "",
+    @SerializedName("BatchNumber")
+    var batchNumber: String = "",
+    @SerializedName("ManufacturerSerialNumber")
+    var manufacturerSerialNumber: String = "",
+    @SerializedName("Quantity")
+    var quantity: Double = 0.0
 )

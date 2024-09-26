@@ -10,8 +10,6 @@ import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.base.MKTFragment
 import com.mkrs.kolt.databinding.FragmentOutputBinding
 import com.mkrs.kolt.input.di.InputModule
-import com.mkrs.kolt.input.presentation.input.InOutputUiState
-import com.mkrs.kolt.input.presentation.input.InputViewModel
 import com.mkrs.kolt.preferences.di.HomeModule
 import com.mkrs.kolt.preferences.di.PreferenceModule
 import com.mkrs.kolt.preferences.presentation.PreferencesViewModel
@@ -33,7 +31,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         InputModule.providesInputViewModelFactory(requireActivity().application)
     }
 
-    private val outputViewModel: InputViewModel by activityViewModels { vmFactory }
+    private val outputViewModel: OutputViewModel by activityViewModels { vmFactory }
 
 
     override fun onCreateView(
@@ -55,57 +53,69 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
     }
 
     private fun loadLiveData() {
-        inputViewModel.inOutViewState.observe(viewLifecycleOwner) {
+        outputViewModel.outputViewState.observe(viewLifecycleOwner) {
             observerOutputState(it)
         }
+        outputViewModel.getDate(false)
+
         isDemo = preferencesViewModel.getInt(getString(R.string.key_pass_is_demo), 0) == 1
     }
 
 
     private fun observerOutputState(state: OutputUiState?) {
         when (state) {
-            is InOutputUiState.Loading -> showDialog()
-            is InOutputUiState.NoState -> dismissDialog()
-            is InOutputUiState.Error -> {
+            is OutputUiState.Loading -> showDialog()
+            is OutputUiState.NoState -> dismissDialog()
+            is OutputUiState.Error -> {
                 dismissDialog()
                 showAlert(msg = state.msg, view = binding.btnOutputNext)
-                inputViewModel.setNoState()
+                outputViewModel.setNoState()
             }
 
             is OutputUiState.SaveOutPutReference -> {
+                dismissDialog()
                 binding.btnOutputClean.enable()
                 binding.tieOutputKeyPtData.enable()
                 binding.tieOutputKeyPtData.requestFocus()
             }
 
-            is InOutputUiState.SaveOutPutKeyPT -> {
+            is OutputUiState.SaveOutPutKeyPT -> {
+                dismissDialog()
                 binding.tieOutputUniqueCodeData.enable()
                 binding.tieOutputUniqueCodeData.requestFocus()
             }
 
-            is InOutputUiState.SaveOutPutKeyUnique -> {
+            is OutputUiState.SaveOutPutKeyUnique -> {
+                dismissDialog()
                 binding.tieOutputPerfoData.enable()
                 binding.tieOutputPerfoData.requestFocus()
             }
 
-            is InOutputUiState.SaveOutPutPerfo -> {
+            is OutputUiState.SaveOutPutPerfo -> {
+                dismissDialog()
                 binding.tieOutputCoworkerData.enable()
                 binding.tieOutputCoworkerData.requestFocus()
             }
 
-            is InOutputUiState.SaveOutputCoworker -> {
+            is OutputUiState.SaveOutputCoworker -> {
+                dismissDialog()
                 binding.tieOutputTo.enable()
                 binding.tieOutputTo.requestFocus()
             }
 
-            is InOutputUiState.SaveOutputTo -> {
+            is OutputUiState.SaveOutputTo -> {
+                dismissDialog()
                 binding.btnOutputNext.enable()
                 binding.btnOutputSave.enable()
             }
 
+            is OutputUiState.GetDate -> {
+                dismissDialog()
+                binding.tvOutputDateData.text = state.date
+            }
+
             else -> {
                 dismissDialog()
-                inputViewModel.setNoState()
             }
         }
     }
@@ -125,6 +135,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         binding.btnOutputClean.disable()
         binding.btnOutputNext.disable()
         binding.btnOutputSave.disable()
+
 
     }
 }
