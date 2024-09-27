@@ -22,7 +22,7 @@ class OutputViewModelFactory(
     private val postCreateOutputUseCase: PostCreateOutputUseCase
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(InputViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(OutputViewModel::class.java)) {
             return OutputViewModel(
                 context,
                 getOutputCodePTUseCase,

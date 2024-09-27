@@ -56,7 +56,7 @@ object OutputRepositoryImp : OutputRepository {
     ) = withContext(Dispatchers.IO) {
         return@withContext if (isDummy) {
             MKTGenericResponse.Success(
-                ErrorResponse("3533", "", false, "OK", 0, "25/09/2024 21:26:23")
+                ErrorResponse("3533", "", true, "OK", 0, "25/09/2024 21:26:23")
             )
         } else {
             val service = MKTOutputGetDateService(keyWms)

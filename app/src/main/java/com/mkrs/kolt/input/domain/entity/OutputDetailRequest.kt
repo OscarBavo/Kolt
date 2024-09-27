@@ -9,10 +9,10 @@ import com.google.gson.annotations.SerializedName
  * Date: 25 / 09 / 2024
  *****/
 class OutputDetailRequest(
-    @SerializedName("ItemCodePT")
-    val itemCodeTP: String = "",
+    @SerializedName("ItemCodeMP")
+    val itemCodeMP: String = "",
     @SerializedName("DistNumber")
-    val DistNumber: String = "",
+    val distNumber: String = "",
     @SerializedName("WhsCode")
     val whsCode: String = ""
 )

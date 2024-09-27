@@ -162,8 +162,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:enabled="false"
-                android:inputType="numberDecimal"
-                android:maxLength="@integer/dim_7" />
+                android:inputType="textCapWords"
+                android:maxLength="@integer/dim_8" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -184,12 +184,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:enabled="false"
-                android:inputType="numberDecimal"
-                android:maxLength="@integer/dim_7" />
+                android:inputType="textCapWords"
+                android:maxLength="@integer/dim_11" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_output_batch_roll"
+            android:id="@+id/til_output_coworker"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -206,8 +206,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:enabled="false"
-                android:inputType="numberDecimal"
-                android:maxLength="@integer/dim_7" />
+                android:inputType="textCapWords"
+                android:maxLength="@integer/dim_11" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -218,9 +218,9 @@
             android:layout_margin="@dimen/dim_size_5"
             android:hint="@string/title_output_to"
             app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="@id/til_output_batch_roll"
-            app:layout_constraintStart_toStartOf="@id/til_output_batch_roll"
-            app:layout_constraintTop_toBottomOf="@id/til_output_batch_roll">
+            app:layout_constraintEnd_toEndOf="@id/til_output_coworker"
+            app:layout_constraintStart_toStartOf="@id/til_output_coworker"
+            app:layout_constraintTop_toBottomOf="@id/til_output_coworker">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tie_output_to"
@@ -249,6 +249,7 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:text="@string/text_general_app_next"
+            android:layout_marginEnd="@dimen/dim_size_2"
             app:layout_constraintEnd_toEndOf="@id/til_output_to"
             app:layout_constraintTop_toBottomOf="@id/til_output_to"
             app:layout_constraintTop_toTopOf="@id/btn_output_clean" />

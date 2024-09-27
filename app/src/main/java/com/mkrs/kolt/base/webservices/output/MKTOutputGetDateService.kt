@@ -22,6 +22,7 @@ class MKTOutputGetDateService(private val whsCode: String) :
         const val WHS_CODE = "CodigoAlmacen"
 
     }
+
     override fun buildRequest() {
         addHeader(MKTGeneralConfig.CONTENT_TYPE, MKTGeneralConfig.APPLICATION_JSON_CHAR)
         addHeader(MKTGeneralConfig.NGROK_WARNING, MKTGeneralConfig.NGROK_WARNING_NUM)
@@ -39,12 +40,11 @@ class MKTOutputGetDateService(private val whsCode: String) :
             val response = Gson().fromJson(responseString, ErrorResponse::class.java)
             this.response.ErrorCode = response.ErrorCode
             this.response.Message = response.Message
-            if (!response.EsError) {
-                this.response.Result = OutputDateResponse(response)
-            }
+            this.response.Result = OutputDateResponse(response)
+
         } catch (ex: Exception) {
             val response = Gson().fromJson(responseString, ErrorResponse::class.java)
-            this.response.ErrorCode = this.serviceUrl ?: ""
+            this.response.ErrorCode = response.ErrorCode
             this.response.Result = OutputDateResponse(response)
         } finally {
             getListener()?.onFinish(this.response)

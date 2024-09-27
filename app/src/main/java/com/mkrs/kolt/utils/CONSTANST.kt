@@ -18,5 +18,11 @@ class CONSTANST {
         const val EMPTY_DATA = ""
         const val NO_DATE="ND"
         const val WHS_CODE_DATE="01"
+        const val CODE_START_WITH="713"
+        const val WHS_CODE_TWO="02"
+        const val WHS_CODE_THREE="03"
+        const val GENERIC_RFC="XAXX010101000"
+        const val NO_QUANTITY_AVAILABLE="0"
+
     }
 }

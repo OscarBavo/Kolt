@@ -61,8 +61,9 @@ fun View.disable() {
     isEnabled = false
 }
 
-fun View.enable() {
+fun View.enable(focus: Boolean = false) {
     isEnabled = true
+    if (focus) this.requestFocus()
 }
 
-fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
+fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)

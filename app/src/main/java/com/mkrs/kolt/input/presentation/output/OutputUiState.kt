@@ -11,12 +11,26 @@ sealed class OutputUiState {
     object Loading : OutputUiState()
     object NoState : OutputUiState()
     data class Error(val msg: String) : OutputUiState()
-    object SaveOutPutReference : OutputUiState()
-    object SaveOutPutKeyPT : OutputUiState()
-    object SaveOutPutKeyUnique : OutputUiState()
-    object SaveOutPutPerfo : OutputUiState()
-    object SaveOutputCoworker : OutputUiState()
-    object SaveOutputTo : OutputUiState()
     data class OutputTotalItems(val total: Int) : OutputUiState()
-    data class GetDate(val date:String):OutputUiState()
+    data class GetDate(val date: String) : OutputUiState()
+    object ErrorReference : OutputUiState()
+    object SaveReference : OutputUiState()
+    object SaveOutPutKeyPT : OutputUiState()
+
+    data class QuantityAvailable(val quantity: String) : OutputUiState()
+    data class ErrorQuantityAvailable(val quantity: String) : OutputUiState()
+
+    data class GetRFC(val rfc: String) : OutputUiState()
+    data class ErrorOutPutKeyPT(val message: String) : OutputUiState()
+    object SaveOutputPerfo : OutputUiState()
+    object ErrorOutputPerfo : OutputUiState()
+    object ErrorOutputCoWorker : OutputUiState()
+    object SaveOutputCoworker : OutputUiState()
+
+    object SaveOutputQuantity : OutputUiState()
+    data class ErrorOutputQuantityUpper(val quantity: String) : OutputUiState()
+    data class ErrorOutputQuantityLowerZero(val quantity: String) : OutputUiState()
+    object ErrorOutputQuantity : OutputUiState()
+
+
 }

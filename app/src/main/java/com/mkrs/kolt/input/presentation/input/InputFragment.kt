@@ -342,7 +342,6 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
         } else if (code.length == CODE_MAX_LENGTH && isDigit(code)) {
             inputViewModel.getCodePT(code, isDemo)
         }
-
     }
 
     private fun initView() {
@@ -393,6 +392,4 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
             )
         }
     }
-
-
 }
