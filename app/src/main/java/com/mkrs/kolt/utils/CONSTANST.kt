@@ -12,6 +12,7 @@ class CONSTANST {
         const val REFERENCE_MAX_LENGTH = 11
         const val CODE_UNIQUE_MAX_LENGTH = 8
         const val VERIFY_TOTAL_OK = 0.0
+        const val LIST_EMPTY = 0
         const val WHS_CODE_IN = "01"
         const val ERROR_ZERO = "0"
         const val CODE = "0"

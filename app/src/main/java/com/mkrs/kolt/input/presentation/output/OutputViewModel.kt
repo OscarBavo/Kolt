@@ -9,7 +9,6 @@ import com.mkrs.kolt.R
 import com.mkrs.kolt.base.webservices.common.ErrorResponse
 import com.mkrs.kolt.input.domain.entity.OutputDetailRequest
 import com.mkrs.kolt.input.domain.models.OutPutModel
-import com.mkrs.kolt.input.domain.usecase.CodeInPTResult
 import com.mkrs.kolt.input.domain.usecase.output.CodeOutputResult
 import com.mkrs.kolt.input.domain.usecase.output.DateOutputResult
 import com.mkrs.kolt.input.domain.usecase.output.DetailItemOutputResult
@@ -17,7 +16,6 @@ import com.mkrs.kolt.input.domain.usecase.output.GetOutputCodePTUseCase
 import com.mkrs.kolt.input.domain.usecase.output.GetOutputDateUseCase
 import com.mkrs.kolt.input.domain.usecase.output.PostCreateOutputUseCase
 import com.mkrs.kolt.input.domain.usecase.output.PostOutputItemDetailUseCase
-import com.mkrs.kolt.input.presentation.input.InOutputUiState
 import com.mkrs.kolt.utils.CONSTANST
 import com.mkrs.kolt.utils.CONSTANST.Companion.CODE_START_WITH
 import com.mkrs.kolt.utils.CONSTANST.Companion.GENERIC_RFC
@@ -63,6 +61,7 @@ class OutputViewModel(
         mutableOutUiState.postValue(OutputUiState.NoState)
     }
 
+    fun getItemsOutput() = listOutItem.size
     fun saveReference(reference: String) {
         if (reference.length < CONSTANST.REFERENCE_MAX_LENGTH) {
             mutableOutUiState.postValue(OutputUiState.ErrorReference)

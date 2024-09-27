@@ -17,10 +17,12 @@ import com.mkrs.kolt.preferences.di.HomeModule
 import com.mkrs.kolt.preferences.di.PreferenceModule
 import com.mkrs.kolt.preferences.presentation.PreferencesViewModel
 import com.mkrs.kolt.utils.CONSTANST
+import com.mkrs.kolt.utils.CONSTANST.Companion.LIST_EMPTY
 import com.mkrs.kolt.utils.CONSTANST.Companion.REFERENCE_MAX_LENGTH
 import com.mkrs.kolt.utils.disable
 import com.mkrs.kolt.utils.emptyStringEditable
 import com.mkrs.kolt.utils.enable
+import com.mkrs.kolt.utils.enableOrDisable
 import com.mkrs.kolt.utils.isCode
 import com.mkrs.kolt.utils.isCodeFill
 import com.mkrs.kolt.utils.isDigit
@@ -137,7 +139,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
             is OutputUiState.ErrorQuantityAvailable -> {
                 dismissDialog()
-                binding.tilOutputUniqueCode.error = "No existe inventario"
+                binding.tilOutputUniqueCode.error = getString(R.string.not_found_data_code_p_msg)
                 binding.tieOutputUniqueCodeData.enable(focus = true)
             }
 
@@ -149,7 +151,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
             is OutputUiState.ErrorOutputPerfo -> {
                 dismissDialog()
-                binding.tilOutputPerfo.error = "Debe ingresar perforadora"
+                binding.tilOutputPerfo.error = getString(R.string.title_error_perfo)
                 binding.tieOutputPerfoData.enable(focus = true)
             }
 
@@ -161,13 +163,14 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
             is OutputUiState.ErrorOutputCoWorker -> {
                 dismissDialog()
-                binding.tilOutputCoworker.error = "Debe ingresar usuario"
+                binding.tilOutputCoworker.error = getString(R.string.title_worker_name)
                 binding.tieOutputCoworkerData.enable(focus = true)
             }
 
             is OutputUiState.ErrorOutputQuantityUpper -> {
                 dismissDialog()
-                binding.tilOutputTo.error = "La cantidad ${state.quantity} supera la disponible"
+                binding.tilOutputTo.error =
+                    getString(R.string.title_error_quantity_upper, state.quantity)
                 binding.tieOutputTo.setTextAppearance(R.style.input_text)
                 binding.tieOutputTo.enable(focus = true)
             }
@@ -175,14 +178,14 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
             is OutputUiState.ErrorOutputQuantityLowerZero -> {
                 dismissDialog()
-                binding.tilOutputTo.error = "La cantidad ${state.quantity} no es correcta"
+                binding.tilOutputTo.error = getString(R.string.title_error_quantity, state.quantity)
                 binding.tieOutputTo.setTextAppearance(R.style.input_text)
                 binding.tieOutputTo.enable(focus = true)
             }
 
             is OutputUiState.ErrorOutputQuantity -> {
                 dismissDialog()
-                binding.tilOutputTo.error = "Debe ingresar la cantidad"
+                binding.tilOutputTo.error = getString(R.string.title_error_quantity_empty)
                 binding.tieOutputTo.setTextAppearance(R.style.input_text)
                 binding.tieOutputTo.enable(focus = true)
             }
@@ -294,6 +297,10 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         }
         //endregion
 
+        binding.btnOutputClean.setOnClickListener {
+            clearData()
+        }
+
     }
 
     private fun initView() {
@@ -356,5 +363,29 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
                 binding.tilOutputUniqueCode
             )
         }
+    }
+
+    private fun clearData() {
+        binding.tieOutputKeyPtData.text = emptyStringEditable()
+        binding.tieOutputUniqueCodeData.text = emptyStringEditable()
+        binding.tieOutputPerfoData.text = emptyStringEditable()
+        binding.tieOutputCoworkerData.text = emptyStringEditable()
+        binding.tieOutputUniqueCodeData.text = emptyStringEditable()
+        binding.tieOutputTo.text= emptyStringEditable()
+
+
+        binding.tieOutputKeyPtData.setTextAppearance(R.style.input_text)
+        binding.tieOutputUniqueCodeData.setTextAppearance(R.style.input_text)
+        binding.tieOutputPerfoData.setTextAppearance(R.style.input_text)
+        binding.tieOutputCoworkerData.setTextAppearance(R.style.input_text)
+        binding.tieOutputUniqueCodeData.setTextAppearance(R.style.input_text)
+        binding.tieOutputTo.setTextAppearance(R.style.input_text)
+
+        outputViewModel.resetData()
+
+        binding.btnOutputSave.enableOrDisable { outputViewModel.getItemsOutput() > LIST_EMPTY }
+        binding.btnOutputNext.disable()
+
+        binding.tieOutputKeyPtData.enable(focus=true)
     }
 }
