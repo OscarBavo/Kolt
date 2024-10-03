@@ -3,7 +3,6 @@ package com.mkrs.kolt.input.di
 import android.app.Application
 import com.mkrs.kolt.input.data.OutputRepositoryImp
 import com.mkrs.kolt.input.domain.repositories.OutputRepository
-import com.mkrs.kolt.input.domain.usecase.output.GetOutputCodePTUseCase
 import com.mkrs.kolt.input.domain.usecase.output.GetOutputDateUseCase
 import com.mkrs.kolt.input.domain.usecase.output.PostCreateOutputUseCase
 import com.mkrs.kolt.input.domain.usecase.output.PostOutputItemDetailUseCase
@@ -35,17 +34,11 @@ object OutputModule {
     fun providesOutputViewModelFactory(application: Application): OutputViewModelFactory {
         return OutputViewModelFactory(
             application,
-            providesOutputGetCodePTUseCase(),
             providesOutputGetDateUseCase(),
             providesOutputPostDetailItemUseCase(),
             providesOutputPostCreateUseCase()
         )
     }
-
-    @Singleton
-    @Provides
-    fun providesOutputGetCodePTUseCase() = GetOutputCodePTUseCase(providesOutputRepository())
-
     @Singleton
     @Provides
     fun providesOutputGetDateUseCase() = GetOutputDateUseCase(providesOutputRepository())
