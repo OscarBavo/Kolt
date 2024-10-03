@@ -7,8 +7,10 @@ import com.mkrs.kolt.base.webservices.output.MKTOutputGetDateService
 import com.mkrs.kolt.base.webservices.output.MKTOutputPostCreateService
 import com.mkrs.kolt.base.webservices.output.MKTOutputPostDetailService
 import com.mkrs.kolt.base.webservices.transfer.MKTTransferGetCodeService
+import com.mkrs.kolt.input.domain.entity.OutPutDetailResponse
 import com.mkrs.kolt.input.domain.entity.OutputDetailRequest
 import com.mkrs.kolt.input.domain.entity.OutputRequest
+import com.mkrs.kolt.input.domain.models.OutputPrinterModel
 import com.mkrs.kolt.input.domain.repositories.OutputRepository
 import com.mkrs.kolt.input.webservices.models.OutputDateResponse
 import com.mkrs.kolt.utils.CONSTANST
@@ -61,7 +63,8 @@ object OutputRepositoryImp : OutputRepository {
         } else {
             val service = MKTOutputGetDateService(keyWms)
             val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
-            return@withContext if (!response.EsError) {
+            response.EsError
+            return@withContext if (!response.Result?.dateResponse?.EsError!!) {
                 MKTGenericResponse.Success(createResponseDate(response.Result))
             } else {
                 MKTGenericResponse.Failed(CONSTANST.NO_DATE)
@@ -80,25 +83,49 @@ object OutputRepositoryImp : OutputRepository {
     ) = withContext(Dispatchers.IO) {
         return@withContext if (isDummy) {
             MKTGenericResponse.Success(
-                ErrorResponse(
-                    "3533",
-                    "0",
-                    false,
-                    "OK",
-                    ObjType = 0,
-                    Result = "300",
-                    FechaHora = "25/09/2024 21:26:23"
+                OutputPrinterModel(
+                    whsCode = detail.whsCode,
+                    itemCodeMP = detail.itemCodeMP,
+                    itemCodePT = "ASBVS",
+                    batchNumber = detail.distNumber,
+                    manufacturerSerialNumber = "AS/BAS12",
+                    quantity = 10.0,
+                    supportCatNumber = "JMV",
+                    order = "JMV01",
+                    pieces = "10.0",
+                    stdPack = "outputDetail.quantity",
+                    itemName = "OSCAR"
                 )
             )
         } else {
             val service = MKTOutputPostDetailService(detail)
             val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
-            return@withContext if (!response.EsError) {
-                MKTGenericResponse.Success(createResponseDate(response.Result))
+            return@withContext if (!response.Result?.response?.EsError!!) {
+                MKTGenericResponse.Success(createDetail(detail,response.Result))
             } else {
                 MKTGenericResponse.Failed(CONSTANST.NO_DATE)
             }
         }
+    }
+    private fun createDetail( detail: OutputDetailRequest,result: OutPutDetailResponse?): OutputPrinterModel {
+        return result?.let { outputDetail->
+            OutputPrinterModel(
+                whsCode = detail.whsCode,
+                itemCodeMP = detail.itemCodeMP,
+                itemCodePT = outputDetail.itemCode,
+                batchNumber = detail.distNumber,
+                manufacturerSerialNumber = outputDetail.mnfSerial,
+                quantity = outputDetail.quantity.toDouble(),
+                supportCatNumber = outputDetail.supportCatNumber,
+                order = outputDetail.order,
+                pieces = outputDetail.quantity,
+                stdPack = outputDetail.quantity,
+                itemName = outputDetail.itemName
+            )
+        }?: kotlin.run{
+            OutputPrinterModel()
+        }
+
     }
 
     override suspend fun postCreateOutput(
@@ -120,10 +147,10 @@ object OutputRepositoryImp : OutputRepository {
         } else {
             val service = MKTOutputPostCreateService(outputRequest)
             val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
-            return@withContext if (!response.EsError) {
+            return@withContext if (!response.Result?.dateResponse?.EsError!!) {
                 MKTGenericResponse.Success(createResponseDate(response.Result))
             } else {
-                MKTGenericResponse.Failed(CONSTANST.NO_DATE)
+                MKTGenericResponse.Failed(createResponseDate(response.Result).Message)
             }
         }
     }

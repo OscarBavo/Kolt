@@ -1,8 +1,8 @@
 package com.mkrs.kolt.input.domain.usecase.output
 
 import com.mkrs.kolt.base.webservices.MKTGenericResponse
-import com.mkrs.kolt.base.webservices.common.ErrorResponse
 import com.mkrs.kolt.input.domain.entity.OutputDetailRequest
+import com.mkrs.kolt.input.domain.models.OutputPrinterModel
 import com.mkrs.kolt.input.domain.repositories.OutputRepository
 
 /****
@@ -25,6 +25,6 @@ class PostOutputItemDetailUseCase(private val outputRepository: OutputRepository
 }
 
 sealed class DetailItemOutputResult {
-    data class Success(val result: ErrorResponse) : DetailItemOutputResult()
+    data class Success(val result: OutputPrinterModel) : DetailItemOutputResult()
     data class Fail(val error: String) : DetailItemOutputResult()
 }

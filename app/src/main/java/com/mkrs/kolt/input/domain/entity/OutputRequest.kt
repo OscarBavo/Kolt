@@ -1,7 +1,7 @@
 package com.mkrs.kolt.input.domain.entity
 
 import com.google.gson.annotations.SerializedName
-import com.mkrs.kolt.base.webservices.entity.LineasED
+import com.mkrs.kolt.input.domain.models.OutPutModel
 
 /****
  * Project: Kolt
@@ -13,5 +13,5 @@ class OutputRequest(
     @SerializedName("Referencia")
     val reference: String = "",
     @SerializedName("Lineas")
-    val lines: MutableList<LineasED>
+    val lines: MutableList<OutPutModel>
 )

@@ -17,11 +17,11 @@ import java.lang.Exception
  * From: com.mkrs.kolt.base.webservices.output
  * Date: 25 / 09 / 2024
  *****/
-class MKTOutputPostCreateService(private val request: OutputRequest):
+class MKTOutputPostCreateService(private val request: OutputRequest) :
     MKTWebService<OutputDateResponse>(
         POST_OUT,
         CONSTANST.CODE
-) {
+    ) {
     override fun buildRequest() {
         addHeader(MKTGeneralConfig.CONTENT_TYPE, MKTGeneralConfig.APPLICATION_JSON_CHAR)
         addHeader(MKTGeneralConfig.NGROK_WARNING, MKTGeneralConfig.NGROK_WARNING_NUM)
@@ -38,9 +38,7 @@ class MKTOutputPostCreateService(private val request: OutputRequest):
             val response = Gson().fromJson(responseString, ErrorResponse::class.java)
             this.response.ErrorCode = response.ErrorCode
             this.response.Message = response.Message
-            if (!response.EsError) {
-                this.response.Result = OutputDateResponse(response)
-            }
+            this.response.Result = OutputDateResponse(response)
         } catch (ex: Exception) {
             val response = Gson().fromJson(responseString, ErrorResponse::class.java)
             this.response.ErrorCode = this.serviceUrl ?: ""

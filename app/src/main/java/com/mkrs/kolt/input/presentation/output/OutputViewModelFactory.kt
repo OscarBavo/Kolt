@@ -16,7 +16,7 @@ import com.mkrs.kolt.input.presentation.input.InputViewModel
  * Date: 25 / 09 / 2024
  *****/
 class OutputViewModelFactory(
-    private val context: Application, private val getOutputCodePTUseCase: GetOutputCodePTUseCase,
+    private val context: Application,
     private val getOutputDateUseCase: GetOutputDateUseCase,
     private val postOutputItemDetailUseCase: PostOutputItemDetailUseCase,
     private val postCreateOutputUseCase: PostCreateOutputUseCase
@@ -25,7 +25,6 @@ class OutputViewModelFactory(
         if (modelClass.isAssignableFrom(OutputViewModel::class.java)) {
             return OutputViewModel(
                 context,
-                getOutputCodePTUseCase,
                 getOutputDateUseCase,
                 postOutputItemDetailUseCase,
                 postCreateOutputUseCase

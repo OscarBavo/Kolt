@@ -33,7 +33,7 @@ class APIKolt {
             val POST_IN: String = "$BASE_URL_KOLT/CrearEntradaInventario"
             val POST_OUT: String = "$BASE_URL_KOLT/CrearSalidaInventario"
             val GET_OUT_RFC: String = "$BASE_URL_KOLT/GetProveedorNombreRazonSocial"
-            val POST_OUT_DETAIL: String = "$BASE_URL_KOLT/GetExistenciaMPAlmacenSalida"
+            val POST_OUT_DETAIL: String = "$BASE_URL_KOLT/PostDetallesExistencia"
         }
     }
 }

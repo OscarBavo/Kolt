@@ -4,6 +4,7 @@ import com.mkrs.kolt.base.webservices.MKTGenericResponse
 import com.mkrs.kolt.base.webservices.common.ErrorResponse
 import com.mkrs.kolt.input.domain.entity.OutputDetailRequest
 import com.mkrs.kolt.input.domain.entity.OutputRequest
+import com.mkrs.kolt.input.domain.models.OutputPrinterModel
 
 /****
  * Project: Kolt
@@ -25,7 +26,7 @@ interface OutputRepository {
     suspend fun postDetail(
         detail: OutputDetailRequest,
         isDummy: Boolean = false
-    ): MKTGenericResponse<ErrorResponse>
+    ): MKTGenericResponse<OutputPrinterModel>
 
     suspend fun postCreateOutput(
         outputRequest: OutputRequest,

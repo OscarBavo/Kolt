@@ -40,6 +40,7 @@ class MKTOutputGetDateService(private val whsCode: String) :
             val response = Gson().fromJson(responseString, ErrorResponse::class.java)
             this.response.ErrorCode = response.ErrorCode
             this.response.Message = response.Message
+            this.response.EsError = response.EsError
             this.response.Result = OutputDateResponse(response)
 
         } catch (ex: Exception) {

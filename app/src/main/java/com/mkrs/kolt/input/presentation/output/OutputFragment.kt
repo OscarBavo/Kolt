@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.mkrs.kolt.R
 import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.base.MKTFragment
+import com.mkrs.kolt.dashboard.home.printer.PrinterUIState
+import com.mkrs.kolt.dashboard.home.printer.PrinterViewModel
 import com.mkrs.kolt.databinding.FragmentOutputBinding
 import com.mkrs.kolt.input.di.OutputModule
 import com.mkrs.kolt.preferences.di.HomeModule
@@ -20,6 +23,7 @@ import com.mkrs.kolt.utils.CONSTANST
 import com.mkrs.kolt.utils.CONSTANST.Companion.LIST_EMPTY
 import com.mkrs.kolt.utils.CONSTANST.Companion.REFERENCE_MAX_LENGTH
 import com.mkrs.kolt.utils.disable
+import com.mkrs.kolt.utils.emptyString
 import com.mkrs.kolt.utils.emptyStringEditable
 import com.mkrs.kolt.utils.enable
 import com.mkrs.kolt.utils.enableOrDisable
@@ -33,6 +37,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
     private lateinit var binding: FragmentOutputBinding
     private var isDemo = false
+    private val printerViewModel by activityViewModels<PrinterViewModel>()
 
     private val preferencesViewModel by activityViewModels<PreferencesViewModel> {
         PreferenceModule.providePreferenceVMFactory(
@@ -46,6 +51,67 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
     private val outputViewModel: OutputViewModel by activityViewModels { vmFactory }
 
+
+    private val uIStateObserver = Observer<PrinterUIState> { state ->
+        when (state) {
+            is PrinterUIState.Loading -> activity?.showDialog()
+            is PrinterUIState.NoState -> {
+                activity?.dismissDialog()
+            }
+
+            is PrinterUIState.Printed -> {
+                activity?.dismissDialog()
+                printerViewModel.printNoState()
+                outputViewModel.setNoState()
+                questionLabelOk()
+            }
+
+            is PrinterUIState.Error -> {
+                activity?.dismissDialog()
+                printerViewModel.printNoState()
+                showAlert(state.message, binding.btnOutputSave)
+            }
+
+        }
+    }
+
+    private fun questionLabelOk() {
+        activity?.showAlertComplete(
+            getString(R.string.generic_information),
+            getString(R.string.success_label_question),
+            getString(R.string.generic_yes),
+            true,
+            { _, _ ->
+                activity?.alertDialog?.dismiss()
+                activity?.onBackPressed()
+            },
+            getString(R.string.generic_no),
+            true,
+            { _, _ ->
+                activity?.alertDialog?.dismiss()
+                showRetrievePrinterLabel()
+            })
+    }
+
+    private fun showRetrievePrinterLabel() {
+        activity?.let {
+            it.showAlertComplete(
+                getString(R.string.generic_information),
+                getString(R.string.retrieve_printer_label),
+                getString(R.string.generic_yes),
+                true, { _, _ ->
+                    it.alertDialog.dismiss()
+                    printingLabel(outputViewModel.getLabelsOutput())
+                },
+                getString(R.string.generic_no),
+                true,
+                { _, _ ->
+                    it.alertDialog.dismiss()
+                    activity?.onBackPressed()
+                }
+            )
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,6 +137,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         }
 
         isDemo = preferencesViewModel.getInt(getString(R.string.key_pass_is_demo), 0) == 1
+        printerViewModel.printerUIState.observe(viewLifecycleOwner, uIStateObserver)
 
         outputViewModel.getDate(isDemo)
     }
@@ -95,6 +162,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
             is OutputUiState.OutputTotalItems -> {
                 dismissDialog()
                 binding.tvOutputLabelsData.text = state.total.toString()
+                clearData()
             }
 
 
@@ -191,9 +259,29 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
             }
 
             is OutputUiState.SaveOutputQuantity -> {
+                dismissDialog()
                 binding.tieOutputTo.setTextAppearance(R.style.input_text_ready)
                 binding.btnOutputNext.enable()
                 binding.btnOutputSave.enable()
+            }
+
+            is OutputUiState.ErrorOutputCreateToPrinter -> {
+                dismissDialog()
+                showAlert(state.error, binding.btnOutputSave)
+            }
+
+            is OutputUiState.OutputCreateToPrinter -> {
+                dismissDialog()
+                activity?.showAlertComplete(
+                    getString(R.string.generic_information),
+                    getString(R.string.title_created_out,state.dateTime),
+                    getString(R.string.generic_ok),
+                    true,
+                    { _, _ -> printingLabel(outputViewModel.getLabelsOutput())},
+                    emptyString(),
+                    false,
+                    { _, _ -> })
+
             }
 
             else -> {
@@ -221,9 +309,13 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         //endregion
 
         //region keycode
-        binding.tieOutputKeyPtData.doOnTextChanged { code, _, _, _ ->
-            validateKeyItem(code = code.toString())
+        binding.tieOutputKeyPtData.doOnTextChanged { code, _, _, count ->
+            if (count > 0)
+                validateKeyItem(code = code.toString())
 
+            if (!code.isNullOrEmpty()) {
+                validateKeyItem(code = code.toString())
+            }
         }
 
         binding.tieOutputKeyPtData.setOnEditorActionListener { code, actionId, keyEvent ->
@@ -282,9 +374,12 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         //endregion
 
         //region quantity
-        binding.tieOutputTo.doOnTextChanged { code, _, _, _ ->
-            binding.tilOutputTo.error = emptyStringEditable()
-            outputViewModel.saveQuantity(code.toString())
+        binding.tieOutputTo.doOnTextChanged { code, _, _, count ->
+            if (count > 0) {
+                binding.tilOutputTo.error = emptyStringEditable()
+            } else if (!code.isNullOrEmpty()) {
+                outputViewModel.saveQuantity(code.toString())
+            }
         }
 
         binding.tieOutputTo.setOnEditorActionListener { code, actionId, keyEvent ->
@@ -299,6 +394,15 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
         binding.btnOutputClean.setOnClickListener {
             clearData()
+        }
+
+        binding.btnOutputNext.setOnClickListener {
+            outputViewModel.nextOutData()
+        }
+
+        binding.btnOutputSave.setOnClickListener {
+            outputViewModel.saveDataOut()
+            outputViewModel.saveOutput(isDemo)
         }
 
     }
@@ -320,13 +424,13 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
     private fun validateKeyItem(code: String) {
         if (code.isEmpty()) {
-            binding.tilOutputKeyPt.error = emptyStringEditable()
+            binding.tilOutputKeyPt.error = getString(R.string.title_empty_pt_message)
             binding.tieOutputKeyPtData.requestFocus()
         } else if (isLetter(code)) {
             binding.tilOutputKeyPt.error = getString(R.string.label_error_digits_item_code)
             binding.tieOutputKeyPtData.requestFocus()
         } else if (code.length == CONSTANST.CODE_MAX_LENGTH && isDigit(code)) {
-            outputViewModel.getCodePT(code, isDemo)
+            outputViewModel.getCodePT(code)
         }
     }
 
@@ -368,16 +472,19 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
     private fun clearData() {
         binding.tieOutputKeyPtData.text = emptyStringEditable()
         binding.tieOutputUniqueCodeData.text = emptyStringEditable()
-        binding.tieOutputPerfoData.text = emptyStringEditable()
-        binding.tieOutputCoworkerData.text = emptyStringEditable()
         binding.tieOutputUniqueCodeData.text = emptyStringEditable()
-        binding.tieOutputTo.text= emptyStringEditable()
+        binding.tieOutputTo.text = emptyStringEditable()
+
+        binding.tieOutputKeyPtData.error = null
+        binding.tieOutputUniqueCodeData.error = null
+        binding.tieOutputPerfoData.error = null
+        binding.tieOutputCoworkerData.error = null
+        binding.tieOutputUniqueCodeData.error = null
+        binding.tieOutputTo.error = null
 
 
         binding.tieOutputKeyPtData.setTextAppearance(R.style.input_text)
         binding.tieOutputUniqueCodeData.setTextAppearance(R.style.input_text)
-        binding.tieOutputPerfoData.setTextAppearance(R.style.input_text)
-        binding.tieOutputCoworkerData.setTextAppearance(R.style.input_text)
         binding.tieOutputUniqueCodeData.setTextAppearance(R.style.input_text)
         binding.tieOutputTo.setTextAppearance(R.style.input_text)
 
@@ -386,6 +493,13 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         binding.btnOutputSave.enableOrDisable { outputViewModel.getItemsOutput() > LIST_EMPTY }
         binding.btnOutputNext.disable()
 
-        binding.tieOutputKeyPtData.enable(focus=true)
+        binding.tieOutputKeyPtData.enable(focus = true)
+    }
+
+    private fun printingLabel(labels: MutableList<String>) {
+        val ipPort = printerViewModel.getDataPrinter(preferencesViewModel, resources)
+        labels.forEach {
+            printerViewModel.printTest(ipPort[0], ipPort[1].toInt(), it)
+        }
     }
 }
