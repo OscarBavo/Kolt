@@ -16,9 +16,8 @@ class GetInCodePTUseCase(private val inputRepository: InputRepository) {
             is MKTGenericResponse.Failed -> CodeInPTResult.Fail(result.errorMsg)
         }
     }
-
-    sealed class CodeInPTResult {
-        data class Success(val data: String) : CodeInPTResult()
-        data class Fail(val data: String) : CodeInPTResult()
-    }
+}
+sealed class CodeInPTResult {
+    data class Success(val data: String) : CodeInPTResult()
+    data class Fail(val data: String) : CodeInPTResult()
 }

@@ -1,4 +1,4 @@
-package com.mkrs.kolt.input.presentation
+package com.mkrs.kolt.input.presentation.input
 
 import com.mkrs.kolt.input.domain.models.InputModel
 
@@ -20,16 +20,7 @@ sealed class InOutputUiState {
     object SavePieces : InOutputUiState()
     object SaveBatchRoll : InOutputUiState()
     data class ErrorBatchRoll(val inputModel: InputModel) : InOutputUiState()
-    data class ErrorRegexBatchRoll(val errorBarch:String) : InOutputUiState()
-
+    data class ErrorRegexBatchRoll(val errorBatch: String) : InOutputUiState()
     data class SaveAll(val totalBatch: Int) : InOutputUiState()
-
-    object SaveOutPutReference : InOutputUiState()
-    object SaveOutPutKeyPT : InOutputUiState()
-    object SaveOutPutKeyUnique : InOutputUiState()
-    object SaveOutPutPerfo : InOutputUiState()
-    object SaveOutputCoworker : InOutputUiState()
-    object SaveOutputTo : InOutputUiState()
-
     data class CreateInReady(val docNum: Int) : InOutputUiState()
 }

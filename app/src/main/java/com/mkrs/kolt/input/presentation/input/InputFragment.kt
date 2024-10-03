@@ -1,4 +1,4 @@
-package com.mkrs.kolt.input.presentation
+package com.mkrs.kolt.input.presentation.input
 
 import android.os.Bundle
 import android.view.KeyEvent
@@ -78,18 +78,21 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
             is InOutputUiState.ErrorSaveKeyItem -> {
                 dismissDialog()
                 binding.tieKeyItemData.error = state.msg
+                inputViewModel.setNoState()
             }
 
             is InOutputUiState.ErrorReference -> {
                 dismissDialog()
                 binding.tilRefer.error = getString(R.string.title_error_empty_reference)
                 binding.tieReferData.requestFocus()
+                inputViewModel.setNoState()
             }
 
             is InOutputUiState.ErrorRegexBatchRoll -> {
                 dismissDialog()
-                binding.tilBatchRoll.error = getString(R.string.title_error_bad_batch)
+                binding.tilBatchRoll.error = getString(R.string.title_error_bad_batch, state.errorBatch)
                 binding.tilBatchRoll.requestFocus()
+                inputViewModel.setNoState()
             }
 
             is InOutputUiState.SaveReference -> {
@@ -98,6 +101,7 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
                 binding.tieKeyItemData.enable()
                 binding.tieReferData.setTextAppearance(R.style.input_text_ready)
                 binding.tieKeyItemData.requestFocus()
+                inputViewModel.setNoState()
             }
 
             is InOutputUiState.SaveKeyItem -> {
@@ -105,6 +109,7 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
                 binding.tieUniqueCodeData.enable()
                 binding.tieKeyItemData.setTextAppearance(R.style.input_text_ready)
                 binding.tieUniqueCodeData.requestFocus()
+                inputViewModel.setNoState()
             }
 
             is InOutputUiState.SaveKeyUnique -> {
@@ -112,6 +117,7 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
                 binding.tiePiecesData.enable()
                 binding.tieUniqueCodeData.setTextAppearance(R.style.input_text_ready)
                 binding.tiePiecesData.requestFocus()
+                inputViewModel.setNoState()
             }
 
             is InOutputUiState.SavePieces -> {
@@ -119,6 +125,7 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
                 binding.tieBatchRollData.enable()
                 binding.tiePiecesData.setTextAppearance(R.style.input_text_ready)
                 binding.tieBatchRollData.requestFocus()
+                inputViewModel.setNoState()
             }
 
             is InOutputUiState.Error -> {
@@ -131,6 +138,7 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
                 dismissDialog()
                 binding.btnNext.enable()
                 binding.btnNext.requestFocus()
+                inputViewModel.setNoState()
             }
 
             is InOutputUiState.SaveAll -> {
@@ -139,17 +147,20 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
                 binding.tieKeyItemData.requestFocus()
                 resetView()
                 binding.btnSave.enable()
+                inputViewModel.setNoState()
             }
 
             is InOutputUiState.ErrorBatchRoll -> {
                 dismissDialog()
                 showMessageAddOrDeleteBatch(state.inputModel)
+                inputViewModel.setNoState()
             }
 
             is InOutputUiState.CreateInReady -> {
                 dismissDialog()
                 resetView()
                 createdInReady(state.docNum)
+                inputViewModel.setNoState()
             }
 
             else -> {
@@ -332,7 +343,6 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
         } else if (code.length == CODE_MAX_LENGTH && isDigit(code)) {
             inputViewModel.getCodePT(code, isDemo)
         }
-
     }
 
     private fun initView() {
@@ -383,6 +393,4 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
             )
         }
     }
-
-
 }

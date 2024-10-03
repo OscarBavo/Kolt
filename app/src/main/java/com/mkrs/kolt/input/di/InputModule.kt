@@ -5,7 +5,7 @@ import com.mkrs.kolt.input.data.InputRepositoryImp
 import com.mkrs.kolt.input.domain.repositories.InputRepository
 import com.mkrs.kolt.input.domain.usecase.GetInCodePTUseCase
 import com.mkrs.kolt.input.domain.usecase.PostAddInUseCase
-import com.mkrs.kolt.input.presentation.InputViewModelFactory
+import com.mkrs.kolt.input.presentation.input.InputViewModelFactory
 
 import dagger.Module
 import dagger.Provides

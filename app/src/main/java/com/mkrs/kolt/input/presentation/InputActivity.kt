@@ -1,7 +1,6 @@
 package com.mkrs.kolt.input.presentation
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.addCallback
 import com.mkrs.kolt.MainActivity
@@ -24,8 +23,7 @@ class InputActivity : MKTActivity() {
 
         this.let {
             val flow = it.intent.getIntExtra(INOUT_FLOW, IN_FLOW)
-            var title = ""
-            title = if (flow == IN_FLOW) {
+            var title = if (flow == IN_FLOW) {
                 initNavController(R.id.fr_input, R.navigation.input_nav, R.id.inputFragment)
                 getString(R.string.btn_title_in)
             } else {
