@@ -2,12 +2,14 @@ package com.mkrs.kolt.input.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.addCallback
 import com.mkrs.kolt.MainActivity
 import com.mkrs.kolt.R
 import com.mkrs.kolt.base.MKTActivity
 import com.mkrs.kolt.base.viewBindings
 import com.mkrs.kolt.databinding.ActivityInputBinding
+import com.mkrs.kolt.input.presentation.output.OutputFragment
 
 class InputActivity : MKTActivity() {
     private val inputBinding by viewBindings(ActivityInputBinding::inflate)
@@ -16,7 +18,7 @@ class InputActivity : MKTActivity() {
         setContentView(inputBinding.root)
         initNavController(R.id.fr_input, R.navigation.input_nav, R.id.inputFragment)
         showingBar = true
-        setSupportActionBar(inputBinding.tbInput)
+
         initBackPress()
         setupActionBar()
         initDialog()
@@ -33,6 +35,8 @@ class InputActivity : MKTActivity() {
 
             setTitle(title)
         }
+        inputBinding.tbInput.title = title
+        setSupportActionBar(inputBinding.tbInput)
     }
 
     private fun initBackPress() {
@@ -53,6 +57,12 @@ class InputActivity : MKTActivity() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId > 0) {
+            messageOut(inputBinding.tbInput.title.toString())
+        }
+        return super.onOptionsItemSelected(item)
+    }
     private fun messageOut(title: String) {
         showAlertComplete(
             getString(R.string.title_on_back_press_general),

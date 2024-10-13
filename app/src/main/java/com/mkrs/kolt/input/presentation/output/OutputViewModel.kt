@@ -19,12 +19,14 @@ import com.mkrs.kolt.input.domain.usecase.output.PostCreateOutputUseCase
 import com.mkrs.kolt.input.domain.usecase.output.PostOutputItemDetailUseCase
 import com.mkrs.kolt.utils.CONSTANST
 import com.mkrs.kolt.utils.CONSTANST.Companion.CODE_START_WITH
+import com.mkrs.kolt.utils.CONSTANST.Companion.DELAY_SAVE_LOCAL_DATA
 import com.mkrs.kolt.utils.CONSTANST.Companion.GENERIC_RFC
 import com.mkrs.kolt.utils.CONSTANST.Companion.NO_QUANTITY_AVAILABLE
 import com.mkrs.kolt.utils.CONSTANST.Companion.VERIFY_TOTAL_OK
 import com.mkrs.kolt.utils.CONSTANST.Companion.WHS_CODE_DATE
 import com.mkrs.kolt.utils.CONSTANST.Companion.WHS_CODE_THREE
 import com.mkrs.kolt.utils.CONSTANST.Companion.WHS_CODE_TWO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -58,8 +60,9 @@ class OutputViewModel(
     private var quantity: Double = 0.0
     private var reference: String = ""
     private var datePrinting: String = ""
-    private var hourPrinting: String = ""
+    private var isReadyToSave: Boolean = false
     private var receiver: String = ""
+    private var uniqueCode: String = ""
     val outputViewState: LiveData<OutputUiState>
         get() = mutableOutUiState
 
@@ -68,7 +71,14 @@ class OutputViewModel(
     }
 
     fun getItemsOutput() = listOutItem.size
+
+    fun getIsReadyToSave() = isReadyToSave
     fun getLabelsOutput() = totalLabels
+
+    fun setReadyToSave(isReady: Boolean) {
+        isReadyToSave = isReady
+    }
+
     fun saveReference(reference: String) {
         if (reference.length < CONSTANST.REFERENCE_MAX_LENGTH) {
             mutableOutUiState.postValue(OutputUiState.ErrorReference)
@@ -86,6 +96,7 @@ class OutputViewModel(
             when (val response =
                 postOutputItemDetailUseCase.execute(outputDetailRequest, isDummy)) {
                 is DetailItemOutputResult.Success -> {
+                    uniqueCode = keyUnique
                     itemCodeMP = response.result.itemCodeMP
                     val quantityResult = getQuantity(response.result)
                     if (quantityResult == NO_QUANTITY_AVAILABLE) {
@@ -124,7 +135,7 @@ class OutputViewModel(
                         mutableOutUiState.postValue(OutputUiState.GetRFC(result))
                     } else {
                         datePrinting = result
-                        mutableOutUiState.postValue(OutputUiState.GetDate(result))
+                        mutableOutUiState.postValue(OutputUiState.GetDate(splitDate(result)))
                     }
                 }
 
@@ -135,12 +146,14 @@ class OutputViewModel(
                         mutableOutUiState.postValue(OutputUiState.GetRFC(result))
                     } else {
                         datePrinting = result
-                        mutableOutUiState.postValue(OutputUiState.GetDate(result))
+                        mutableOutUiState.postValue(OutputUiState.GetDate(splitDate(result)))
                     }
                 }
             }
         }
     }
+
+    private fun splitDate(date: String) = date.split(" ")[0]
 
     fun getCodePT(code: String) {
         itemCodePT = code
@@ -148,32 +161,44 @@ class OutputViewModel(
         mutableOutUiState.postValue(OutputUiState.SaveOutPutKeyPT)
     }
 
-    fun savePerfo(perfo: String) {
-        if (perfo.isNullOrEmpty()) {
-            mutableOutUiState.postValue(OutputUiState.ErrorOutputPerfo)
-        } else {
-            this.perfo = perfo
-            mutableOutUiState.postValue(OutputUiState.SaveOutputPerfo)
+    fun savePerfo(perfoSave: String) {
+        viewModelScope.launch {
+            mutableOutUiState.postValue(OutputUiState.Loading)
+            delay(DELAY_SAVE_LOCAL_DATA)
+            if (perfoSave.isNullOrEmpty()) {
+                mutableOutUiState.postValue(OutputUiState.ErrorOutputPerfo)
+            } else {
+                perfo = perfoSave
+                mutableOutUiState.postValue(OutputUiState.SaveOutputPerfo)
+            }
         }
     }
 
-    fun saveCoWorker(coWorker: String) {
-        if (coWorker.isNullOrEmpty()) {
-            mutableOutUiState.postValue(OutputUiState.ErrorOutputCoWorker)
-        } else {
-            this.coWorker = coWorker
-            mutableOutUiState.postValue(OutputUiState.SaveOutputCoworker)
+    fun saveCoWorker(coWorkerSave: String) {
+        viewModelScope.launch {
+            mutableOutUiState.postValue(OutputUiState.Loading)
+            delay(DELAY_SAVE_LOCAL_DATA)
+            if (coWorkerSave.isNullOrEmpty()) {
+                mutableOutUiState.postValue(OutputUiState.ErrorOutputCoWorker)
+            } else {
+                coWorker = coWorkerSave
+                mutableOutUiState.postValue(OutputUiState.SaveOutputCoworker)
+            }
         }
     }
 
     fun saveQuantity(quantity: String) {
         if (quantity.isNullOrEmpty()) {
+            isReadyToSave = false
             mutableOutUiState.postValue(OutputUiState.ErrorOutputQuantity)
         } else if (quantity.toDouble() > quantityAvailable) {
+            isReadyToSave = false
             mutableOutUiState.postValue(OutputUiState.ErrorOutputQuantityUpper(quantity))
         } else if (quantity.toDouble() <= VERIFY_TOTAL_OK) {
+            isReadyToSave = false
             mutableOutUiState.postValue(OutputUiState.ErrorOutputQuantityLowerZero(quantity))
         } else {
+            isReadyToSave = true
             this.quantity = quantity.toDouble()
             mutableOutUiState.postValue(OutputUiState.SaveOutputQuantity)
         }
@@ -181,17 +206,27 @@ class OutputViewModel(
 
 
     fun nextOutData() {
-        saveDataOut()
-        mutableOutUiState.postValue(OutputUiState.OutputTotalItems(listOutItem.size))
-    }
-
-    fun saveDataOut(){
-        replaceDataPrinter()
+        isReadyToSave = true
         outputModel.itemCodeMP = itemCodeMP
         outputModel.itemCodePT = itemCodePT
         outputModel.batchNumber = batchNumber
         outputModel.manufacturerSerialNumber = manufacturerSerialNumber
         outputModel.quantity = quantity
+        outputModel.whsCode = whsCode
+        replaceDataPrinter()
+        listOutItem.add(outputModel)
+        mutableOutUiState.postValue(OutputUiState.OutputTotalItems(listOutItem.size))
+        resetData()
+    }
+
+    fun saveOutData() {
+        outputModel.itemCodeMP = itemCodeMP
+        outputModel.itemCodePT = itemCodePT
+        outputModel.batchNumber = batchNumber
+        outputModel.manufacturerSerialNumber = manufacturerSerialNumber
+        outputModel.quantity = quantity
+        outputModel.whsCode = whsCode
+        replaceDataPrinter()
         listOutItem.add(outputModel)
         resetData()
     }
@@ -205,6 +240,13 @@ class OutputViewModel(
         quantity = 0.0
         outputModel = OutPutModel()
         outputPrinterModel = OutputPrinterModel()
+    }
+
+    fun resetDefaultValues() {
+        coWorker = ""
+        perfo = ""
+        listOutItem.clear()
+        totalLabels.clear()
     }
 
     private fun getLocalDate(): String {
@@ -263,14 +305,17 @@ class OutputViewModel(
             label = label.replace(dataLabel[1], outputPrinterModel.itemName)
             label = label.replace(dataLabel[2], outputPrinterModel.supportCatNumber)
             label = label.replace(dataLabel[3], coWorker)
-            label = label.replace(dataLabel[4], outputPrinterModel.itemCodePT)
+            label = label.replace(dataLabel[4], outputPrinterModel.itemCodeMP)
             label = label.replace(dataLabel[5], outputPrinterModel.order)
             label = label.replace(dataLabel[6], outputPrinterModel.manufacturerSerialNumber)
             label = label.replace(dataLabel[7], receiver)
-            label = label.replace(dataLabel[8], outputPrinterModel.itemCodeMP)
+            label = label.replace(dataLabel[8], outputPrinterModel.batchNumber)
             label = label.replace(dataLabel[9], perfo)
             label = label.replace(dataLabel[10], quantity.toString())
-            label = label.replace(dataLabel[11], "1 de 1")
+            label = label.replace(
+                dataLabel[11],
+                context.getString(R.string.item_printer_default_counter)
+            )
             label = label.replace(dataLabel[12], dateHour)
             totalLabels.add(label)
 
@@ -283,8 +328,10 @@ class OutputViewModel(
             val outputRequest = OutputRequest(reference, listOutItem)
             when (val response = postCreateOutputUseCase.execute(outputRequest, isDummy)) {
                 is CreateOutputResult.Success -> {
+                    resetData()
                     mutableOutUiState.postValue(OutputUiState.OutputCreateToPrinter(response.result.DocNum))
                 }
+
                 is CreateOutputResult.Fail -> {
                     mutableOutUiState.postValue(OutputUiState.ErrorOutputCreateToPrinter(response.error))
                 }

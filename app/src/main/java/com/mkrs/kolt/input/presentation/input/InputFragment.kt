@@ -57,6 +57,7 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupBar(resources.getString(R.string.btn_title_in), true)
         initDialog()
         initView()
         initListener()

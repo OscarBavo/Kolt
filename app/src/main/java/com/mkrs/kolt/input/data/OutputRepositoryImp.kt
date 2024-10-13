@@ -63,13 +63,12 @@ object OutputRepositoryImp : OutputRepository {
         } else {
             val service = MKTOutputGetDateService(keyWms)
             val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
-            response.EsError
-            return@withContext if (!response.Result?.dateResponse?.EsError!!) {
-                MKTGenericResponse.Success(createResponseDate(response.Result))
-            } else {
-                MKTGenericResponse.Failed(CONSTANST.NO_DATE)
-            }
 
+            return@withContext if (response.Result == null) {
+                MKTGenericResponse.Failed(CONSTANST.NO_DATE)
+            } else {
+                MKTGenericResponse.Success(createResponseDate(response.Result))
+            }
         }
     }
 
@@ -100,15 +99,20 @@ object OutputRepositoryImp : OutputRepository {
         } else {
             val service = MKTOutputPostDetailService(detail)
             val response = convertToSuspend(service, MKTGeneralConfig.CODE_SUCCESS.toString())
-            return@withContext if (!response.Result?.response?.EsError!!) {
-                MKTGenericResponse.Success(createDetail(detail,response.Result))
-            } else {
+            return@withContext if (response.Result == null) {
                 MKTGenericResponse.Failed(CONSTANST.NO_DATE)
+            } else {
+                MKTGenericResponse.Success(createDetail(detail, response.Result))
             }
         }
     }
-    private fun createDetail( detail: OutputDetailRequest,result: OutPutDetailResponse?): OutputPrinterModel {
-        return result?.let { outputDetail->
+
+
+    private fun createDetail(
+        detail: OutputDetailRequest,
+        result: OutPutDetailResponse?
+    ): OutputPrinterModel {
+        return result?.let { outputDetail ->
             OutputPrinterModel(
                 whsCode = detail.whsCode,
                 itemCodeMP = detail.itemCodeMP,
@@ -122,7 +126,7 @@ object OutputRepositoryImp : OutputRepository {
                 stdPack = outputDetail.quantity,
                 itemName = outputDetail.itemName
             )
-        }?: kotlin.run{
+        } ?: kotlin.run {
             OutputPrinterModel()
         }
 

@@ -72,18 +72,22 @@ class MainMenuFragment : MKTFragment(R.layout.fragment_main_menu) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupBar(resources.getString(R.string.title_dashboard), true)
-        initAPI()
+
         binding.btnTransfer.setOnClickListener {
+            initAPI()
             consultWorker()
 
         }
         binding.btnIn.setOnClickListener {
+            initAPI()
             inout(IN_FLOW)
         }
         binding.btnOut.setOnClickListener {
+            initAPI()
             inout(OUT_FLOW)
         }
         binding.btnAboutUs.setOnClickListener {
+            initAPI()
             showAboutUs()
         }
         registerForContextMenu(binding.btnTransfer)

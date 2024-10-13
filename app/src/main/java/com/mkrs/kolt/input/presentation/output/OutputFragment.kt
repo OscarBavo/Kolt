@@ -70,6 +70,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
                 activity?.dismissDialog()
                 printerViewModel.printNoState()
                 showAlert(state.message, binding.btnOutputSave)
+                questionLabelOk()
             }
 
         }
@@ -83,6 +84,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
             true,
             { _, _ ->
                 activity?.alertDialog?.dismiss()
+                clearView()
                 activity?.onBackPressed()
             },
             getString(R.string.generic_no),
@@ -124,6 +126,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupBar(resources.getString(R.string.btn_title_out), true)
         initDialog()
         initView()
         initListener()
@@ -144,6 +147,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
 
     private fun observerOutputState(state: OutputUiState?) {
+        this.hideKeyboard()
         when (state) {
             is OutputUiState.Loading -> showDialog()
             is OutputUiState.NoState -> dismissDialog()
@@ -213,20 +217,24 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
             is OutputUiState.SaveOutputPerfo -> {
                 dismissDialog()
-                binding.tieOutputPerfoData.setTextAppearance(R.style.input_text_ready)
-                binding.tieOutputCoworkerData.enable(focus = true)
+                this.activity?.runOnUiThread {
+                    binding.tieOutputPerfoData.setTextAppearance(R.style.input_text_ready)
+                    binding.tieOutputCoworkerData.enable(focus = true)
+                }
             }
 
             is OutputUiState.ErrorOutputPerfo -> {
                 dismissDialog()
                 binding.tilOutputPerfo.error = getString(R.string.title_error_perfo)
                 binding.tieOutputPerfoData.enable(focus = true)
+                this.hideKeyboard()
             }
 
             is OutputUiState.SaveOutputCoworker -> {
                 dismissDialog()
                 binding.tieOutputCoworkerData.setTextAppearance(R.style.input_text_ready)
                 binding.tieOutputTo.enable(focus = true)
+                binding.tieOutputTo.requestFocus()
             }
 
             is OutputUiState.ErrorOutputCoWorker -> {
@@ -274,10 +282,10 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
                 dismissDialog()
                 activity?.showAlertComplete(
                     getString(R.string.generic_information),
-                    getString(R.string.title_created_out,state.dateTime),
+                    getString(R.string.title_created_out, state.dateTime),
                     getString(R.string.generic_ok),
                     true,
-                    { _, _ -> printingLabel(outputViewModel.getLabelsOutput())},
+                    { _, _ -> printingLabel(outputViewModel.getLabelsOutput()) },
                     emptyString(),
                     false,
                     { _, _ -> })
@@ -293,12 +301,14 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
     private fun initListener() {
         //region reference
         binding.tieOutputReferData.doOnTextChanged { code, _, _, _ ->
+            outputViewModel.setReadyToSave(false)
             binding.tilOutputRefer.error = emptyStringEditable()
             if (code.toString().length == REFERENCE_MAX_LENGTH) {
                 outputViewModel.saveReference(code.toString())
             }
         }
         binding.tieOutputReferData.setOnEditorActionListener { textView, actionId, keyEvent ->
+            outputViewModel.setReadyToSave(false)
             if (keyEvent != null && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
                 outputViewModel.saveReference(textView.text.toString())
             } else if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
@@ -310,6 +320,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
         //region keycode
         binding.tieOutputKeyPtData.doOnTextChanged { code, _, _, count ->
+            binding.tilOutputKeyPt.error = emptyStringEditable()
             if (count > 0)
                 validateKeyItem(code = code.toString())
 
@@ -319,6 +330,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         }
 
         binding.tieOutputKeyPtData.setOnEditorActionListener { code, actionId, keyEvent ->
+            outputViewModel.setReadyToSave(false)
             if (keyEvent != null && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
                 validateKeyItem(code.text.toString())
             } else if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
@@ -334,12 +346,13 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         }
 
         binding.tieOutputUniqueCodeData.setOnEditorActionListener { code, actionId, keyEvent ->
+            outputViewModel.setReadyToSave(false)
             if (keyEvent != null && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
                 validateTextUniqueCode(code.text.toString())
             } else if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
                 validateTextUniqueCode(code.text.toString())
             }
-            return@setOnEditorActionListener false
+            return@setOnEditorActionListener true
         }
         //endregion
 
@@ -349,6 +362,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         }
 
         binding.tieOutputPerfoData.setOnEditorActionListener { code, actionId, keyEvent ->
+            outputViewModel.setReadyToSave(false)
             if (keyEvent != null && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
                 outputViewModel.savePerfo(code.text.toString())
             } else if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
@@ -364,6 +378,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         }
 
         binding.tieOutputCoworkerData.setOnEditorActionListener { code, actionId, keyEvent ->
+            outputViewModel.setReadyToSave(false)
             if (keyEvent != null && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
                 outputViewModel.saveCoWorker(code.text.toString())
             } else if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
@@ -401,12 +416,14 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         }
 
         binding.btnOutputSave.setOnClickListener {
-            outputViewModel.saveDataOut()
-            outputViewModel.saveOutput(isDemo)
+            if (outputViewModel.getIsReadyToSave()) {
+                outputViewModel.saveOutData()
+                binding.tvOutputLabelsData.text = outputViewModel.getItemsOutput().toString()
+                outputViewModel.saveOutput(isDemo)
+            }
         }
 
     }
-
     private fun initView() {
         binding.tvOutputEmitData.text = getString(R.string.title_output_kolt)
         binding.tvOutputLabelsData.text = CONSTANST.EMPTY_DATA
@@ -423,6 +440,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
     }
 
     private fun validateKeyItem(code: String) {
+        outputViewModel.setReadyToSave(false)
         if (code.isEmpty()) {
             binding.tilOutputKeyPt.error = getString(R.string.title_empty_pt_message)
             binding.tieOutputKeyPtData.requestFocus()
@@ -436,6 +454,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
     private fun validateTextUniqueCode(uniqueCode: String) {
         if (uniqueCode.isNotEmpty()) {
+            outputViewModel.setReadyToSave(false)
             if (uniqueCode.length == CONSTANST.CODE_UNIQUE_MAX_LENGTH) {
                 hideKeyboard()
                 validateUniqueCode(uniqueCode)
@@ -459,8 +478,10 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
 
     private fun validateUniqueCode(uniqueCode: String) {
         if (isCode(uniqueCode)) {
+            outputViewModel.setReadyToSave(false)
             outputViewModel.saveKeyUnique(uniqueCode, isDemo)
         } else {
+            outputViewModel.setReadyToSave(false)
             binding.tilOutputUniqueCode.error = getString(R.string.unique_code_error_init)
             showAlert(
                 getString(R.string.unique_code_error_init),
@@ -470,6 +491,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
     }
 
     private fun clearData() {
+
         binding.tieOutputKeyPtData.text = emptyStringEditable()
         binding.tieOutputUniqueCodeData.text = emptyStringEditable()
         binding.tieOutputUniqueCodeData.text = emptyStringEditable()
@@ -494,6 +516,20 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         binding.btnOutputNext.disable()
 
         binding.tieOutputKeyPtData.enable(focus = true)
+    }
+
+    private fun clearView() {
+        clearData()
+        outputViewModel.resetDefaultValues()
+        binding.tieOutputReferData.text = emptyStringEditable()
+        binding.tieOutputReferData.setTextAppearance(R.style.input_text)
+        binding.tieOutputPerfoData.setTextAppearance(R.style.input_text)
+        binding.tieOutputCoworkerData.setTextAppearance(R.style.input_text)
+        binding.tvOutputLabelsData.text = "0"
+        binding.tieOutputPerfoData.text = emptyStringEditable()
+        binding.tieOutputCoworkerData.text = emptyStringEditable()
+        outputViewModel.setNoState()
+        binding.tilOutputRefer.enable(focus = true)
     }
 
     private fun printingLabel(labels: MutableList<String>) {

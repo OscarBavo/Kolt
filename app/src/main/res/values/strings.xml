@@ -36,7 +36,7 @@
     <!-- about us -->
     <string name="title_about_us">Acerca de…</string>
     <string name="title_about_us_name">App Kolt</string>
-    <string name="title_about_us_version">v 1.2.0</string>
+    <string name="title_about_us_version">v 1.5.0</string>
     <string name="title_about_us_email">soporte@mkrs.com</string>
     <string name="title_about_us_author">MKRS</string>
     <string name="title_about_us_close">Gracias</string>
@@ -165,11 +165,11 @@
     <string name="title_key_pt">Clave PT:</string>
     <string name="title_output_to">Salida a:</string>
     <string name="title_error_perfo">No existe perforadora</string>
-    <string name="title_exit_in_out">¿Deseas salir de %s?</string>
+    <string name="title_exit_in_out">¿Deseas salir del Módulo %s?</string>
     <string name="title_error_quantity_upper">La cantidad %s supera la disponible</string>
     <string name="title_error_quantity">La cantidad %s no es correcta</string>
     <string name="title_error_quantity_empty">Debe ingresar una cantidad</string>
     <string name="title_created_out">Número de documento creado: %s  Inicia impresión de etiquetas</string>
     <string name="title_empty_pt_message">La clave del PT no peude quedar vacío, verifique</string>
-
+    <string name="item_printer_default_counter">1 de 1</string>
 </resources>

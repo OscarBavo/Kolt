@@ -1,7 +1,9 @@
 package com.mkrs.kolt.utils
 
+import android.content.Context
 import android.text.Editable
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 
 /****
  * Project: Kolt
@@ -63,7 +65,12 @@ fun View.disable() {
 
 fun View.enable(focus: Boolean = false) {
     isEnabled = true
-    if (focus) this.requestFocus()
+    if (focus){
+        this.requestFocus()
+            val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+    }
+
 }
 
 fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)

@@ -13,7 +13,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_output_date"
-            style="@style/input_text.item.title"
+            style="@style/input_text.item.title_out"
             android:layout_width="@dimen/dim_size_0"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dim_size_8"
@@ -24,7 +24,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_output_date_data"
-            style="@style/input_text.item.title"
+            style="@style/input_text.item.title_out"
             android:layout_width="@dimen/dim_size_0"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dim_size_4"
@@ -35,7 +35,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_output_labels"
-            style="@style/input_text.item.title"
+            style="@style/input_text.item.title_out"
             android:layout_width="@dimen/dim_size_0"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dim_size_8"
@@ -46,7 +46,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_output_labels_data"
-            style="@style/input_text.item.title"
+            style="@style/input_text.item.title_out"
             android:layout_width="@dimen/dim_size_0"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dim_size_4"
@@ -58,7 +58,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_output_emit"
-            style="@style/input_text.item.title"
+            style="@style/input_text.item.title_out"
             android:layout_width="@dimen/dim_size_0"
             android:layout_height="wrap_content"
             android:text="@string/btn_title_output_emit"
@@ -68,7 +68,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_output_emit_data"
-            style="@style/input_text.item.title"
+            style="@style/input_text.item.title_out"
             android:layout_width="@dimen/dim_size_0"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dim_size_4"
@@ -79,7 +79,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_output_receive"
-            style="@style/input_text.item.title"
+            style="@style/input_text.item.title_out"
             android:layout_width="@dimen/dim_size_0"
             android:layout_height="wrap_content"
             android:text="@string/btn_title_output_receive"
@@ -89,14 +89,15 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_output_receive_data"
-            style="@style/input_text.item.title"
+            style="@style/input_text.item_lite"
             android:layout_width="@dimen/dim_size_0"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dim_size_4"
             android:textAlignment="center"
+            app:layout_constraintTop_toTopOf="@id/tv_output_receive"
             app:layout_constraintBottom_toBottomOf="@id/tv_output_receive"
             app:layout_constraintStart_toEndOf="@id/tv_output_receive"
-            tools:text="" />
+            tools:text="ischer Stainless Steel Tubing Mexicana" />
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -104,7 +105,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dim_size_5"
+            android:layout_marginStart="@dimen/dim_size_5"
+            android:layout_marginEnd="@dimen/dim_size_5"
             android:hint="@string/title_label_refer"
             app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
@@ -125,12 +127,10 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_output_key_pt"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/dim_size_150"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dim_size_5"
             android:hint="@string/title_key_pt"
             app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="@id/til_output_refer"
             app:layout_constraintStart_toStartOf="@id/til_output_refer"
             app:layout_constraintTop_toBottomOf="@id/til_output_refer">
 
@@ -147,14 +147,13 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_output_unique_code"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/dim_size_150"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dim_size_5"
+            android:layout_marginEnd="@dimen/dim_size_5"
             android:hint="@string/title_unique_item"
             app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="@id/til_output_key_pt"
-            app:layout_constraintStart_toStartOf="@id/til_output_key_pt"
-            app:layout_constraintTop_toBottomOf="@id/til_output_key_pt">
+            app:layout_constraintEnd_toEndOf="@id/til_output_refer"
+            app:layout_constraintTop_toBottomOf="@id/til_output_refer">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tie_output_unique_code_data"
@@ -169,13 +168,12 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_output_perfo"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/dim_size_150"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dim_size_5"
             android:hint="@string/title_bottom_transfer_perforadora"
             app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="@id/til_output_unique_code"
-            app:layout_constraintStart_toStartOf="@id/til_output_unique_code"
+            app:layout_constraintEnd_toEndOf="@id/til_output_key_pt"
+            app:layout_constraintStart_toStartOf="@id/til_output_key_pt"
             app:layout_constraintTop_toBottomOf="@id/til_output_unique_code">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -185,20 +183,21 @@
                 android:layout_height="match_parent"
                 android:enabled="false"
                 android:inputType="textCapWords"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:maxLength="@integer/dim_11" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_output_coworker"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/dim_size_150"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dim_size_5"
             android:hint="@string/hint_worker_name"
             app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="@id/til_output_perfo"
-            app:layout_constraintStart_toStartOf="@id/til_output_perfo"
-            app:layout_constraintTop_toBottomOf="@id/til_output_perfo">
+            app:layout_constraintEnd_toEndOf="@id/til_output_unique_code"
+            app:layout_constraintStart_toStartOf="@id/til_output_unique_code"
+            app:layout_constraintTop_toBottomOf="@id/til_output_unique_code">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tie_output_coworker_data"
@@ -207,6 +206,8 @@
                 android:layout_height="match_parent"
                 android:enabled="false"
                 android:inputType="textCapWords"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:maxLength="@integer/dim_11" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -215,11 +216,12 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dim_size_5"
             android:hint="@string/title_output_to"
             app:endIconMode="clear_text"
+            android:layout_marginEnd="@dimen/dim_size_5"
+            android:layout_marginStart="@dimen/dim_size_5"
             app:layout_constraintEnd_toEndOf="@id/til_output_coworker"
-            app:layout_constraintStart_toStartOf="@id/til_output_coworker"
+            app:layout_constraintStart_toStartOf="@id/til_output_perfo"
             app:layout_constraintTop_toBottomOf="@id/til_output_coworker">
 
             <com.google.android.material.textfield.TextInputEditText

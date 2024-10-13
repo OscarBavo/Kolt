@@ -10,7 +10,9 @@ import com.google.gson.JsonArray
 import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig.Companion.CODE_ERROR_COMMON
 import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig.Companion.CODE_ERROR_UNAUTHORIZED_LOCATION
 import com.mkrs.kolt.base.conectivity.webservice.MKTGeneralConfig.Companion.EMPTY_TEXT
+import com.mkrs.kolt.base.webservices.common.ErrorResponse
 import com.mkrs.kolt.base.webservices.entity.MKTResponse
+import com.mkrs.kolt.input.webservices.models.OutputDateResponse
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.FilterInputStream
@@ -322,7 +324,7 @@ abstract class MKTWebService<T>(
         if(res!=null && !response.isNullOrEmpty()){
           //  val exception=MKTUtils().parse(response, )
         }*/
-
+        this.response.EsError = true
         listener?.onFinish(this.response)
 
 
