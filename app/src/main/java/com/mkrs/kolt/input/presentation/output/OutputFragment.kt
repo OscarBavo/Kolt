@@ -418,9 +418,10 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         binding.btnOutputSave.setOnClickListener {
             if (outputViewModel.getIsReadyToSave()) {
                 outputViewModel.saveOutData()
-                binding.tvOutputLabelsData.text = outputViewModel.getItemsOutput().toString()
-                outputViewModel.saveOutput(isDemo)
             }
+            binding.tvOutputLabelsData.text = outputViewModel.getItemsOutput().toString()
+            showAlert("Total de lineas ${outputViewModel.getItemsOutput()}", binding.btnOutputSave)
+            outputViewModel.saveOutput(isDemo)
         }
 
     }

@@ -240,6 +240,7 @@ class OutputViewModel(
         quantity = 0.0
         outputModel = OutPutModel()
         outputPrinterModel = OutputPrinterModel()
+        isReadyToSave = false
     }
 
     fun resetDefaultValues() {
