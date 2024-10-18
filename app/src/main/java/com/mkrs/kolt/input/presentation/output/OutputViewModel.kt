@@ -80,7 +80,10 @@ class OutputViewModel(
     }
 
     fun saveReference(reference: String) {
-        if (reference.length < CONSTANST.REFERENCE_MAX_LENGTH) {
+        if(reference.isEmpty()){
+            mutableOutUiState.postValue(OutputUiState.ErrorReference)
+        }
+        else if (reference.length > CONSTANST.REFERENCE_MAX_LENGTH) {
             mutableOutUiState.postValue(OutputUiState.ErrorReference)
         } else {
             this.reference = reference

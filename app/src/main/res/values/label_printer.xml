@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="label_printer_one">
-        CT~~CD,~CC^~CT~
+        CT~CD,~CC^~CT
         ^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR5,5~SD10^JUS^LRN^CI0^XZ
 ^XA
 ^MMT
@@ -28,13 +28,13 @@
 ^FT585,270^A0B,23,24^FH\^FDPiezas^FS
 ^FT618,1189^A0B,23,24^FH\^FDOperador^FS
 ^FT314,626^A0B,23,24^FH\^FDReceptor^FS
-^FT360,1190^A0B,23,24^FH\^FDNo. de Parte Cliente^FS
 ^FT313,1202^A0B,23,24^FH\^FDEmisor^FS
 ^FT270,1200^A0B,23,24^FH\^FDDescripción^FS
 ^BY2,3,80^FT720,1185^BCB,,Y,N
 ^A0,40^FD>:%Operador%^FS
-^BY2,3,80^FT450,1190^BCB,,Y,N
-^A0,75^FD>:%NPCL%^FS
+^FT380,1140^A0B,23,24^FH\^FDNo. de Parte Cliente^FS
+^FO400,920^BQN,2,4^FDQA,%NPCL%^FS
+^FT560,1190^A0B,23,24^FH\^A0,70^FD%NPCL%^FS
 ^BY2,3,81^FT450,700^BCB,,Y,N
 ^A0,40^FD>:%Pedido%^FS
 ^BY2,3,81^FT450,260^BCB,,Y,N

@@ -75,7 +75,7 @@ class MainMenuFragment : MKTFragment(R.layout.fragment_main_menu) {
 
         binding.btnTransfer.setOnClickListener {
             initAPI()
-            consultWorker()
+            initTransfer("")
 
         }
         binding.btnIn.setOnClickListener {

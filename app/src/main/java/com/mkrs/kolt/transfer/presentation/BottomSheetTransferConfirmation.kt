@@ -159,6 +159,7 @@ class BottomSheetTransferConfirmation :
             is TransferUIState.IsEnableTransfer -> {
                 activity?.dismissDialog()
                 binding.btnSave.enableOrDisable { uiState.isReadyToPrinter }
+                binding.tieTextPerforadora.enable(true)
             }
 
             is TransferUIState.Printing -> {
@@ -282,7 +283,7 @@ class BottomSheetTransferConfirmation :
     private fun initView() {
         binding.apply {
             transferViewModel.initReadyPrinter()
-            tvTextNoPart.text = transferViewModel.finalProductModel.itemCode
+            tvTextNoPart.text = transferViewModel.finalProductModel.codePT
             tvTextBatch.text = transferViewModel.finalProductModel.mnfSerial
             tvPt.text = transferViewModel.finalProductModel.itemName
             tvTextOrder.text = transferViewModel.finalProductModel.uPedidoProg

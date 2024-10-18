@@ -50,7 +50,7 @@
                 style="@style/input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="numberDecimal"
+                android:inputType="textCapWords"
                 android:enabled="false"
                 android:maxLength="@integer/dim_11" />
         </com.google.android.material.textfield.TextInputLayout>

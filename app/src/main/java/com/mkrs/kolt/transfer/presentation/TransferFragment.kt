@@ -209,15 +209,15 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer),
     }
 
     private fun initListener() {
-        transferBinding.tieTextKeyItem.doOnTextChanged { code, _, _, _ ->
-            validateKeyItem(code.toString())
+        transferBinding.tieTextKeyItem.doOnTextChanged { codePT, _, _, _ ->
+            validateKeyItem(codePT.toString())
         }
 
-        transferBinding.tieTextKeyItem.setOnEditorActionListener { textKey, actionId, keyEvent ->
+        transferBinding.tieTextKeyItem.setOnEditorActionListener { textKeyPT, actionId, keyEvent ->
             if (keyEvent != null && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
-                validateKeyItem(textKey.toString())
+                validateKeyItem(textKeyPT.toString())
             } else if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
-                validateKeyItem(textKey.toString())
+                validateKeyItem(textKeyPT.toString())
             }
             return@setOnEditorActionListener false
         }
@@ -369,15 +369,15 @@ class TransferFragment : MKTFragment(R.layout.fragment_transfer),
         }
     }
 
-    private fun validateKeyItem(code: String) {
-        if (code.isEmpty()) {
+    private fun validateKeyItem(codePT: String) {
+        if (codePT.isEmpty()) {
             transferBinding.tilKeyItem.error = emptyStringEditable()
             transferBinding.tieTextKeyItem.requestFocus()
-        } else if (isLetter(code)) {
+        } else if (isLetter(codePT)) {
             transferBinding.tilKeyItem.error = getString(R.string.label_error_digits_item_code)
             transferBinding.tieTextKeyItem.requestFocus()
-        } else if (code.length == CODE_MAX_LENGTH && isDigit(code)) {
-            transferViewModel.getCodePT(code = code, isDemo)
+        } else if (codePT.length == CODE_MAX_LENGTH && isDigit(codePT)) {
+            transferViewModel.getCodePT(codePT = codePT, isDemo)
         }
     }
 

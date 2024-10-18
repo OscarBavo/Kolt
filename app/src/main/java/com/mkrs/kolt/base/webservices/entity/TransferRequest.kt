@@ -35,9 +35,9 @@ class LineasED(
     @SerializedName("WhsCode")
     val whsCode: String = "",
     @SerializedName("ItemCodeMP")
-    val code: String = "",
+    val itemCodeMP: String = "",
     @SerializedName("ItemCodePT")
-    val itemCode: String = "",
+    val itemCodePT: String = "",
     @SerializedName("BatchNumber")
     val batchNumber: String = "",
     @SerializedName("ManufacturerSerialNumber")

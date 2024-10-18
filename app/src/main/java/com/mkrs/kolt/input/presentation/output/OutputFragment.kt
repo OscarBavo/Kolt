@@ -285,7 +285,10 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
                     getString(R.string.title_created_out, state.dateTime),
                     getString(R.string.generic_ok),
                     true,
-                    { _, _ -> printingLabel(outputViewModel.getLabelsOutput()) },
+                    { _, _ ->
+                        clearView()
+                        activity?.onBackPressed()
+                    },
                     emptyString(),
                     false,
                     { _, _ -> })
@@ -425,6 +428,7 @@ class OutputFragment : MKTFragment(R.layout.fragment_output) {
         }
 
     }
+
     private fun initView() {
         binding.tvOutputEmitData.text = getString(R.string.title_output_kolt)
         binding.tvOutputLabelsData.text = CONSTANST.EMPTY_DATA

@@ -19,6 +19,7 @@ import com.mkrs.kolt.transfer.domain.usecase.PostTransferUseCase
 import com.mkrs.kolt.transfer.domain.usecase.TransferResult
 import com.mkrs.kolt.utils.CONSTANST.Companion.VERIFY_TOTAL_OK
 import com.mkrs.kolt.utils.emptyString
+import com.mkrs.kolt.utils.toJsonString
 import kotlinx.coroutines.launch
 
 /****
@@ -37,8 +38,8 @@ class TransferViewModel(
     private val mutableTransferUIState = MutableLiveData<TransferUIState>()
     var finalProductModel: FinalProductModel = FinalProductModel()
     private var totalLabels = mutableListOf<String>()
-    private var code: String = ""
-    private var itemCode: String = ""
+    private var codePT: String = ""
+    private var itemCodeMP: String = ""
     private var codeUnique: String = ""
     private var coWorker: String = ""
     private var perforadora: String = ""
@@ -59,14 +60,14 @@ class TransferViewModel(
 
     private fun saveFinalProductModel(finalProductModel: FinalProductModel) {
         this.finalProductModel = finalProductModel
-        this.finalProductModel.code = code
+        this.finalProductModel.codePT = codePT
         this.finalProductModel.codeUnique = codeUnique
-        this.finalProductModel.itemCode = itemCode
+        this.finalProductModel.itemCodeMP = itemCodeMP
     }
 
     fun resetFinalProductModel() {
         this.finalProductModel = FinalProductModel()
-        code = ""
+        codePT = ""
         quantity = VERIFY_TOTAL_OK
     }
 
@@ -74,9 +75,9 @@ class TransferViewModel(
         mutableTransferUIState.postValue(TransferUIState.NoState)
     }
 
-    private fun saveCode(code: String, itemCode: String) {
-        this.code = code
-        this.itemCode = itemCode
+    private fun saveCode(codePT: String, itemCodeMP: String) {
+        this.codePT = codePT
+        this.itemCodeMP = itemCodeMP
     }
 
     fun saveCoWorker(coWorker: String) {
@@ -132,10 +133,10 @@ class TransferViewModel(
         isAvailableQuantity(TypeQuantity.SCRAP)
     }
 
-    fun getCodePT(code: String, isDummy: Boolean) {
+    fun getCodePT(codePT: String, isDummy: Boolean) {
         viewModelScope.launch {
             mutableTransferUIState.postValue(TransferUIState.Loading)
-            when (val response = getCodePTUseCase.execute(code, isDemo = isDummy)) {
+            when (val response = getCodePTUseCase.execute(codePT, isDemo = isDummy)) {
                 is CodePTResult.Success -> {
                     if (response.data == context.getString(R.string.not_found_data_code_pt)) {
                         mutableTransferUIState.postValue(
@@ -146,13 +147,13 @@ class TransferViewModel(
                             )
                         )
                     } else {
-                        saveCode(code, response.data)
+                        saveCode(codePT, response.data)
                         mutableTransferUIState.postValue(TransferUIState.SuccessCode)
                     }
                 }
 
                 is CodePTResult.Fail -> {
-                    mutableTransferUIState.postValue(TransferUIState.Error(context.getString(R.string.error_get_code_pt_general, code)))
+                    mutableTransferUIState.postValue(TransferUIState.Error(context.getString(R.string.error_get_code_pt_general, codePT)))
                 }
             }
         }
@@ -161,7 +162,7 @@ class TransferViewModel(
     fun getDetailInventory(codigoUnico: String, isDemo: Boolean) {
         viewModelScope.launch {
             mutableTransferUIState.postValue(TransferUIState.Loading)
-            val request = TransferInventoryRequest(itemCode = code, distNumber = codigoUnico)
+            val request = TransferInventoryRequest(itemCode = codePT, distNumber = codigoUnico)
             when (val response = postDetailInventoryUseCase.execute(request, isDemo)) {
                 is DetailInventoryResult.Success -> {
                     if (response.finalProductModel.quantity == context.getString(R.string.quantity_detail)) {
@@ -184,10 +185,11 @@ class TransferViewModel(
     fun createTransfer(isDummy: Boolean) {
         viewModelScope.launch {
             mutableTransferUIState.postValue(TransferUIState.Loading)
-            when (val response = postTransferUseCase.execute(createPost(), isDummy)) {
+            val transfer=createPost()
+            when (val response = postTransferUseCase.execute(transfer, isDummy)) {
                 is TransferResult.Success -> {
                     if (response.transfer.Result == context.getString(R.string.generic_ok)) {
-                        mutableTransferUIState.postValue(TransferUIState.TransferDone(response.transfer.FechaHora))
+                        mutableTransferUIState.postValue(TransferUIState.TransferDone(response.transfer.FechaHora + "\n" +toJsonString(transfer)))
                     } else {
                         mutableTransferUIState.postValue(TransferUIState.ErrorCustom(response.transfer.Message))
                     }
@@ -301,7 +303,7 @@ class TransferViewModel(
                 label = label.replace(dataLabel[1], finalProductModel.itemName)
                 label = label.replace(dataLabel[2], finalProductModel.suppCatNum)
                 label = label.replace(dataLabel[3], coWorker)
-                label = label.replace(dataLabel[4], code)
+                label = label.replace(dataLabel[4], codePT)
                 label = label.replace(dataLabel[5], finalProductModel.uPedidoProg)
                 label = label.replace(dataLabel[6], finalProductModel.mnfSerial)
                 label = label.replace(dataLabel[7], emptyString())
@@ -320,13 +322,13 @@ class TransferViewModel(
     private fun createPost(): TransferRequest {
         val lineas: MutableList<LineasED> = mutableListOf()
         val whsCode =
-            if (finalProductModel.code.startsWith(context.getString(R.string.is_pt_03))) context.getString(
+            if (finalProductModel.codePT.startsWith(context.getString(R.string.is_pt_03))) context.getString(
                 R.string.whs_code_pt_03
             ) else context.getString(R.string.whs_code_pt_02)
         val transferMP = LineasED(
             whsCode = whsCode,
-            code = finalProductModel.code,
-            itemCode = finalProductModel.itemCode,
+            itemCodePT = finalProductModel.codePT,
+            itemCodeMP = finalProductModel.itemCodeMP,
             batchNumber = finalProductModel.codeUnique,
             manSerialNum = finalProductModel.mnfSerial,
             quantity = quantityDone
@@ -335,8 +337,8 @@ class TransferViewModel(
         if (quantityReject > 0.0) {
             val transferRej = LineasED(
                 whsCode = context.getString(R.string.whs_code_rej_04),
-                code = finalProductModel.code,
-                itemCode = finalProductModel.itemCode,
+                itemCodePT = finalProductModel.codePT,
+                itemCodeMP = finalProductModel.itemCodeMP,
                 batchNumber = finalProductModel.codeUnique,
                 manSerialNum = finalProductModel.mnfSerial,
                 quantity = quantityReject
@@ -346,8 +348,8 @@ class TransferViewModel(
         if (quantitySCRAP > 0.0) {
             val transferSCRAP = LineasED(
                 whsCode = context.getString(R.string.whs_code_scrap_05),
-                code = finalProductModel.code,
-                itemCode = finalProductModel.itemCode,
+                itemCodePT = finalProductModel.codePT,
+                itemCodeMP = finalProductModel.itemCodeMP,
                 batchNumber = finalProductModel.codeUnique,
                 manSerialNum = finalProductModel.mnfSerial,
                 quantity = quantitySCRAP
@@ -357,8 +359,8 @@ class TransferViewModel(
         if (quantityDiff > 0.0) {
             val transferDiff = LineasED(
                 whsCode = context.getString(R.string.whs_code_diff_06),
-                code = finalProductModel.code,
-                itemCode = finalProductModel.itemCode,
+                itemCodePT = finalProductModel.codePT,
+                itemCodeMP = finalProductModel.itemCodeMP,
                 batchNumber = finalProductModel.codeUnique,
                 manSerialNum = finalProductModel.mnfSerial,
                 quantity = quantityDiff

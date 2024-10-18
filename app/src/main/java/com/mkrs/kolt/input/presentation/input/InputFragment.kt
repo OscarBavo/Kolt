@@ -243,7 +243,7 @@ class InputFragment : MKTFragment(R.layout.fragment_input) {
 
         binding.tieReferData.doOnTextChanged { code, _, _, _ ->
             binding.tilRefer.error = null
-            inputViewModel.saveReference(code.toString())
+           // inputViewModel.saveReference(code.toString())
         }
 
         binding.tieReferData.setOnEditorActionListener { textView, actionId, keyEvent ->

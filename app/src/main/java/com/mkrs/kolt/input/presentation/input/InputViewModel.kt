@@ -49,7 +49,7 @@ class InputViewModel(
     fun getItemsAdded() = listAddItem.size
 
     fun saveReference(reference: String) {
-        if (reference.length < REFERENCE_MAX_LENGTH) {
+        if (reference.isEmpty()) {
             mutableInOutUiState.postValue(InOutputUiState.ErrorReference)
         } else if (reference.length > REFERENCE_MAX_LENGTH) {
             mutableInOutUiState.postValue(InOutputUiState.ErrorReference)
@@ -185,7 +185,7 @@ class InputViewModel(
                 )
             lines.add(line)
         }
-        lines.sortedByDescending { it.code }
+        lines.sortedByDescending { it.itemCodeMP }
         lines.sortedByDescending { it.batchNumber }
         lines.reverse()
         return lines
